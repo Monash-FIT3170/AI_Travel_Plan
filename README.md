@@ -11,14 +11,20 @@ To install the required modules, do the following:
 - Enter "cd server". This will navigate to spike/server directory.
 - Enter "npm install". This will install all dependencies to run your server. Server is ready to run now :)
 
+Great! you've installed everything
 To run the application, you must:
-open 2 terminal windows. (ctrl + `)
-  - navigate one to server first. (cd server)
-    - while here, run "npm run dev".
+open 2 separate terminal windows. (ctrl + `)
+  
+  - In one terminal, run the following commands
+    - cd server
+    - run npm run dev
     This will run the server.
-  - navigate the other terminal to server. (cd client)
-    - while here, run "npm start".
+
+  - In the other terminal, run the following commands
+    - run cd client
+    - run npm start
     This will open your react program in the browser.
+
 
 Recommended but not required:
 - Install ES7+ React/Redux/React-Native snippets
