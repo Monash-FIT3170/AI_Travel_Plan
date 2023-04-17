@@ -16,14 +16,14 @@ To run the application, you must:
 open 2 separate terminal windows. (ctrl + `)
   
   - In one terminal, run the following commands
-    - cd server
-    - run npm run dev
+    - "cd server"
+    - "npm run dev"
     This will run the server.
 
   - In the other terminal, run the following commands
-    - run cd client
-    - run npm start
-    This will open your react program in the browser.
+    - "cd client"
+    - "npm start"
+    This will open your react program in the browser. If it doesn't automatically open in the browser, head to your browser and type this link in the search bar: localhost:3000
 
 
 Recommended but not required:
