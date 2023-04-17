@@ -25,6 +25,8 @@ open 2 separate terminal windows. (ctrl + `)
     - "npm start"
     This will open your react program in the browser. If it doesn't automatically open in the browser, head to your browser and type this link in the search bar: localhost:3000
 
+I have added the react-bootstrap and bootstrap libraries for our UI. Refer to their documentation to get a feel on how to use their library: https://react-bootstrap.github.io/components/alerts 
+
 
 Recommended but not required:
 - Install ES7+ React/Redux/React-Native snippets
