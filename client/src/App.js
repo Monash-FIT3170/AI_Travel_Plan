@@ -1,4 +1,4 @@
-import Template from "./component/Template";
+import Template from "./components/Template";
 function App() {
   return (
     <div>
