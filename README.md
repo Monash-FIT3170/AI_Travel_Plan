@@ -14,8 +14,8 @@ To install the required modules, do the following:
 
 To add api keys to the aplication do the follwing:
 
--Create a '.env' file in the server directory
--add the key e.g OPENAIKEY='insert key here'
+- create a '.env' file in the server directory
+- add the key e.g OPENAIKEY='insert key here'
 
 Great! you've installed everything
 To run the application, you must:
