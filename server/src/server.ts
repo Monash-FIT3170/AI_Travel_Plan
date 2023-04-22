@@ -4,10 +4,10 @@ import dotenv from 'dotenv';
 dotenv.config()
 const api = require('./routes/index');
 
-
 const app = express();
-console.log(process.env.OPENAIKEY)
 const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 4000;
+import { Event, Travel_Itinerary } from './ApplicationTypes'
+import { sendResponse } from './services/OpenIAIService'
 
 app.use('/api', api);
 
@@ -20,3 +20,12 @@ app.listen(PORT, () => {
 		+ 'on port http://localhost:' + PORT);
 })
 
+// testing open api request
+// sendResponse("where should i go ").catch((err) => {
+// 	console.log(err.response.data)
+// }).
+// 	then((response) => {
+// 		console.log(response)
+// 		const place: Event = response ? JSON.parse(response) : null
+// 		console.log(place.description)
+// 	})
