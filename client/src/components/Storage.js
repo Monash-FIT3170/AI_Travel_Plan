@@ -40,8 +40,8 @@ useEffect(() => {
     e.preventDefault();
     const eventToStore = {
       ...event,
-      startTime: event.startTime.toISOString(),
-      endTime: event.endTime.toISOString(),
+      startTime: new Date(event.startTime),
+      endTime: new Date(event.endTime),
     };
     localStorage.setItem("event", JSON.stringify(eventToStore));
   };
