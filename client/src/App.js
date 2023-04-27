@@ -1,12 +1,12 @@
 import Template from "./components/Template";
-import { MyForm } from "./components/Storage"
+import { MyForm1 } from "./components/Storage-general"
 
 function App() {
   return (
     <div>
       <h1> HELLO </h1>
       <Template></Template>
-      <MyForm />
+      <MyForm1 />
     </div>
   );
 }
