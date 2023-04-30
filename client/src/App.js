@@ -1,8 +1,13 @@
-import Template from "./components/Template";
+// import Template from "./components/Template";
+import EditButton from "./components/EditButton";
+import AddButton from "./components/AddButton";
+
 function App() {
   return (
     <div>
-      <Template></Template>
+      {/* <Template></Template> */}
+      <EditButton />
+      <AddButton />
     </div>
   );
 }
