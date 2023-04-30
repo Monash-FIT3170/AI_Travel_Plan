@@ -36,8 +36,8 @@ function EditButton() { // Initialise with invisible popup and empty values
             }>Edit destination</button>
             {
             isPopupVisible && (
-                <div className="edit-overlay">
-                    <div className="edit-popup">
+                <div className="overlay">
+                    <div className="popup">
                         <h2>Edit destination</h2>
                         <label htmlFor="inputDestination">Destination:</label>
                         <input id="inputDestination" type="text"
@@ -45,18 +45,21 @@ function EditButton() { // Initialise with invisible popup and empty values
                             onChange={
                                 (e) => handleUpdate(e, 1)
                             }/>
+                        <br></br>
                         <label htmlFor="inputDate">Date:</label>
                         <input id="inputDate" type="date"
                             value={dateVal}
                             onChange={
                                 (e) => handleUpdate(e, 2)
                             }/>
+                        <br></br>
                         <label htmlFor="inputTime">Time:</label>
                         <input id="inputTime" type="time"
                             value={timeVal}
                             onChange={
                                 (e) => handleUpdate(e, 3)
                             }/>
+                        <br></br>
                         <button onClick={handleSave}>Save</button>
                     </div>
                 </div>
