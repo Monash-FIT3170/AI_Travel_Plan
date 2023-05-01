@@ -1,8 +1,10 @@
-import Template from "./components/Template";
+import DeleteAlert from "./components/DeleteAlert";
+import DeleteButton from "./components/DeleteButton";
 function App() {
   return (
     <div>
-      <Template></Template>
+      <DeleteButton></DeleteButton>
+      <DeleteAlert></DeleteAlert>
     </div>
   );
 }
