@@ -8,12 +8,14 @@
  */
 
 import React from 'react'
-import Template from "./../components/Template";
+import ExampleBox from '../components/examples/ExampleBox';
 
 export default function ExamplePage() {
   return (
     <div>
-        <Template></Template>
+        
+        <ExampleBox/>   
+
     </div>
   )
 }

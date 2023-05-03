@@ -9,7 +9,7 @@ function App() {
   return (
     <Router>
       <div className='container'>
-        {/*<Header />  <- this header component will generate at the top of the page. It is app-wide and not specific to the page you are on */}
+        {/*<Header />  <- this header component will generate at the top of the page. */}
         {/*  ^^ Header currently not implemented so it is commented out*/}
         <Routes> {/* <- used to switch between pages of the application. Uses react-router-dom*/}
           <Route path='/' element={<ExamplePage />} /> {/* currently the root or home page is set to ExamplePage(i.e., localhost:3000/) */}
@@ -23,7 +23,7 @@ function App() {
       </div>
     </Router>
     
-    // Remember, any components that are placed in the App component (here) are not part of a specific page and are application wide. 
+    // Remember, any components that are placed in the App component (here) but not nested inside Router component are not part of a specific page and are application wide. 
 
   );
 }
