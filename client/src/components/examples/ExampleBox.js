@@ -1,11 +1,13 @@
 import React, {useState} from 'react'
 import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button'
+import axios from 'axios'
 
 export default function ExampleBox() {
   
   /**
-   * here is an example of a state. React components can have states. They are sort of like class variables
+   * here is an example of a state. React components can have states. They are basically a component's variables. 
+   * We use variables this way because a react component is reloaded when a state change happens (when you call setDisplayText)
    * The state given here is composed of an array of 2 elements
    * The first element in the array is the variable that stores the state
    * the second element in the array is a method that can be used to update the value in displayText
@@ -15,12 +17,20 @@ export default function ExampleBox() {
   */
   const [displayText, setDisplayText] = useState(""); // <- the value in useState is the default value of displayText that is set. Initially it is a blank string.
 
-  const handleClick = () =>  {
+  /**
+   * This function handles a click of the button.
+   * It will try getting data from the backend and updating the displayText state when it gets it. 
+   * it is asynchronous because it needs to wait for the server to get a response. 
+   */
+  const handleClick = async () =>  { // need the async keyword to make the function here asynchronous
     //here is where the magic happens. Here is how you can use the get request in express to get something from the backend
+    const response = await fetch(`http://localhost:4000/exampleAPI`)
     
+    //accesses the data portion of the response
+    const textOnServer = await response.text()
     
-    setDisplayText("some text has appeared")
-    
+    //updates the displayText state to contain the string from the server
+    setDisplayText(textOnServer)
   }
   
     return (
