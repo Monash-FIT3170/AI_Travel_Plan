@@ -23,15 +23,22 @@ const ItinerarySummaryButton = () => {
     fetchItinerary();
   }, []);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  };
+
   return (
     <div>
       <button onClick={togglePopup}>Show Itinerary</button>
       {showPopup && (
         <div className="popup">
-          <h2>User's Itinerary</h2>
+          <h2>Your Itinerary</h2>
           {itinerary.map((dailyItinerary, index) => (
             <div key={index}>
-              <h3 className="day-header">Day {dailyItinerary.day}:</h3>
+              <h3 className="day-header">
+                Day {dailyItinerary.day} ({formatDate(dailyItinerary.date)}):
+              </h3>
               <ul>
                 {dailyItinerary.events.map((event, eventIndex) => (
                   <li key={eventIndex}>
