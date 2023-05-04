@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./ItinerarySummaryButton.css";
 
 const ItinerarySummaryButton = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -28,14 +29,25 @@ const ItinerarySummaryButton = () => {
       {showPopup && (
         <div className="popup">
           <h2>User's Itinerary</h2>
-          <ul>
-            {itinerary.map((dailyItinerary, index) => (
-              <li key={index}>
-                Day {dailyItinerary.day}:{" "}
-                {dailyItinerary.events.map((event) => event.name).join(", ")}
-              </li>
-            ))}
-          </ul>
+          {itinerary.map((dailyItinerary, index) => (
+            <div key={index}>
+              <h3 className="day-header">Day {dailyItinerary.day}:</h3>
+              <ul>
+                {dailyItinerary.events.map((event, eventIndex) => (
+                  <li key={eventIndex}>
+                    <p className="event-title">{event.name}</p>
+                    <p className="event-detail">Address: {event.address}</p>
+                    <p className="event-detail">
+                      Description: {event.description}
+                    </p>
+                    <p className="event-detail">
+                      Estimated Cost: ${event.cost}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
           <button onClick={togglePopup}>Close</button>
         </div>
       )}
