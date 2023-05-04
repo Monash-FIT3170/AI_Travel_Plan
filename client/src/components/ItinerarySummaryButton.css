@@ -61,3 +61,59 @@ button {
 button:hover {
   background-color: #555555;
 }
+
+.popup .close-button {
+  background-color: #f44336;
+}
+
+.popup .close-button:hover {
+  background-color: #e53935;
+}
+
+.popup .event-edit-button {
+  background-color: #333333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 5px 12px;
+  margin-left: 5px;
+}
+
+.popup .event-edit-button:hover {
+  background-color: #555555;
+}
+
+form label {
+  display: block;
+  margin: 5px 0;
+}
+
+form input[type="text"],
+form input[type="number"],
+form textarea {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.popup form button {
+  background-color: #333333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin: 5px;
+}
+
+.popup button:hover {
+  background-color: #555555;
+}
+
+form button[type="button"] {
+  background-color: #f44336;
+}

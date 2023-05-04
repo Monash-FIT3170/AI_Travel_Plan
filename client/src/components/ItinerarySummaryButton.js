@@ -4,9 +4,33 @@ import "./ItinerarySummaryButton.css";
 const ItinerarySummaryButton = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [itinerary, setItinerary] = useState([]);
+  const [editingEvent, setEditingEvent] = useState(null);
 
   const togglePopup = () => {
     setShowPopup(!showPopup);
+  };
+
+  const editEvent = (dayIndex, eventIndex) => {
+    setEditingEvent({ dayIndex, eventIndex });
+  };
+
+  const updateEvent = (event, dayIndex, eventIndex) => {
+    event.preventDefault();
+    const updatedEvent = {
+      name: event.target.name.value,
+      address: event.target.address.value,
+      description: event.target.description.value,
+      cost: event.target.cost.value,
+    };
+
+    const updatedItinerary = [...itinerary];
+    updatedItinerary[dayIndex].events[eventIndex] = updatedEvent;
+    setItinerary(updatedItinerary);
+    setEditingEvent(null);
+  };
+
+  const cancelEdit = () => {
+    setEditingEvent(null);
   };
 
   useEffect(() => {
@@ -34,28 +58,81 @@ const ItinerarySummaryButton = () => {
       {showPopup && (
         <div className="popup">
           <h2>Your Itinerary</h2>
-          {itinerary.map((dailyItinerary, index) => (
-            <div key={index}>
+          {itinerary.map((dailyItinerary, dayIndex) => (
+            <div key={dayIndex}>
               <h3 className="day-header">
                 Day {dailyItinerary.day} ({formatDate(dailyItinerary.date)}):
               </h3>
               <ul>
                 {dailyItinerary.events.map((event, eventIndex) => (
                   <li key={eventIndex}>
-                    <p className="event-title">{event.name}</p>
-                    <p className="event-detail">Address: {event.address}</p>
-                    <p className="event-detail">
-                      Description: {event.description}
-                    </p>
-                    <p className="event-detail">
-                      Estimated Cost: ${event.cost}
-                    </p>
+                    {editingEvent &&
+                    editingEvent.dayIndex === dayIndex &&
+                    editingEvent.eventIndex === eventIndex ? (
+                      <form
+                        onSubmit={(e) => updateEvent(e, dayIndex, eventIndex)}
+                      >
+                        <label>
+                          Name:
+                          <input
+                            type="text"
+                            name="name"
+                            defaultValue={event.name}
+                          />
+                        </label>
+                        <label>
+                          Address:
+                          <input
+                            type="text"
+                            name="address"
+                            defaultValue={event.address}
+                          />
+                        </label>
+                        <label>
+                          Description:
+                          <textarea
+                            name="description"
+                            defaultValue={event.description}
+                          />
+                        </label>
+                        <label>
+                          Estimated Cost:
+                          <input
+                            type="number"
+                            name="cost"
+                            defaultValue={event.cost}
+                          />
+                        </label>
+                        <button type="submit">Update</button>
+                        <button type="button" onClick={cancelEdit}>
+                          Cancel
+                        </button>
+                      </form>
+                    ) : (
+                      <>
+                        <p className="event-title">{event.name}</p>
+                        <p className="event-detail">
+                          Description: {event.description}
+                        </p>
+                        <p className="event-detail">
+                          Estimated Cost: ${event.cost}
+                        </p>
+                        <button
+                          onClick={() => editEvent(dayIndex, eventIndex)}
+                          className="event-edit-button"
+                        >
+                          Edit
+                        </button>
+                      </>
+                    )}
                   </li>
                 ))}
               </ul>
             </div>
           ))}
-          <button onClick={togglePopup}>Close</button>
+          <button onClick={togglePopup} className="close-button">
+            Close
+          </button>
         </div>
       )}
     </div>
