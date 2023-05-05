@@ -16,15 +16,15 @@ function App() {
 
           {/* vv You can add more pages to the app like so vv */} 
 
-          {/* <Route path='/login' element={<Login />} /> */} {/* This would create a new page using the Login page component at address localhost:3000/login */}
-          {/* <Route path='/register' element={<Register />} /> */} {/* This would create a new page using the Register page component at address localhost:3000/register */}
+          {/* <Route path='/login' element={<LoginPage />} /> */} {/* This would create a new page using the Login page component at address localhost:3000/login */}
+          {/* <Route path='/register' element={<RegisterPage />} /> */} {/* This would create a new page using the Register page component at address localhost:3000/register */}
         
         </Routes>
       </div>
     </Router>
     
     // Remember, any components that are placed in the App component (here) but not nested inside Router component are not part of a specific page and are application wide. 
-
+    // This means Even if you switch pages, the components here will never change. 
   );
 }
 

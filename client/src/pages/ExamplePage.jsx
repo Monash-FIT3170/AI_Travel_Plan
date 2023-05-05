@@ -4,7 +4,7 @@
  * for example, you may be redirected from the HOME page to a LOG IN page to log into your account
  * Each page should contain all the relevant components specific to that page
  * 
- * In terms of react components, a page is also a react component that has components in it
+ * In terms of react components, a page is also just a react component. 
  */
 
 import React from 'react'
@@ -13,7 +13,7 @@ import ExampleBox from '../components/examples/ExampleBox';
 export default function ExamplePage() {
   return (
     <div>
-        
+        {/*Currently the only thing on the page is this ExampleBox component */}
         <ExampleBox/>   
 
     </div>
