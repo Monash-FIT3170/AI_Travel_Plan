@@ -14,19 +14,36 @@ const ItinerarySummaryButton = () => {
     setEditingEvent({ dayIndex, eventIndex });
   };
 
+  const validateInput = (name, address, description, cost) => {
+    if (
+      name.trim() === "" ||
+      address.trim() === "" ||
+      description.trim() === ""
+    ) {
+      alert("Name, address, and description are required.");
+      return false;
+    }
+    if (isNaN(cost) || cost < 0) {
+      alert("Please enter a valid estimated cost.");
+      return false;
+    }
+    return true;
+  };
+
   const updateEvent = (event, dayIndex, eventIndex) => {
     event.preventDefault();
-    const updatedEvent = {
-      name: event.target.name.value,
-      address: event.target.address.value,
-      description: event.target.description.value,
-      cost: event.target.cost.value,
-    };
+    const name = event.target.name.value;
+    const address = event.target.address.value;
+    const description = event.target.description.value;
+    const cost = event.target.cost.value;
 
-    const updatedItinerary = [...itinerary];
-    updatedItinerary[dayIndex].events[eventIndex] = updatedEvent;
-    setItinerary(updatedItinerary);
-    setEditingEvent(null);
+    if (validateInput(name, address, description, cost)) {
+      const updatedEvent = { name, address, description, cost };
+      const updatedItinerary = [...itinerary];
+      updatedItinerary[dayIndex].events[eventIndex] = updatedEvent;
+      setItinerary(updatedItinerary);
+      setEditingEvent(null);
+    }
   };
 
   const cancelEdit = () => {
