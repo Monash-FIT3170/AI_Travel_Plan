@@ -50,6 +50,22 @@ const ItinerarySummaryButton = () => {
     setEditingEvent(null);
   };
 
+  // The below is used to load mock data from local storage.
+  const loadDataFromLocalStorage = () => {
+    const storedData = localStorage.getItem("itinerary");
+    if (storedData) {
+      setItinerary(JSON.parse(storedData).schedule);
+    } else {
+      console.log("No data found in local storage.");
+    }
+  };
+
+  useEffect(() => {
+    loadDataFromLocalStorage();
+  }, []);
+
+  // The useEffect below is used to load mock data from the backend.
+  /*
   useEffect(() => {
     const fetchItinerary = async () => {
       try {
@@ -62,7 +78,7 @@ const ItinerarySummaryButton = () => {
     };
 
     fetchItinerary();
-  }, []);
+  }, []); */
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
