@@ -1,6 +1,5 @@
 import "../style.css";
 import React, {useState} from "react";
-import DeleteAlert from "./DeleteAlert";
 
 function DeleteButton() {
     const [isPopupVisible, setPopupVisibility] = useState(false);
@@ -13,7 +12,7 @@ function DeleteButton() {
     // Delete the event from history once confirmed
     const handleDelete = () => {
         setPopupVisibility(false);
-        var x = document.getElementById("deletedDestination");
+        var x = document.getElementById("deletedAlert");
         x.className = "show";
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
         
