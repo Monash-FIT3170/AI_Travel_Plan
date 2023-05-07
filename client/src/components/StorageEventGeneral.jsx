@@ -1,7 +1,7 @@
 import { useLocalStorage } from "./LocalStorageGeneric";
 import { mockEvent1 } from "./MockData";
 
-export const MyForm1 = () => {
+export const MyForm1 = ({setEventFormData}) => {
     
   const [event, setEvent, updateValueInLocalStorage] = useLocalStorage("event", mockEvent1);
 
@@ -23,7 +23,7 @@ export const MyForm1 = () => {
     };
     console.log("event after formatting:", eventToStore);
     // setEvent(eventToStore);
-    // setEventFormData(eventToStore);
+    setEventFormData(eventToStore);
     updateValueInLocalStorage(eventToStore);
   };
 
