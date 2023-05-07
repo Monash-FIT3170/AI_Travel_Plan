@@ -1,19 +1,9 @@
 import { useLocalStorage } from "./LocalStorageGeneric";
-
-
-const mockEvent = {
-    name: "Melbourne",
-    address: "Clayton",
-    description: "Nothing",
-    startTime: new Date(),
-    endTime: new Date(),
-    cost: 100,
-    chatResponse: "something",
-};
+import { mockEvent1 } from "./MockData";
 
 export const MyForm1 = () => {
     
-  const [event, setEvent] = useLocalStorage("event", mockEvent);
+  const [event, setEvent] = useLocalStorage("event", mockEvent1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,13 +15,16 @@ export const MyForm1 = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("event before formatting:", event);
     const eventToStore = {
       ...event,
-      startTime: new Date(event.startTime),
-      endTime: new Date(event.endTime),
+      startTime: new Date(event.startTime).toISOString().slice(0,16),
+      endTime: new Date(event.endTime).toISOString().slice(0,16),
     };
+    console.log("event after formatting:", eventToStore);
     setEvent(eventToStore)
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>

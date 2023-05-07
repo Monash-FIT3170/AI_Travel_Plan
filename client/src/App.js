@@ -1,5 +1,5 @@
 import Template from "./components/Template";
-import { MyForm1 } from "./components/Storage-general"
+import { MyForm1 } from "./components/StorageEventGeneral";
 
 function App() {
   return (
