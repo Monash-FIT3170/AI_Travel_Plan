@@ -3,7 +3,7 @@ import { mockEvent1 } from "./MockData";
 
 export const MyForm1 = () => {
     
-  const [event, setEvent] = useLocalStorage("event", mockEvent1);
+  const [event, setEvent, updateValueInLocalStorage] = useLocalStorage("event", mockEvent1);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,12 +18,19 @@ export const MyForm1 = () => {
     console.log("event before formatting:", event);
     const eventToStore = {
       ...event,
-      startTime: new Date(event.startTime).toISOString().slice(0,16),
-      endTime: new Date(event.endTime).toISOString().slice(0,16),
+      startTime: new Date(event.startTime.includes("Z") ? event.startTime : event.startTime + "Z").toISOString(),
+      endTime: new Date(event.endTime.includes("Z") ? event.endTime : event.endTime + "Z").toISOString(),
     };
     console.log("event after formatting:", eventToStore);
-    setEvent(eventToStore)
+    // setEvent(eventToStore);
+    // setEventFormData(eventToStore);
+    updateValueInLocalStorage(eventToStore);
   };
+
+  // const formattedStartTime = event.startTime.includes("Z") ? event.startTime : event.startTime + "Z";
+  // const formattedEndTime = event.endTime.includes("Z") ? event.endTime : event.endTime + "Z";
+  // const formattedStartTime = new Date(event.startTime).toLocaleString();
+  // const formattedEndTime = new Date(event.endTime).toLocaleString();
   
 
   return (
@@ -62,6 +69,7 @@ export const MyForm1 = () => {
         <input
           type="datetime-local"
           name="startTime"
+          // value={event.startTime ? new Date(event.startTime+"Z").toISOString().slice(0, -8) : ''}
           value={event.startTime}
           onChange={handleChange}
         />
@@ -72,6 +80,7 @@ export const MyForm1 = () => {
         <input
           type="datetime-local"
           name="endTime"
+          // value={event.endTime ? new Date(event.endTime+"Z").toISOString().slice(0,-8) : ''}
           value={event.endTime}
           onChange={handleChange}
         />

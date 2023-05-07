@@ -1,4 +1,5 @@
 import Template from "./components/Template";
+// import { MyForm2 } from "./components/StorageDailyItineraryGeneral";
 import { MyForm1 } from "./components/StorageEventGeneral";
 
 function App() {
