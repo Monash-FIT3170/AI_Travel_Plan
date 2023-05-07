@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Alert from 'react-bootstrap/Alert'
-import Button from 'react-bootstrap/Button'
+import ExampleButton from './ExampleButton'
 
 export default function ExampleBox() {
   
@@ -15,6 +15,7 @@ export default function ExampleBox() {
    * https://www.youtube.com/watch?v=TNhaISOUy6Q&ab_channel=Fireship
   */
   const [displayText, setDisplayText] = useState(""); // <- the value in useState is the default value of displayText that is set. Initially it is a blank string.
+  const [clickSwitch, setClickSwitch] = useState(false); // <- the value can be other data types like boolean
 
   /**
    * This function handles a click of the button.
@@ -23,13 +24,21 @@ export default function ExampleBox() {
    */
   const handleClick = async () =>  { // need the async keyword to make the function here asynchronous
     //here is where the magic happens. Here is how you can use the get request in express to get something from the backend
-    const response = await fetch(`http://localhost:4000/exampleAPI`)
+    const response = await fetch(`http://localhost:4000/api/exampleRoute`)
     
     //accesses the data portion of the response
-    const textOnServer = await response.text()
+    const dataOnServer = await response.text()
+    const textOnServer = JSON.parse(dataOnServer).message
     
-    //updates the displayText state to contain the string from the server
-    setDisplayText(textOnServer)
+    // A simple switching mechanism, that shows text when clicked once, then deletes text when clicked again.
+    if (clickSwitch) {
+      setClickSwitch(false)
+      setDisplayText("")
+    }
+    else {
+      setClickSwitch(true)
+      setDisplayText(textOnServer)
+    }
   }
   
     // The rest of the code here just shows the components and HTML that will be displayed in this component.
@@ -37,7 +46,7 @@ export default function ExampleBox() {
     <Alert variant="success">
       <Alert.Heading>Wow look! A button! I wonder what happens if you click it...</Alert.Heading>
       
-      <Button variant="primary" onClick={handleClick}>Please click me</Button>
+      <ExampleButton onClick={handleClick}>Please click me</ExampleButton>
       
       <hr /> {/* <-- line separating button from text below it */}
 

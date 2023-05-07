@@ -8,7 +8,7 @@ const router = express.Router()
  * Refer to the 18 min mark in this vid for adding the other operations here: https://www.youtube.com/watch?v=-0exw-9YJBo 
  */
 router.get('/', (req, res) => {
-    res.status(200).json({message: 'Dummy Data'})
+    res.status(200).json({message: 'I live in the server'})
 })
 
 /**
