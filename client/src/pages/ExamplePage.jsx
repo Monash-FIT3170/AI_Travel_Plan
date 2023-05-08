@@ -13,8 +13,12 @@ import ExampleBox from '../components/examples/ExampleBox';
 export default function ExamplePage() {
   return (
     <div>
-        {/*Currently the only thing on the page is this ExampleBox component */}
+        {/*Notice each ExampleBox's state is unique to its component instance i.e. it is not linked across all instances of a component */}
+        {/*This means all components are reusable. You therefore don't need to remake a component if you can simply reuse it */}
         <ExampleBox/>   
+        <ExampleBox/>  
+        <ExampleBox/>  
+
 
     </div>
   )
