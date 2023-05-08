@@ -68,4 +68,4 @@ function EditButton() { // Initialise with invisible popup and empty values
     );
 }
 
-export default EditButton
+export default EditButton;

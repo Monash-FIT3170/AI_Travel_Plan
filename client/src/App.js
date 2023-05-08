@@ -1,3 +1,4 @@
+import AddButton from "./components/AddButton";
 import Template from "./components/Template";
 import EditButton from "./components/EditButton";
 import NewDestination from "./components/NewDestination";
@@ -12,6 +13,7 @@ function App() {
       <EditButton />
       <NewDestination />
       {/* <AddButton /> */}
+       <AddButton />
       <MyForm2 />
     </div>
   );
