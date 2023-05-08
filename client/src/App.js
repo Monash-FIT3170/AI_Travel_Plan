@@ -1,8 +1,9 @@
-import Template from "./components/Template";
+import Chatbox from "./components/chatbox";
+
 function App() {
   return (
     <div>
-      <Template></Template>
+      <Chatbox />
     </div>
   );
 }
