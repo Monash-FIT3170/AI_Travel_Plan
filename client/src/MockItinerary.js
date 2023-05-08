@@ -1,10 +1,9 @@
 /*
-This is a mock itinerary for a 6-day trip to Japan (Tokyo, Kyoto, Osaka)
+This is a mock itinerary for a 6-day trip to Japan (Tokyo, Kyoto, Osaka) in JavaScript object format.
 */
 
-
 // mock events
-const mockEvent1: Event = {
+const mockEvent1 = {
   name: "Ueno Park, Tokyo",
   address: "110-0007 Tokyo Ueno Park, Taito-ku, 5-20",
   description:
@@ -15,7 +14,7 @@ const mockEvent1: Event = {
   chatResponse: "",
 };
 
-const mockEvent2: Event = {
+const mockEvent2 = {
   name: "Akihabaraeki, Tokyo",
   address: "Taito City, Tokyo, Japan",
   description:
@@ -26,7 +25,7 @@ const mockEvent2: Event = {
   chatResponse: "",
 };
 
-const mockEvent3: Event = {
+const mockEvent3 = {
   name: "Meiji Jingu Shrine, Tokyo",
   address: "1-1 Yoyogikamizonocho, Shibuya, Tokyo 151-8557, Japan",
   description:
@@ -37,7 +36,7 @@ const mockEvent3: Event = {
   chatResponse: "",
 };
 
-const mockEvent4: Event = {
+const mockEvent4 = {
   name: "Harajuku, Tokyo",
   address: "Harajuku, Tokyo",
   description:
@@ -48,7 +47,7 @@ const mockEvent4: Event = {
   chatResponse: "",
 };
 
-const mockEvent5: Event = {
+const mockEvent5 = {
   name: "Tokyo Disneyland",
   address: "1-1 Maihama, Urayasu, Chiba Prefecture 279-0031, Japan",
   description:
@@ -59,7 +58,7 @@ const mockEvent5: Event = {
   chatResponse: "",
 };
 
-const mockEvent6: Event = {
+const mockEvent6 = {
   name: "Kiyomizu-Dera, Kyoto",
   address:
     "294 Kiyomizu 1-chome, Higashiyama Ward, Kyoto, Kyoto Prefecture 605-0862, Japan",
@@ -71,7 +70,7 @@ const mockEvent6: Event = {
   chatResponse: "",
 };
 
-const mockEvent7: Event = {
+const mockEvent7 = {
   name: "Arashiyama, Kyoto",
   address: "Ukyo Ward, Kyoto, Japan",
   description:
@@ -82,7 +81,7 @@ const mockEvent7: Event = {
   chatResponse: "",
 };
 
-const mockEvent8: Event = {
+const mockEvent8 = {
   name: "Fushimi Inari-Taisha, Kyoto",
   address: "68 Fukakusa Yabunouchicho, Fushimi Ward, Kyoto, Japan",
   description:
@@ -93,7 +92,7 @@ const mockEvent8: Event = {
   chatResponse: "",
 };
 
-const mockEvent9: Event = {
+const mockEvent9 = {
   name: "Kinkaku-Ji, Kyoto",
   address: "1 Kinkakujicho, Kita Ward, Kyoto, Kyoto Prefecture 603-8361, Japan",
   description:
@@ -104,7 +103,7 @@ const mockEvent9: Event = {
   chatResponse: "",
 };
 
-const mockEvent10: Event = {
+const mockEvent10 = {
   name: "Pontocho, Kyoto",
   address: "Pontocho, Kyoto",
   description:
@@ -115,7 +114,7 @@ const mockEvent10: Event = {
   chatResponse: "",
 };
 
-const mockEvent11: Event = {
+const mockEvent11 = {
   name: "Tennoji Zoo, Osaka",
   address:
     "1-108 Chausuyamacho, Tennoji Ward, Osaka, Osaka Prefecture 543-0063, Japan",
@@ -127,7 +126,7 @@ const mockEvent11: Event = {
   chatResponse: "",
 };
 
-const mockEvent12: Event = {
+const mockEvent12 = {
   name: "Dotonbori Area, Osaka",
   address: "Dotonbori Area, Osaka",
   description:
@@ -139,44 +138,44 @@ const mockEvent12: Event = {
 };
 
 // mock daily itinerary
-const mockDaily_Itinerary1: Daily_Itinerary = {
+const mockDaily_Itinerary1 = {
   day: 1,
   date: new Date("2023-05-26"),
   events: [mockEvent1, mockEvent2],
 };
 
-const mockDaily_Itinerary2: Daily_Itinerary = {
+const mockDaily_Itinerary2 = {
   day: 2,
   date: new Date("2023-05-27"),
   events: [mockEvent3, mockEvent4],
 };
 
-const mockDaily_Itinerary3: Daily_Itinerary = {
+const mockDaily_Itinerary3 = {
   day: 3,
   date: new Date("2023-05-28"),
   events: [mockEvent5],
 };
 
-const mockDaily_Itinerary4: Daily_Itinerary = {
+const mockDaily_Itinerary4 = {
   day: 4,
   date: new Date("2023-05-29"),
   events: [mockEvent6, mockEvent7],
 };
 
-const mockDaily_Itinerary5: Daily_Itinerary = {
+const mockDaily_Itinerary5 = {
   day: 5,
   date: new Date("2023-05-30"),
   events: [mockEvent8, mockEvent9, mockEvent10],
 };
 
-const mockDaily_Itinerary6: Daily_Itinerary = {
+const mockDaily_Itinerary6 = {
   day: 6,
   date: new Date("2023-05-31"),
   events: [mockEvent11, mockEvent12],
 };
 
 // mock travel itinerary
-export const mockTravel_Itinerary1: Travel_Itinerary = {
+export const mockTravel_Itinerary1 = {
   startDate: new Date("2023-05-26"),
   endDate: new Date("2023-05-31"),
   schedule: [
