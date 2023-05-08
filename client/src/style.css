@@ -2,3 +2,107 @@
 .template {
     color: red;
 }
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.popup h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#cancelButton {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: #757575;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+#cancelButton:hover {
+    background-color: #686868;
+}
+
+#deleteButton {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: #D23232;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+#deleteButton:hover {
+    background-color: #b11111;
+}
+
+#deletedDestination {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+  }
+  
+  #deletedDestination.show {
+    visibility: visible;
+  }
+  
+.popup input[type="text"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.popup button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.popup button:hover {
+    background-color: #0069d9;
+}
+
+.popup input {
+    margin-bottom: 20px;
+}
