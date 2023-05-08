@@ -1,0 +1,2 @@
+This folder should contain any functions that aren't included in the components themselves.
+Perhaps some functions that allow for manipulation of our local storage or app state (using redux potentially).

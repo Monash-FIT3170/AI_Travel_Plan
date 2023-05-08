@@ -2,7 +2,6 @@
 This is a mock itinerary for a 6-day trip to Japan (Tokyo, Kyoto, Osaka)
 */
 
-import { Event, Daily_Itinerary, Travel_Itinerary } from "./ApplicationTypes";
 
 // mock events
 const mockEvent1: Event = {

@@ -1,45 +1,38 @@
 // Importing module
-import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
+import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config()
+
 let cors = require("cors");
-const api = require("./routes/index");
+
 const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 4000;
-import { Event, Travel_Itinerary } from "./ApplicationTypes";
-import { sendResponse } from "./services/OpenIAIService";
-import { mockTravel_Itinerary1 } from "./MockItinerary";
+import swaggerDocs from './utils/swagger';
+
+
 
 const app = express();
-app.use(cors());
-app.use("/api", api);
+app.use(cors())
+//convert input to json
+app.use(express.json())
+
+//handle routes
+app.use('/api/healthCheck', require('./routes/healthCheckRoutes'));
+app.use('/api/exampleRoute', require('./routes/ExampleRoute'));
+app
 
 /**
- * Here is the endpoint for the server. Anytime you open localhost:4000/exampleAPI while the server is running, this will run.
+ * We define a route as follows. 
+ * The first argument is the actual route in the web request (http://localhost:4000/api/ExampleRoute)
+ * The second argument is the file that contains the router for the REST API. In our case, we import the file using the require() method.
+ * check out routes/ExampleRoute for the get request!
  */
-app.get("/exampleAPI", (req, res) => {
-  res.send("I live in the server");
-});
+// app.use('/api/ExampleRoute', require('./routes/ExampleRoute'))
 
-app.get("/", (req, res) => {
-  res.send("Hi");
-});
 
-app.get("/mockItinerary", (req, res) => {
-  res.json(mockTravel_Itinerary1);
-});
 // Server setup
 app.listen(PORT, () => {
-  console.log(
-    "The application is listening " + "on port http://localhost:" + PORT,
-  );
-});
+  console.log('The application is listening '
+    + 'on port http://localhost:' + PORT);
 
-// testing open api request
-// sendResponse("where should i go ").catch((err) => {
-// 	console.log(err.response.data)
-// }).
-// 	then((response) => {
-// 		console.log(response)
-// 		const place: Event = response ? JSON.parse(response) : null
-// 		console.log(place.description)
-// 	})
+  swaggerDocs(app, PORT)
+})
