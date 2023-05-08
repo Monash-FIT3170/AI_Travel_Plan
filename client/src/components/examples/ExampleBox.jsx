@@ -1,6 +1,12 @@
 import React, {useState} from 'react'
-import Alert from 'react-bootstrap/Alert'
+
+//This is where you import the required components from the material ui library
 import ExampleButton from './ExampleButton'
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+
 
 export default function ExampleBox() {
   
@@ -42,15 +48,24 @@ export default function ExampleBox() {
   }
   
     // The rest of the code here just shows the components and HTML that will be displayed in this component.
+    // it is styled using material ui
     return (
-    <Alert variant="success">
-      <Alert.Heading>Wow look! A button! I wonder what happens if you click it...</Alert.Heading>
-      
-      <ExampleButton onClick={handleClick}>Please click me</ExampleButton>
-      
-      <hr /> {/* <-- line separating button from text below it */}
+      <>
+        <Card variant="outlined" sx={{ minWidth: 275 }}>
+          <CardContent>
 
-      <p> {displayText} </p> {/* here the text is displayed. Before making an api call, the displayText has default value of "" thus no text is showing intially*/}
-    </Alert>
+            <Typography variant="h5" component="div">
+              Wow look! A button! I wonder what happens if you click it...
+            </Typography>
+            <Typography component="div">
+              {displayText}
+            </Typography>
+
+          </CardContent>
+          <CardActions>
+            <ExampleButton size="small" onClick={handleClick}>Please click me</ExampleButton>
+          </CardActions>
+        </Card>
+      </>
   )
 }

@@ -10,7 +10,7 @@ import { validateExample } from '../services/example.service'
 
 
 
-const getExampleRequest = (req: Request, res: Response) => (res.status(200).json({ message: 'Dummy Data' }))
+const getExampleRequest = (req: Request, res: Response) => (res.status(200).json({ message: 'I live in the server. Find me in server/src/controllerss/ExampleController.ts' }))
 
 const postExampleRequest = (req: Request, res: Response) => {
     validateExample(req.body) ? res.status(201).json({ message: req.body }) : res.status(400).json({ message: 'failure' })

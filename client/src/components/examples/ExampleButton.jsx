@@ -1,5 +1,4 @@
-import Button from 'react-bootstrap/Button';
-
+import Button from '@mui/material/Button';
 import React from 'react'
 
 /**
@@ -11,7 +10,8 @@ import React from 'react'
 export default function ExampleButton(props) {
   return (
     <>
-        <Button variant="primary" onClick={props.onClick}>{props.children}</Button>{' '}
+        <Button variant="contained" onClick={props.onClick}>{props.children}</Button>{' '}
+        
     </>
     
   );
