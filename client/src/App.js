@@ -1,3 +1,6 @@
+
+import DeleteAlert from "./components/DeleteAlert";
+import DeleteButton from "./components/DeleteButton";
 import AddButton from "./components/AddButton";
 import Template from "./components/Template";
 import EditButton from "./components/EditButton";
@@ -14,6 +17,9 @@ function App() {
       <NewDestination />
       {/* <AddButton /> */}
        <AddButton />
+       
+      <DeleteButton></DeleteButton>
+      <DeleteAlert></DeleteAlert>
       <MyForm2 />
     </div>
   );
