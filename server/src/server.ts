@@ -2,16 +2,23 @@
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config()
+
 let cors = require("cors");
-const api = require('./routes/index');
+
 const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 4000;
-import { Event, Travel_Itinerary } from './ApplicationTypes'
-import { sendResponse } from './services/OpenIAIService'
+import swaggerDocs from './utils/swagger';
+
+
+
 const app = express();
-app.use(cors());
+
+//convert input to json
 app.use(express.json())
 
-app.use('/api', api);
+//handle routes
+app.use('/api/healthCheck', require('./routes/healthCheckRoutes'));
+app.use('/api/exampleRoute', require('./routes/ExampleRoute'));
+app
 
 /**
  * We define a route as follows. 
@@ -19,15 +26,13 @@ app.use('/api', api);
  * The second argument is the file that contains the router for the REST API. In our case, we import the file using the require() method.
  * check out routes/ExampleRoute for the get request!
  */
-app.use('/api/ExampleRoute', require('./routes/ExampleRoute'))
+// app.use('/api/ExampleRoute', require('./routes/ExampleRoute'))
 
-
-app.get('/', (req, res) => {
-	res.send('Hi');
-})
 
 // Server setup
 app.listen(PORT, () => {
-	console.log('The application is listening '
-		+ 'on port http://localhost:' + PORT);
+  console.log('The application is listening '
+    + 'on port http://localhost:' + PORT);
+
+  swaggerDocs(app, PORT)
 })
