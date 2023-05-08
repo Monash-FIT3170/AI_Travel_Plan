@@ -31,6 +31,55 @@
     color: #333;
 }
 
+#cancelButton {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: #757575;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+#cancelButton:hover {
+    background-color: #686868;
+}
+
+#deleteButton {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: #D23232;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+#deleteButton:hover {
+    background-color: #b11111;
+}
+
+#deletedDestination {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+  }
+  
+  #deletedDestination.show {
+    visibility: visible;
+  }
+  
 .popup input[type="text"] {
     padding: 10px;
     margin-bottom: 10px;
