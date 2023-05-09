@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { ChatPage } from './pages/ChatPage';
 import { ItineraryPage } from './pages/ItineraryPage';
+import ExamplePage from './pages/ExamplePage';
 import Button from '@mui/material/Button';
 /**
  * The high level component that contains all pages and components of the application
@@ -14,13 +15,12 @@ function App() {
       <div className='container'>
      <Button component = {Link} to = "/chat"> Chat</Button>
      <Button component = {Link} to = "/itinerary"> Itinerary</Button>
+     <Button component = {Link} to = "/example">Example</Button>
 
-        {/*<Header />  <- this header component will generate at the top of the page. */}
-        {/*  ^^ Header currently not implemented so it is commented out*/}
         <Routes> {/* <- used to switch between pages of the application. Uses react-router-dom*/}
-          {/* <Route path='/' element={<ExamplePage />} /> currently the root or home page is set to ExamplePage(i.e., localhost:3000/) */}
           <Route path='/chat' element={<ChatPage />}></Route>
           <Route path='/itinerary' element={<ItineraryPage/>}></Route>
+          <Route path='/example' element={<ExamplePage/>}></Route>
 
           {/* vv You can add more pages to the app like so vv */} 
 

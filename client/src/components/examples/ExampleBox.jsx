@@ -58,6 +58,9 @@ export default function ExampleBox() {
               Wow look! A button! I wonder what happens if you click it...
             </Typography>
             <Typography component="div">
+              Just make sure the server is also running, or the buttons don't do anything
+            </Typography>
+            <Typography component="div">
               {displayText}
             </Typography>
 
