@@ -4,8 +4,7 @@ import { ChatPage } from "./pages/ChatPage";
 import { ItineraryPage } from "./pages/ItineraryPage";
 import ExamplePage from "./pages/ExamplePage";
 import HomePage from "./pages/HomePage";
-
-import AppBar from "./components/AppBar";
+import MyAppBar from "./components/AppBar";
 /**
  * The high level component that contains all pages and components of the application
  * @returns The application's view
@@ -14,7 +13,7 @@ import AppBar from "./components/AppBar";
 function App() {
   return (
     <Router>
-      <AppBar />
+      <MyAppBar />
 
       <Routes>
         {" "}

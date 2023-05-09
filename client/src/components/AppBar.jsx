@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 const MyAppBar = () => {
   return (
     <AppBar
-      position="sticky"
-      style={{ backgroundColor: "transparent", boxShadow: "none", zIndex: 2 }}
+      position="fixed"
+      style={{ backgroundColor: "transparent", zIndex: 2, boxShadow: "none" }}
     >
       <Toolbar>
         <Box display="flex" flexGrow={1}>

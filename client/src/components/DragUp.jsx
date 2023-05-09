@@ -27,7 +27,7 @@ const DragUp = () => {
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
-      style={{ cursor: "ns-resize", height: "100%" }} // Change to 100%
+      style={{ cursor: "ns-resize", height: "100%" }}
     >
       <div
         style={{
@@ -37,7 +37,7 @@ const DragUp = () => {
           textAlign: "center",
         }}
       >
-        <span style={{ fontSize: "24px" }}>↑</span>
+        <span style={{ fontSize: "69px" }}>↑</span>
         <p>Swipe up to start talking to our AI Travel Planner </p>
       </div>
     </div>
