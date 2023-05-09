@@ -1,6 +1,6 @@
 import React from "react";
 
-const Background = ({ children }) => {
+const Background = ({ children, scrollable = true }) => {
   return (
     <div
       style={{
@@ -9,7 +9,7 @@ const Background = ({ children }) => {
         position: "relative",
         zIndex: 1,
         height: "100vh",
-        overflow: "auto",
+        overflow: scrollable ? "auto" : "hidden",
       }}
     >
       {children}

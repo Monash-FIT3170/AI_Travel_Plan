@@ -8,7 +8,7 @@ function HomePage() {
   return (
     <>
       <BackgroundImage />
-      <Background>
+      <Background scrollable={false}>
         <Typography
           variant="h1"
           style={{ textAlign: "center", color: "white", marginTop: "200px" }}
