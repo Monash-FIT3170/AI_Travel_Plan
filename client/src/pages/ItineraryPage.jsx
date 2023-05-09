@@ -12,7 +12,7 @@ import ItinerarySumarryButton from "../components/ItinerarySummaryButton";
 export function ItineraryPage(){
   useEffect(() => {
     // Store the mock data in local storage when the page is loaded
-    const itineraryKey = "travelItinerary";
+    const itineraryKey = "itinerary";
     const storedItinerary = localStorage.getItem(itineraryKey);
 
     if (!storedItinerary) {
