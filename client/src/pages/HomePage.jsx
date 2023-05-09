@@ -1,12 +1,16 @@
 import React from "react";
-import DragUp from "../components/DragUp"; // Import the new component
+import DragUp from "../components/DragUp";
+import Background from "../components/Background";
+import BackgroundImage from "../components/BackgroundImage";
 
 function HomePage() {
   return (
-    <div style={{ backgroundColor: "rgba(128,128,128,0.5)", height: "100vh" }}>
-      {/* Your image will go here */}
-      <DragUp />
-    </div>
+    <>
+      <BackgroundImage />
+      <Background>
+        <DragUp />
+      </Background>
+    </>
   );
 }
 

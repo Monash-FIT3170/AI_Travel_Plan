@@ -9,19 +9,39 @@ import { Link } from "react-router-dom";
 
 const MyAppBar = () => {
   return (
-    <AppBar position="static" style={{ backgroundColor: "#123456" }}>
+    <AppBar
+      position="sticky"
+      style={{ backgroundColor: "transparent", boxShadow: "none", zIndex: 2 }}
+    >
       <Toolbar>
         <Box display="flex" flexGrow={1}>
-          <HomeIcon style={{ marginRight: "10px" }} />
-          <Typography variant="h6">Get Packing Traveller</Typography>
+          <HomeIcon style={{ marginRight: "10px", color: "white" }} />
+          <Typography variant="h6" style={{ color: "white" }}>
+            Get Packing Traveller
+          </Typography>
         </Box>
-        <Button color="inherit" component={Link} to="/chat">
+        <Button
+          color="inherit"
+          component={Link}
+          to="/chat"
+          style={{ color: "white" }}
+        >
           Chat
         </Button>
-        <Button color="inherit" component={Link} to="/itinerary">
+        <Button
+          color="inherit"
+          component={Link}
+          to="/itinerary"
+          style={{ color: "white" }}
+        >
           Itinerary
         </Button>
-        <Button color="inherit" component={Link} to="/example">
+        <Button
+          color="inherit"
+          component={Link}
+          to="/example"
+          style={{ color: "white" }}
+        >
           Example
         </Button>
       </Toolbar>

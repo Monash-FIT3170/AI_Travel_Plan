@@ -27,7 +27,7 @@ const DragUp = () => {
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
-      style={{ cursor: "ns-resize", height: "100vh" }}
+      style={{ cursor: "ns-resize", height: "100%" }} // Change to 100%
     >
       <div
         style={{
@@ -38,7 +38,7 @@ const DragUp = () => {
         }}
       >
         <span style={{ fontSize: "24px" }}>↑</span>
-        <p>Swipe Up</p>
+        <p>Swipe up to start talking to our AI Travel Planner </p>
       </div>
     </div>
   );
