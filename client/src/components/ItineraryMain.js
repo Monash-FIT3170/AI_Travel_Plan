@@ -1,12 +1,8 @@
 import "../style.css"
 
-const styles = {
-    backgroundColor: 'blue',
-};
-
 function ItineraryMain(){
     return(
-        <div style = {styles}>
+        <div>
             <h1 className= "ItineraryMain">This is the main itinerary page</h1>
         </div>
     )
