@@ -14,7 +14,7 @@ const MyAppBar = () => {
       style={{ backgroundColor: "transparent", zIndex: 2, boxShadow: "none" }}
     >
       <Toolbar>
-        <Box display="flex" flexGrow={1}>
+        <Box display="flex" alignItems="center" flexGrow={1}>
           <HomeIcon style={{ marginRight: "10px", color: "white" }} />
           <Typography variant="h6" style={{ color: "white" }}>
             Get Packing Traveller
@@ -24,7 +24,7 @@ const MyAppBar = () => {
           color="inherit"
           component={Link}
           to="/chat"
-          style={{ color: "white" }}
+          style={{ color: "white", marginRight: "88px" }}
         >
           Chat
         </Button>
@@ -32,7 +32,7 @@ const MyAppBar = () => {
           color="inherit"
           component={Link}
           to="/itinerary"
-          style={{ color: "white" }}
+          style={{ color: "white", marginRight: "88px" }}
         >
           Itinerary
         </Button>
@@ -40,7 +40,7 @@ const MyAppBar = () => {
           color="inherit"
           component={Link}
           to="/example"
-          style={{ color: "white" }}
+          style={{ color: "white", marginRight: "88px" }}
         >
           Example
         </Button>
