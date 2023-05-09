@@ -1,8 +1,10 @@
-import Template from "./components/Template";
+import MainNavButtons from "./components/MainNavButtons";
+
+
 function App() {
   return (
     <div>
-      <Template></Template>
+        <MainNavButtons></MainNavButtons>
     </div>
   );
 }
