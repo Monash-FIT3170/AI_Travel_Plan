@@ -9,6 +9,8 @@ import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import { EventCardView } from './EventCardView';
 
 function timelineGenerator(dailyItinerary){
+  // to fix date time
+  // - {dailyItinerary.events[0].startTime.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true })}
   return (
       <TimelineItem>
         <TimelineOppositeContent display='none'/> 
@@ -17,7 +19,7 @@ function timelineGenerator(dailyItinerary){
           <TimelineConnector />
         </TimelineSeparator>
         <TimelineContent>
-          Day {dailyItinerary.day} {dailyItinerary.date.toString()}
+          Day {dailyItinerary.day} {dailyItinerary.date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})} 
           {dailyItinerary.events.map(event=> <EventCardView event={event}/>)}
 
         </TimelineContent>
