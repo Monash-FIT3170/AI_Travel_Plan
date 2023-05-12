@@ -11,7 +11,7 @@ import CardMedia from '@mui/material/CardMedia';
 export  function EventCardView({event}) {
     console.log(event.event)
   return (
-    <Card variant="outlined" sx={{ maxWidth: 275 }}>
+    <Card variant="outlined" sx={{ maxWidth: 550 }}>
        <CardHeader
         avatar={
      <PlaceIcon />

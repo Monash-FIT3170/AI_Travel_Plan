@@ -7,6 +7,7 @@ import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import { EventCardView } from './EventCardView';
+import "./ItineraryTimeLine.css";
 
 function timelineGenerator(dailyItinerary){
   // to fix date time
@@ -15,13 +16,14 @@ function timelineGenerator(dailyItinerary){
       <TimelineItem>
         <TimelineOppositeContent display='none'/> 
         <TimelineSeparator>
-          <TimelineDot />
-          <TimelineConnector />
+          <TimelineDot sx={{ bgcolor: 'white' }}/>
+          <TimelineConnector sx={{ bgcolor: 'white' }}/>
         </TimelineSeparator>
         <TimelineContent>
+          <h5>
           Day {dailyItinerary.day} {dailyItinerary.date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})} 
+          </h5>
           {dailyItinerary.events.map(event=> <EventCardView event={event}/>)}
-
         </TimelineContent>
       </TimelineItem>)
 }
