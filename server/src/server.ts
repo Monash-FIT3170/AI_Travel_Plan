@@ -18,7 +18,7 @@ app.use(express.json())
 //handle routes
 app.use('/api/healthCheck', require('./routes/healthCheckRoutes'));
 app.use('/api/exampleRoute', require('./routes/ExampleRoute'));
-app
+app.use('/api/chatMessage', require('./routes/chatMessageRoute'));
 
 /**
  * We define a route as follows. 
@@ -37,6 +37,6 @@ app.listen(PORT, () => {
   swaggerDocs(app, PORT)
 })
 
-//Just an example of using the 
-const exampleUsage = require("./services/ExampleUsageOfArenService")
-exampleUsage.printAsyncValue()
+//Just an example of using the
+// const exampleUsage = require("./services/ExampleUsageOfArenService")
+// exampleUsage.printAsyncValue()
