@@ -17,7 +17,7 @@ export  function EventCardView({event}) {
      <PlaceIcon />
               }
         title={event.name}
-        // subheader={event.startTime}
+        subheader={"DURATION: " + Math.floor(((event.endTime-event.startTime) / (1000 * 60 * 60))) + " HRS"}
       />
         {/* <CardMedia
         component="img"
