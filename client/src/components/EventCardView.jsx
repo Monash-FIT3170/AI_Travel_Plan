@@ -19,12 +19,12 @@ export  function EventCardView({event}) {
         title={event.name}
         // subheader={event.startTime}
       />
-        <CardMedia
+        {/* <CardMedia
         component="img"
         height="194"
         image="https://theworldtravelguy.com/wp-content/uploads/2020/11/DJI_0943_1200.jpg"
         alt="Paella dish"
-      />
+      /> */}
         
       <CardContent>
        {event.description}

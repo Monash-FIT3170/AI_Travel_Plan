@@ -1,25 +1,26 @@
 import Background from "../components/Background"
 import BackgroundImage from "../components/BackgroundImage"
+import Chatbox from "../components/Chatbox";
 import { EventCardView } from "../components/EventCardView"
-
-
-const mockevent = {
-  name: "Ueno Park, Tokyo",
-  address: "110-0007 Tokyo Ueno Park, Taito-ku, 5-20",
-  description:
-    "The Ueno park is officially called the “Ueno Imperial Gift Park “ because it was a gift from Emperor Taisho to Tokyo city as a place of public recreation. The park is rich with greenery and birds during winter. This park also includes many other attractions in it.",
-  startTime: new Date("2023-05-26T13:00:00.000Z"),
-  endTime: new Date("2023-05-26T16:00:00.000Z"),
-  cost: 0,
-  chatResponse: "",
-};
+import { ItineraryTimeLine } from "../components/ItineraryTimeLine"
+import Grid from '@mui/material/Grid';
+import { mockTravel_Itinerary1 } from "../MockItinerary";
 
 export function ItineraryRight(){
     return (
         <div>
             <BackgroundImage/>
             <Background>
-            <EventCardView event={mockevent}></EventCardView>
+            <Grid container>
+                  <Grid item xs={6}>
+                <Chatbox></Chatbox>
+                </Grid>
+                <Grid item xs={6} >
+    <ItineraryTimeLine travelItinerary={mockTravel_Itinerary1}/>
+                </Grid>
+        
+            </Grid>
+            
             </Background>
         </div>
 
