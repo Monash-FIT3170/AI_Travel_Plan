@@ -18,8 +18,12 @@ import { TravelItinerary } from './travelItinerary.model';
  *          description: The travel itinerary object
  *          $ref: '#/components/schemas/TravelItinerary'
  *        chatHistory:
- *          $ref: '#/components/schemas/ChatHistoryItem'
- *          description: openAI's response to the prompt
+ *          type: array
+ *          description: An array of chat history items   
+ *          items:
+ *              $ref: '#/components/schemas/ChatHistoryItem'
+
+ * 
 
  */
 export interface ChatMessage {
