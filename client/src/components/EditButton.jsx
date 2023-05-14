@@ -1,13 +1,36 @@
 import "../style.css";
 import React, {useState} from "react";
+import { useLocalStorage } from "./LocalStorageGeneric";
 
 function EditButton() { // Initialise with invisible popup and empty values
     const [isPopupVisible, setPopupVisibility] = useState(false);
+    
+    const [itinerary, setItinerary, updateValueInLocalStorage] = useLocalStorage("dailyItinerary", "");
+
+    const exampleEventName = 'Meiji Jingu Shrine, Tokyo';
+    
+    const findEvent = (itinerary) => {
+        for (let i = 0; i < Object.keys(itinerary.schedule).length; i++) {
+            for (let j = 0; j < Object.keys(itinerary.schedule[i].events).length; j++) {
+                let currentName = itinerary.schedule[i].events[j].name;
+                if (currentName == exampleEventName) {
+                    let currentEvent = itinerary.schedule[i].events[j];
+                    
+                    // console.log("in schedule location: " + i + " and events location: " + j);
+                    let eventName = currentEvent.name;
+                }
+            }
+        }
+    }
+
+
+
 
     // Pass existing information into useState
     const [destinationVal, setDestination] = useState("Test");
     const [dateVal, setDate] = useState();
     const [timeVal, setTime] = useState();
+
 
     // Updating the value when the input is changed
     const handleUpdate = (event, inputNum) => {
@@ -23,7 +46,6 @@ function EditButton() { // Initialise with invisible popup and empty values
 
     // Save the values once user clicks save
     const handleSave = () => { // Use destinationVal, dateVal, timeVal to store where needed
-
 
         setPopupVisibility(false);
     };
