@@ -28,6 +28,7 @@ export default function ChatBox() {
    * TODO: create new message and add it to the message list
    */
   const handleButtonClick = () => {
+    addMessage(inputValue)
     setInputValue('')
   }
 
@@ -44,8 +45,14 @@ export default function ChatBox() {
  * @param {String} newMessage new message to add to the message list
  */
   const addMessage = (newMessage) => {
-    const newArr = messages + newMessage
-    setMessages(newArr)
+    setMessages([...messages, newMessage])
+    //just for testing vv
+    //TODO: the messages printed are delayed by 1 message. Why is that? 
+    console.log("\nhere is the array contents:")
+    for (let i = 0; i < messages.length; i++) {
+      console.log(messages[i])
+    }
+    console.log("end of contents\n")
   }
 
   /**

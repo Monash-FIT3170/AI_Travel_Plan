@@ -1,9 +1,10 @@
 import React from 'react'
+import Paper from '@mui/material/Paper';
 
 export default function MessageCard() {
   return (
     <div>
-        here's a message
+        <Paper elevation="12">Something here</Paper>
     </div>
   )
 }
