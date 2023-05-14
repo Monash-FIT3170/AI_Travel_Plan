@@ -21,6 +21,7 @@ function EditButton() {
 	// Update this to automatically take the input for a specific event
 	const exampleEventName = "Meiji Jingu Shrine, Tokyo";
 
+	// Function to parse the date from ISO string to Date object
 	function parseDateFromISO(dateString) {
 		const year = dateString.slice(0, 4);
 		const month = dateString.slice(5, 7);
@@ -35,6 +36,7 @@ function EditButton() {
 		);
 	}
 
+	// Function to parse the date from Date object to ISO string
 	function parseDateToISO(date) {
 		const year = date.getUTCFullYear();
 		const month = String(date.getUTCMonth() + 1).padStart(2, "0");
@@ -47,6 +49,7 @@ function EditButton() {
 		return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
 	}
 
+	// Function to find an event in the itinerary that matches the event name
 	const findEvent = (itinerary) => {
 		for (let i = 0; i < Object.keys(itinerary.schedule).length; i++) {
 			for (
@@ -57,9 +60,9 @@ function EditButton() {
 				let currentName = itinerary.schedule[i].events[j].name;
 				if (currentName == exampleEventName) {
 					let currentEvent = itinerary.schedule[i].events[j];
-
-					// console.log("in schedule location: " + i + " and events location: " + j);
 					let eventName = currentEvent.name;
+
+					// Setting values based on event and location
 					setDestination(eventName);
 					setDate(parseDateFromISO(currentEvent.startTime));
 					setEventName(eventName);
@@ -96,11 +99,12 @@ function EditButton() {
 
 	// Save the values once user clicks save
 	const handleSave = () => {
-		// Use destinationVal, dateVal, timeVal to store where needed
+		// Rebuilding itinerary in respective location
 		itinerary.schedule[scheduleIndex].events[eventsIndex].name = destinationVal;
 		itinerary.schedule[scheduleIndex].events[eventsIndex].startTime =
 			parseDateToISO(dateVal);
-		console.log(itinerary);
+
+		// Update local storage and close popup
 		updateValueInLocalStorage(itinerary);
 		setPopupVisibility(false);
 	};
