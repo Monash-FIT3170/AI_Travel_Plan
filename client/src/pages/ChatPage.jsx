@@ -1,6 +1,6 @@
-import Chatbox from '../components/Chatbox';
+import ChatBox from '../components/chatbox/ChatBox';
 export function ChatPage(){
     return (
-        <Chatbox></Chatbox>
+        <ChatBox></ChatBox>
     )
 }
