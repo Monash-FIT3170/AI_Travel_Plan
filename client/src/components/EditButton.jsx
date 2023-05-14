@@ -7,8 +7,13 @@ function EditButton() { // Initialise with invisible popup and empty values
     
     const [itinerary, setItinerary, updateValueInLocalStorage] = useLocalStorage("dailyItinerary", "");
 
+    const [eventName, setEventName] = useState();
+    const [scheduleIndex, setScheduleIndex] = useState();
+    const [eventsIndex, setEventsIndex] = useState();
+
     const exampleEventName = 'Meiji Jingu Shrine, Tokyo';
-    
+
+
     const findEvent = (itinerary) => {
         for (let i = 0; i < Object.keys(itinerary.schedule).length; i++) {
             for (let j = 0; j < Object.keys(itinerary.schedule[i].events).length; j++) {
@@ -18,17 +23,19 @@ function EditButton() { // Initialise with invisible popup and empty values
                     
                     // console.log("in schedule location: " + i + " and events location: " + j);
                     let eventName = currentEvent.name;
+                    setDestination(eventName);
+                    setEventName(eventName);
+                    setScheduleIndex(i);
+                    setEventsIndex(j);
                 }
             }
         }
     }
 
-
-
-
+    console.log(itinerary.schedule[1].events);
     // Pass existing information into useState
-    const [destinationVal, setDestination] = useState("Test");
-    const [dateVal, setDate] = useState();
+    const [destinationVal, setDestination] = useState(eventName);
+    const [dateVal, setDate] = useState(new Date('2023-05-27'));
     const [timeVal, setTime] = useState();
 
 
@@ -46,7 +53,8 @@ function EditButton() { // Initialise with invisible popup and empty values
 
     // Save the values once user clicks save
     const handleSave = () => { // Use destinationVal, dateVal, timeVal to store where needed
-
+        itinerary.schedule[scheduleIndex].events[eventsIndex].name = destinationVal;
+        console.log(itinerary);
         setPopupVisibility(false);
     };
 
@@ -54,7 +62,9 @@ function EditButton() { // Initialise with invisible popup and empty values
     return (
         <div>
             <button onClick={
-                () => setPopupVisibility(true)
+                () => {
+                    setPopupVisibility(true);
+                    findEvent(itinerary);}
             }>Edit destination</button>
             {
             isPopupVisible && (
@@ -70,7 +80,7 @@ function EditButton() { // Initialise with invisible popup and empty values
                         <br></br>
                         <label htmlFor="inputDate">Date:</label>
                         <input id="inputDate" type="date"
-                            value={dateVal}
+                            value={dateVal.toISOString().slice(0, 10)}
                             onChange={
                                 (e) => handleUpdate(e, 2)
                             }/>
