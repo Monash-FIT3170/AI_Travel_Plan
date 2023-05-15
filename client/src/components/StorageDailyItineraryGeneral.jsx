@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocalStorage } from "./LocalStorageGeneric";
-import { mockDaily_Itinerary1, mockTravel_Itinerary1 } from "./MockData";
+import { mockDaily_Itinerary1, mockTravel_Itinerary1 } from "../MockItinerary";
 import { MyForm1 } from "./StorageEventGeneral";
 
 export const MyForm2 = () => {
