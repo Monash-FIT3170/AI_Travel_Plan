@@ -7,7 +7,7 @@ export function ChatPage() {
     <>
       <BackgroundImage />
       <Background>
-        <Chatbox></Chatbox>
+        <ChatBox></ChatBox>
       </Background>
     </>
   );
