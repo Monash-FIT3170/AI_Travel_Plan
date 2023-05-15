@@ -1,4 +1,4 @@
-import { DailyItinerary } from "./dailyitinary.model";
+import { DailyItinerary } from "./dailyitinerary.model"
 /**
  * @openapi
  * components:

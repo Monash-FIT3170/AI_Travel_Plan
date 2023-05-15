@@ -6,7 +6,7 @@
  *      type: object
  *      required:
  *          - name
- *          - address
+ *          - location
  *          - startTime
  *          - endTime
  *      properties:
@@ -14,7 +14,7 @@
  *          type: string
  *          default: 'Ueno Park, Tokyo'
  *          description: Name of the place to visit
- *         address:
+ *         location:
  *          type: string
  *          default: '110-0007 Tokyo Ueno Park, Taito-ku, 5-20'
  *          description: Address of the place to visit

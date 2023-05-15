@@ -2,7 +2,7 @@
 This is a mock itinerary for a 6-day trip to Japan (Tokyo, Kyoto, Osaka)
 */
 import { Activity } from "./models/activity.model";
-import { DailyItinerary } from "./models/dailyitinary.model";
+import { DailyItinerary } from "./models/dailyitinerary.model";
 import { TravelItinerary } from "./models/travelItinerary.model";
 
 
