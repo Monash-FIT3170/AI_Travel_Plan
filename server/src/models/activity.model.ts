@@ -2,7 +2,7 @@
  * @openapi
  * components:
  *  schemas:
- *     Event:
+ *     Activity:
  *      type: object
  *      required:
  *          - name
@@ -32,12 +32,11 @@
  * 
 
  */
-export interface Event {
+export interface Activity {
     name: string
-    address: string
+    location: string
     description?: string
     startTime: Date
     endTime: Date
     cost?: number
-    chatResponse?: string
 }

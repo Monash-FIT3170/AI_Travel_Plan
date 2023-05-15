@@ -1,4 +1,4 @@
-import { Event } from './event.model'
+import { Activity } from './activity.model'
 
 /**
  * @openapi
@@ -9,7 +9,7 @@ import { Event } from './event.model'
  *       required:
  *         - day
  *         - date
- *         - events
+ *         - activities
  *       properties:
  *         day:
  *           type: integer
@@ -21,11 +21,11 @@ import { Event } from './event.model'
  *         events:
  *           type: array
  *           items:
- *             $ref: '#/components/schemas/Event'
+ *             $ref: '#/components/schemas/Activity'
  *           description: An array of event objects for the day.
  */
 export interface DailyItinerary {
     day: number
     date: Date
-    events: Event[]
+    activities: Activity[]
 }

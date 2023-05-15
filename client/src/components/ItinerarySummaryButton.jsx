@@ -52,7 +52,7 @@ const ItinerarySummaryButton = () => {
 
   // The below is used to load mock data from local storage.
   const loadDataFromLocalStorage = () => {
-    const storedData = localStorage.getItem("itinerary");
+    const storedData = localStorage.getItem("dailyItinerary");
     if (storedData) {
       setItinerary(JSON.parse(storedData).schedule);
     } else {
