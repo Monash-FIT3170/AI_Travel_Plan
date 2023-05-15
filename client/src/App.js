@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ChatPage } from "./pages/ChatPage";
 import { ItineraryPage } from "./pages/ItineraryPage";
+import { ItineraryRight } from "./pages/itineraryRight";
 import ExamplePage from "./pages/ExamplePage";
 import HomePage from "./pages/HomePage";
 import MyAppBar from "./components/AppBar";
@@ -20,7 +21,7 @@ function App() {
         {/* <- used to switch between pages of the application. Uses react-router-dom*/}
         <Route path="/" element={<HomePage />} />
         <Route path="/chat" element={<ChatPage />}></Route>
-        <Route path="/itinerary" element={<ItineraryPage />}></Route>
+        <Route path="/itinerary" element={<ItineraryRight />}></Route>
         <Route path="/example" element={<ExamplePage />}></Route>
         {/* vv You can add more pages to the app like so vv */}
         {/* <Route path='/login' element={<LoginPage />} /> */}{" "}
