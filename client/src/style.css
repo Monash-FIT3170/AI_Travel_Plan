@@ -62,11 +62,11 @@
     background-color: #b11111;
 }
 
-#deletedDestination {
+#deletedAlert {
     visibility: hidden;
     min-width: 250px;
     margin-left: -125px;
-    background-color: #333;
+    background-color: #9400f7;
     color: #fff;
     text-align: center;
     border-radius: 2px;
@@ -77,9 +77,10 @@
     bottom: 30px;
   }
   
-  #deletedDestination.show {
-    visibility: visible;
-  }
+#deletedAlert.show {
+visibility: visible;
+}
+
   
 .popup input[type="text"] {
     padding: 10px;
