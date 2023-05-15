@@ -1,4 +1,4 @@
-import Chatbox from "../components/Chatbox";
+import ChatBox from '../components/chatbox/ChatBox';
 import Background from "../components/Background";
 import BackgroundImage from "../components/BackgroundImage";
 
