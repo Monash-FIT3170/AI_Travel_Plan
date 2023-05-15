@@ -1,6 +1,14 @@
-import Chatbox from '../components/Chatbox';
-export function ChatPage(){
-    return (
-        <Chatbox></Chatbox>
-    )
+import ChatBox from '../components/chatbox/ChatBox';
+import Background from "../components/Background";
+import BackgroundImage from "../components/BackgroundImage";
+
+export function ChatPage() {
+  return (
+    <>
+      <BackgroundImage />
+      <Background>
+        <ChatBox></ChatBox>
+      </Background>
+    </>
+  );
 }
