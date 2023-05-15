@@ -11,13 +11,13 @@ import CardMedia from '@mui/material/CardMedia';
 export  function EventCardView({event}) {
     console.log(event.event)
   return (
-    <Card variant="outlined" sx={{ maxWidth: 275 }}>
+    <Card variant="outlined" sx={{ maxWidth: 550 }}>
        <CardHeader
         avatar={
      <PlaceIcon />
               }
         title={event.name}
-        // subheader={event.startTime}
+        subheader={"DURATION: " + Math.floor(((event.endTime-event.startTime) / (1000 * 60 * 60))) + " HRS"}
       />
         {/* <CardMedia
         component="img"
