@@ -18,7 +18,7 @@ import { Activity } from './activity.model'
  *           type: string
  *           format: date
  *           description: The date of the itinerary in "YYYY-MM-DD" format.
- *         events:
+ *         activities:
  *           type: array
  *           items:
  *             $ref: '#/components/schemas/Activity'

@@ -13,7 +13,7 @@ export function ItineraryRight(){
             <Background>
             <Grid container>
                   <Grid item xs={6}>
-                <Chatbox></Chatbox>
+                Follow figma for the components here
                 </Grid>
                 <Grid item xs={6} style={{ height: '100vh', overflowY: 'auto' }}>
     <ItineraryTimeLine travelItinerary={mockTravel_Itinerary1}/>
