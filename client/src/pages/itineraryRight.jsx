@@ -15,7 +15,7 @@ export function ItineraryRight(){
                   <Grid item xs={6}>
                 <Chatbox></Chatbox>
                 </Grid>
-                <Grid item xs={6} >
+                <Grid item xs={6} style={{ height: '100vh', overflowY: 'auto' }}>
     <ItineraryTimeLine travelItinerary={mockTravel_Itinerary1}/>
                 </Grid>
         
