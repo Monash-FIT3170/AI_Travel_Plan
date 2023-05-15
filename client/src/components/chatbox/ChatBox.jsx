@@ -72,7 +72,7 @@ export default function ChatBox() {
       </Box>
       <Box display="flex" alignItems="center">
         <TextField
-          fullWidth
+          
           multiline
           onChange={(value) => handleInputEnter(value)}
           value={inputValue}
