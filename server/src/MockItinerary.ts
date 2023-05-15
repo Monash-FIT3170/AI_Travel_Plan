@@ -171,7 +171,7 @@ const mockDaily_Itinerary6: DailyItinerary = {
 };
 
 // mock travel itinerary
-export const mockTravel_Itinerary1: TravelItinerary = {
+export const mockTravelItinerary1: TravelItinerary = {
   startDate: new Date("2023-05-26"),
   endDate: new Date("2023-05-31"),
   schedule: [
