@@ -1,7 +1,7 @@
 import "../style.css";
 import React, {useState} from "react";
 import { useLocalStorage } from "./LocalStorageGeneric";
-import { mockDaily_Itinerary1, mockEvent1 } from "./MockData";
+import { mockDaily_Itinerary1, mockEvent1 } from "../MockItinerary";
 
 function DeleteButton() {
     const [isPopupVisible, setPopupVisibility] = useState(false);
