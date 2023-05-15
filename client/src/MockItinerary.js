@@ -3,7 +3,7 @@ This is a mock itinerary for a 6-day trip to Japan (Tokyo, Kyoto, Osaka) in Java
 */
 
 // mock events
-const mockEvent1 = {
+export const mockEvent1 = {
   name: "Ueno Park, Tokyo",
   address: "110-0007 Tokyo Ueno Park, Taito-ku, 5-20",
   description:
@@ -138,7 +138,7 @@ const mockEvent12 = {
 };
 
 // mock daily itinerary
-const mockDaily_Itinerary1 = {
+export const mockDaily_Itinerary1 = {
   day: 1,
   date: new Date("2023-05-26"),
   events: [mockEvent1, mockEvent2],

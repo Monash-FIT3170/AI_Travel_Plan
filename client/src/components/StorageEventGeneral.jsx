@@ -1,5 +1,5 @@
 import { useLocalStorage } from "./LocalStorageGeneric";
-import { mockEvent1 } from "./MockData";
+import { mockEvent1 } from "../MockItinerary";
 
 export const MyForm1 = ({setEventFormData}) => {
     
