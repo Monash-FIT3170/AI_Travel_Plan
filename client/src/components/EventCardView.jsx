@@ -90,9 +90,12 @@ export function EventCardView({ event, itinerary, setItinerary }) {
 		const updatedItinerary = {
 			...itinerary,
 			schedule: itinerary.schedule.map((day) => {
+				// Filter out the event with a matching name from the original events array
 				const updatedEvents = day.events.filter((e) => e.name !== event.name);
 
+				// Check if the current day's date matches the selected date
 				if (dayjs(day.date).isSame(date, "day")) {
+					// Create a new event object with updated values
 					const newEvent = {
 						chatResponse,
 						cost,
@@ -108,7 +111,8 @@ export function EventCardView({ event, itinerary, setItinerary }) {
 						startTime: date.toDate(),
 					};
 
-					updatedEvents.push(newEvent); // Add the new event to the end of the array
+					// Add the new event to the end of the array
+					updatedEvents.push(newEvent);
 				}
 
 				return {
