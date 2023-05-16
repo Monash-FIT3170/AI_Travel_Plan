@@ -10,8 +10,11 @@ import { EventCardView } from './EventCardView';
 import "./ItineraryTimeLine.css";
 
 function timelineGenerator(dailyItinerary){
-  // to fix date time
-  // - {dailyItinerary.events[0].startTime.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true })}
+  const formattedMonth = new Date(dailyItinerary.date).toLocaleString("default", { month: "long" });
+  const formattedDate = new Date(dailyItinerary.date).getUTCDate();
+  const formattedYear = new Date(dailyItinerary.date).getUTCFullYear();
+  const formattedStartTime = formatTimeToAMPM(new Date(dailyItinerary.events[0].startTime));
+
   return (
       <TimelineItem>
         <TimelineOppositeContent display='none'/> 
@@ -21,7 +24,7 @@ function timelineGenerator(dailyItinerary){
         </TimelineSeparator>
         <TimelineContent>
           <h5>
-          Day {dailyItinerary.day} {dailyItinerary.date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})} 
+          Day {dailyItinerary.day} {formattedMonth} {formattedDate}, {formattedYear} - {formattedStartTime}
           </h5>
           {dailyItinerary.events.map(event=> <EventCardView event={event}/>)}
         </TimelineContent>
@@ -29,10 +32,19 @@ function timelineGenerator(dailyItinerary){
 }
 
 export  function ItineraryTimeLine({travelItinerary}) {
-  // console.log(travelItinerary.schedule[0])
   return (
     <Timeline   sx={0.2}>
       {travelItinerary.schedule.map(dailyItinerary=> timelineGenerator(dailyItinerary))}
     </Timeline>
   );
+}
+
+// Function to format time into AM or PM based on Given DateTime object
+function formatTimeToAMPM(time) {
+  const hours = time.getUTCHours();
+  const minutes = time.getUTCMinutes();
+  const ampm = hours >= 12 ? 'pm' : 'am';
+  const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+  const formattedMinutes = minutes.toString().padStart(2, '0');
+  return `${formattedHours}:${formattedMinutes}${ampm}`;
 }
