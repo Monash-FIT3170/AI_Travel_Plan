@@ -191,7 +191,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
                 helperText={errors.date}
               />
             </Box>
-            <Box width={"100%"} mt={2}>
+            {/* <Box width={"100%"} mt={2}>
               <TimePicker
                 label="Time"
                 // Removing localisation for now.
@@ -200,7 +200,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
                 error={Boolean(errors.time)}
                 helperText={errors.time}
               />
-            </Box>
+            </Box> */}
           </LocalizationProvider>
         </DialogContent>
         <DialogActions>
