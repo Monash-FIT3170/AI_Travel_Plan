@@ -16,6 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
+import { Grid } from "@mui/material";
 
 export function EventCardView({ event, itinerary, setItinerary }) {
   const [open, setOpen] = useState(false);
@@ -104,7 +105,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
         </CardActions>
       </Card>
 
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} maxWidth="xs">
         <DialogTitle>Edit Event</DialogTitle>
         <DialogContent>
           <TextField
@@ -119,20 +120,24 @@ export function EventCardView({ event, itinerary, setItinerary }) {
             helperText={errors.name}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Date"
-              value={date}
-              onChange={(newDate) => setDate(newDate)}
-              error={Boolean(errors.date)}
-              helperText={errors.date}
-            />
-            <TimePicker
-              label="Time"
-              value={time}
-              onChange={(newTime) => setTime(newTime)}
-              error={Boolean(errors.time)}
-              helperText={errors.time}
-            />
+            <Box width={"100%"} mt={2}>
+              <DatePicker
+                label="Date"
+                value={date}
+                onChange={(newDate) => setDate(newDate)}
+                error={Boolean(errors.date)}
+                helperText={errors.date}
+              />
+            </Box>
+            <Box width={"100%"} mt={2}>
+              <TimePicker
+                label="Time"
+                value={time}
+                onChange={(newTime) => setTime(newTime)}
+                error={Boolean(errors.time)}
+                helperText={errors.time}
+              />
+            </Box>
           </LocalizationProvider>
         </DialogContent>
         <DialogActions>
