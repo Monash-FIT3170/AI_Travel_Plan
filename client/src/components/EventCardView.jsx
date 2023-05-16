@@ -16,14 +16,12 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
-import { useLocalStorage } from "./LocalStorageGeneric";
 
-export function EventCardView({ event }) {
+export function EventCardView({ event, itinerary, setItinerary }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(event.name);
   const [date, setDate] = useState(dayjs(event.startTime));
   const [time, setTime] = useState(dayjs(event.startTime));
-  const [itinerary, setItinerary] = useLocalStorage("dailyItinerary");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -56,7 +54,6 @@ export function EventCardView({ event }) {
 
     setItinerary(updatedItinerary);
     setOpen(false);
-    window.location.reload();
   };
 
   return (

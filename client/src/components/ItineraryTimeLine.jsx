@@ -9,7 +9,7 @@ import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import { EventCardView } from "./EventCardView";
 import "./ItineraryTimeLine.css";
 
-function timelineGenerator(dailyItinerary) {
+function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
   // to fix date time
   // - {dailyItinerary.events[0].startTime.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true })}
   return (
@@ -29,19 +29,23 @@ function timelineGenerator(dailyItinerary) {
           })}
         </h5>
         {dailyItinerary.events.map((event) => (
-          <EventCardView event={event} />
+          <EventCardView
+            event={event}
+            itinerary={itinerary}
+            setItinerary={setItinerary}
+          />
         ))}
       </TimelineContent>
     </TimelineItem>
   );
 }
 
-export function ItineraryTimeLine({ travelItinerary }) {
+export function ItineraryTimeLine({ travelItinerary, setItinerary }) {
   // console.log(travelItinerary.schedule[0])
   return (
     <Timeline sx={0.2}>
       {travelItinerary.schedule.map((dailyItinerary) =>
-        timelineGenerator(dailyItinerary),
+        timelineGenerator(travelItinerary, dailyItinerary, setItinerary),
       )}
     </Timeline>
   );

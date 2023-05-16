@@ -32,7 +32,10 @@ export function ItineraryRight() {
             Follow figma for the components here
           </Grid>
           <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
-            <ItineraryTimeLine travelItinerary={itinerary} />
+            <ItineraryTimeLine
+              travelItinerary={itinerary}
+              setItinerary={setItinerary}
+            />
           </Grid>
         </Grid>
       </Background>
