@@ -77,6 +77,7 @@ function NewDestination() {
     const [destNameVal, setDestinationName] = useState(eventName);
     const [destDescVal, setDestDescription] = useState(eventName);
     const [dateVal, setDate] = useState();
+    const [destAddress, setAddress] = useState(eventName);
     const [timeVal, setTime] = useState();
 
     // Updating the value when the input is changed
@@ -94,7 +95,8 @@ function NewDestination() {
                     setDate(null);
                 }
             },
-            3: setTime
+            3: setTime,
+            4: setAddress
         };
         const setInput = fields[inputNum];
         setInput(value);
@@ -107,7 +109,7 @@ function NewDestination() {
         // Adding the new event in the itinerary in the desired location
         // Note: TIME is not used to order the events in the events array
         let newEventObject = {
-            address: null, //no address data for manual events 
+            address: destAddress, 
             chatResponse: "", 
             cost: 0, 
             description: destDescVal,
@@ -129,8 +131,8 @@ function NewDestination() {
             itinerary.schedule.unshift(newScheduleObject);
 
             // update the event numbers for all of the remaining days
-            for (let i = 0; i < Object.keys(itinerary.schedule).length; i++) {
-                itinerary.schedule[i].day = itinerary.schedule[i].day++;
+            for (let i = 1; i < Object.keys(itinerary.schedule).length; i++) {
+                itinerary.schedule[i].day = itinerary.schedule[i].day + 1;
             }
 
         } else if (scheduleIndex >= itinerary.schedule.length) {
@@ -174,6 +176,13 @@ function NewDestination() {
     
                             onChange={
                                 (e) => handleUpdate(e, 1)
+                            }/>
+                        <br></br>
+                        <label htmlFor="inputDestAddr">Destination Address:</label>
+                        <input id="inputDestAddr" type="text"
+                             
+                            onChange={
+                                (e) => handleUpdate(e, 4)
                             }/>
                         <br></br>
                         <label htmlFor="inputDate">Date:</label>
