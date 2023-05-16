@@ -5,7 +5,9 @@ import Box from "@mui/material/Box";
 import MessageList from "./MessageList";
 import MessageCard from "./MessageCard";
 
-import React, { useState } from "react";
+import { useLocalStorage } from "../LocalStorageGeneric";
+
+import React, { useState, useEffect } from "react";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
@@ -17,10 +19,8 @@ export default function ChatBox() {
    */
   const [inputValue, setInputValue] = useState("");
 
-  /**
-   * State - messges: list of messages in this chat
-   */
-  const [messages, setMessages] = useState([]);
+  const [chatHistory, setChatHistory, updateValueInLocalStorage] =
+    useLocalStorage("chatHistory", []);
 
   /**
    * Method call when the button is clicked
@@ -45,15 +45,15 @@ export default function ChatBox() {
    * @param {String} newMessage new message to add to the message list
    */
   const addMessage = (newMessage) => {
-    setMessages([...messages, newMessage]);
-    //just for testing vv
-    //TODO: the messages printed are delayed by 1 message. Why is that?
-    console.log("\nhere is the array contents:");
-    for (let i = 0; i < messages.length; i++) {
-      console.log(messages[i]);
-    }
-    console.log("end of contents\n");
+    setChatHistory((prevChatHistory) => [
+      ...prevChatHistory,
+      { prompt: newMessage, reply: "" },
+    ]);
   };
+
+  useEffect(() => {
+    updateValueInLocalStorage(chatHistory);
+  }, [chatHistory, updateValueInLocalStorage]);
 
   /**
    * jsx render
@@ -72,7 +72,6 @@ export default function ChatBox() {
       </Box>
       <Box display="flex" alignItems="center">
         <TextField
-          
           multiline
           onChange={(value) => handleInputEnter(value)}
           value={inputValue}
