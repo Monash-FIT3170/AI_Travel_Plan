@@ -9,7 +9,6 @@ import PlaceIcon from '@mui/icons-material/Place';
 import CardMedia from '@mui/material/CardMedia';
 
 export  function EventCardView({event}) {
-    console.log(event.event)
   return (
     <Card variant="outlined" sx={{ maxWidth: 550 }}>
        <CardHeader
@@ -17,7 +16,7 @@ export  function EventCardView({event}) {
      <PlaceIcon />
               }
         title={event.name}
-        subheader={"DURATION: " + Math.floor(((event.endTime-event.startTime) / (1000 * 60 * 60))) + " HRS"}
+        subheader={"DURATION: " + ((new Date(event.endTime) - new Date(event.startTime)) / (1000 * 60 * 60)) + " HRS"}
       />
         {/* <CardMedia
         component="img"
