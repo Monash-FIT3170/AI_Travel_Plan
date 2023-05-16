@@ -12,17 +12,11 @@ function NewDestination() {
 		""
 	);
 
-    	// Initialise the event name, schedule index, and events index as states
+    // Initialise the event name, schedule index, and events index as states
 	const [eventName, setEventName] = useState();
 	const [scheduleIndex, setScheduleIndex] = useState();
-	const [eventsIndex, setEventsIndex] = useState();
 
     let ARRAY_FRONT_FLAG = -1;
-    let ARRAY_END_FLAG = -2;
-
-    // Test input for editing an event
-	// Update this to automatically take the input for a specific event
-	const exampleEventName = "Meiji Jingu Shrine, Tokyo";
 
      // Function to parse the date from ISO string to Date object
 	function parseDateFromISO(dateString) {
@@ -53,30 +47,6 @@ function NewDestination() {
 	}
 
     // Function to find an event in the itinerary that matches the event name
-	const findEvent = (itinerary) => {
-		for (let i = 0; i < Object.keys(itinerary.schedule).length; i++) {
-			for (
-				let j = 0;
-				j < Object.keys(itinerary.schedule[i].events).length;
-				j++
-			) {
-				let currentName = itinerary.schedule[i].events[j].name;
-				if (currentName == exampleEventName) {
-					let currentEvent = itinerary.schedule[i].events[j];
-					let eventName = currentEvent.name;
-
-					// Setting values based on event and location
-					setDestDescription(eventName);
-					setDate(parseDateFromISO(currentEvent.startTime));
-					setEventName(eventName);
-					setScheduleIndex(i);
-					setEventsIndex(j);
-				}
-			}
-		}
-	};
-
-    // Function to find an event in the itinerary that matches the event name
 	const findEventFromDate = (date) => {
         //NOTE: there is no protection/validation for empty dates, descriptions or times
 
@@ -95,18 +65,9 @@ function NewDestination() {
 		for (let i = 0; i < Object.keys(itinerary.schedule).length; i++) {
 				let currentDate = parseDateFromISO(itinerary.schedule[i].date);
 				if (currentDate.getDate() == date.getDate() & currentDate.getFullYear() == date.getFullYear() & currentDate.getMonth() == date.getMonth()) {
-					//let currentEvent = itinerary.schedule[i].events[j];
-					//let eventName = currentEvent.name;
-
-					// Setting values based on event and location
-					// setDestination(eventName);
-					// setDate(parseDateFromISO(currentEvent.startTime));
-					// setEventName(eventName);
-
-                    // case where we are in the middle
+                    
+                    // case where the date is in the middle
 					setScheduleIndex(i);
-
-					//setEventsIndex(j);
 				}
 		}
 	};
@@ -124,7 +85,6 @@ function NewDestination() {
         const fields = {
             0: setDestinationName,
             1: setDestDescription,
-            //2: setDate,
             2: (val) => {
                 if (val) {
                     const date = parseDateFromISO(val);
@@ -141,10 +101,11 @@ function NewDestination() {
     };
 
     // Save the values once user clicks save
-    const handleSave = () => { // Use destinationVal, dateVal, timeVal to store where needed
-        // Adding the new event in the itinerary in the desired location
+    const handleSave = () => { 
+        // Use destinationVal, dateVal, timeVal to store where needed
 
-        
+        // Adding the new event in the itinerary in the desired location
+        // Note: TIME is not used to order the events in the events array
         let newEventObject = {
             address: null, //no address data for manual events 
             chatResponse: "", 
@@ -155,6 +116,7 @@ function NewDestination() {
             name: destNameVal
         }
 
+        // Initiate schedule for addition at before or after existing dates
         let newScheduleObject = {
             date: parseDateToISO(dateVal),
             day: 1,
@@ -180,10 +142,6 @@ function NewDestination() {
             var numOfEvents = Object.keys(itinerary.schedule[scheduleIndex].events).length;
 		    itinerary.schedule[scheduleIndex].events[numOfEvents] = newEventObject;
         }
-		// itinerary.schedule[scheduleIndex].events[numOfEvents].startTime =
-		// 	parseDateToISO(dateVal);
-
-        //console.log(itinerary);
 
 		// Update local storage and close popup
 		updateValueInLocalStorage(itinerary);
@@ -197,9 +155,6 @@ function NewDestination() {
             <button onClick={
                 () => {
                     setPopupVisibility(!isPopupVisible);
-
-                    // passes the whole itinerary to findEvent
-                    //findEvent(itinerary);
                 }
             }>Add New Destination</button>
             {
@@ -209,21 +164,20 @@ function NewDestination() {
                         <h2>Add New Destination</h2>
                         <label htmlFor="inputDestName">Destination Name:</label>
                         <input id="inputDestName" type="text"
-                            // value={destinationVal}
+                             
                             onChange={
                                 (e) => handleUpdate(e, 0)
                             }/>
                         <br></br>
                         <label htmlFor="inputDestination">Destination Description:</label>
                         <input id="inputDestination" type="text"
-                            // value={destinationVal}
+    
                             onChange={
                                 (e) => handleUpdate(e, 1)
                             }/>
                         <br></br>
                         <label htmlFor="inputDate">Date:</label>
                         <input id="inputDate" type="date"
-                            
                             // value={dateVal.toISOString().slice(0, 10)}
                             onChange={
                                 (e) => handleUpdate(e, 2)
@@ -231,7 +185,6 @@ function NewDestination() {
                         <br></br>
                         <label htmlFor="inputTime">Time:</label>
                         <input id="inputTime" type="time"
-                            // value={timeVal}
                             onChange={
                                 (e) => handleUpdate(e, 3)
                             }/>
