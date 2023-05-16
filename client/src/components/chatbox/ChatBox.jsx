@@ -8,6 +8,9 @@ import MessageCard from "./MessageCard";
 import { useLocalStorage } from "../LocalStorageGeneric";
 
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
+
+import { mockTravel_Itinerary1 } from "../../MockItinerary";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
@@ -21,6 +24,8 @@ export default function ChatBox() {
 
   const [chatHistory, setChatHistory, updateValueInLocalStorage] =
     useLocalStorage("chatHistory", []);
+
+  const [itinerary, setItinerary, updateValueInLocalStorage1] = useLocalStorage("travelItinerary", mockTravel_Itinerary1);
 
   /**
    * Method call when the button is clicked
@@ -44,16 +49,33 @@ export default function ChatBox() {
    * adds a new message to the list of messages
    * @param {String} newMessage new message to add to the message list
    */
-  const addMessage = (newMessage) => {
-    setChatHistory((prevChatHistory) => [
-      ...prevChatHistory,
-      { prompt: newMessage, reply: "" },
-    ]);
+  const addMessage = async (newMessage) => {
+    try {
+      const response = await axios.post('http://localhost:4000/api/chatMessage', 
+        {
+          prompt: newMessage,
+          travelItinerary: itinerary,
+          chatHistory: chatHistory,
+        }
+      )
+      const reply = response.data;
+      setChatHistory((prevChatHistory) => [
+        ...prevChatHistory,
+        { prompt: newMessage, reply: reply },
+      ]);
+    } catch (error) {
+      console.error('API call error:',error);
+    }
+    
   };
 
   useEffect(() => {
     updateValueInLocalStorage(chatHistory);
   }, [chatHistory, updateValueInLocalStorage]);
+
+  useEffect(() => {
+    updateValueInLocalStorage1(mockTravel_Itinerary1);
+  }, [updateValueInLocalStorage1]);
 
   /**
    * jsx render
