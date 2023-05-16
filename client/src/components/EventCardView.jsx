@@ -19,132 +19,160 @@ import dayjs from "dayjs";
 import { Grid } from "@mui/material";
 
 export function EventCardView({ event, itinerary, setItinerary }) {
-	const [open, setOpen] = useState(false);
-	const [name, setName] = useState(event.name);
-	const [date, setDate] = useState(dayjs(event.startTime));
-	const [time, setTime] = useState(dayjs(event.startTime));
-	const [errors, setErrors] = useState({ name: "", date: "", time: "" });
+  const [open, setOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [name, setName] = useState(event.name);
+  const [date, setDate] = useState(dayjs(event.startTime));
+  const [time, setTime] = useState(dayjs(event.startTime));
+  const [errors, setErrors] = useState({ name: "", date: "", time: "" });
 
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-	const handleClose = () => {
-		setOpen(false);
-		setErrors({ name: "", date: "", time: "" });
-	};
+  const handleClose = () => {
+    setOpen(false);
+    setErrors({ name: "", date: "", time: "" });
+  };
 
-	useEffect(() => {
-		let nameError = "";
-		let dateError = "";
-		let timeError = "";
+  const handleDeleteOpen = () => {
+    setDeleteOpen(true);
+  };
 
-		// Check if name field is empty
-		if (!name.trim()) {
-			nameError = "Name is required";
-		}
-		// Check if date is valid
-		if (!date.isValid()) {
-			dateError = "Date is not valid";
-		}
-		// Check if time is valid
-		if (!time.isValid()) {
-			timeError = "Time is not valid";
-		}
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+  };
 
-		setErrors({ name: nameError, date: dateError, time: timeError });
-	}, [name, date, time]);
+  // Function to handle the delete confirmation
+  const handleDeleteConfirm = () => {
+    setDeleteOpen(false);
+  };
 
-	const handleSave = () => {
-		if (errors.name || errors.date || errors.time) {
-			alert("Please enter valid inputs before saving.");
-			return;
-		}
-		const updatedItinerary = {
-			...itinerary,
-			schedule: itinerary.schedule.map((day) => ({
-				...day,
-				events: day.events.map((e) => {
-					if (e.name === event.name) {
-						return {
-							...e,
-							name,
-							startTime: date.toDate(),
-							endTime: date
-								.add(dayjs(e.endTime).diff(dayjs(e.startTime), "hour"), "hour")
-								.toDate(),
-						};
-					}
-					return e;
-				}),
-			})),
-		};
+  useEffect(() => {
+    let nameError = "";
+    let dateError = "";
+    let timeError = "";
 
-		setItinerary(updatedItinerary);
-		setOpen(false);
-	};
+    // Check if name field is empty
+    if (!name.trim()) {
+      nameError = "Name is required";
+    }
+    // Check if date is valid
+    if (!date.isValid()) {
+      dateError = "Date is not valid";
+    }
+    // Check if time is valid
+    if (!time.isValid()) {
+      timeError = "Time is not valid";
+    }
 
-	return (
-		<Box display="flex" justifyContent="stretch" width="100%">
-			<Card variant="outlined" style={{ width: "100%" }}>
-				<CardHeader
-					avatar={<PlaceIcon />}
-					title={event.name}
-					subheader={
-						"DURATION: " +
-						Math.floor((event.endTime - event.startTime) / (1000 * 60 * 60)) +
-						" HRS"
-					}
-				/>
-				<CardContent>{event.description}</CardContent>
-				<CardActions>
-					<Button size="small">Delete</Button>
-					<Button size="small" onClick={handleClickOpen}>
-						Edit
-					</Button>
-				</CardActions>
-			</Card>
+    setErrors({ name: nameError, date: dateError, time: timeError });
+  }, [name, date, time]);
 
-			<Dialog open={open} onClose={handleClose} maxWidth="xs">
-				<DialogTitle>Edit Event</DialogTitle>
-				<DialogContent>
-					<TextField
-						autoFocus
-						margin="dense"
-						label="Name"
-						type="text"
-						fullWidth
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-						error={Boolean(errors.name)}
-						helperText={errors.name}
-					/>
-					<LocalizationProvider dateAdapter={AdapterDayjs}>
-						<Box width={"100%"} mt={2}>
-							<DatePicker
-								label="Date"
-								value={date}
-								onChange={(newDate) => setDate(newDate)}
-								error={Boolean(errors.date)}
-								helperText={errors.date}
-							/>
-						</Box>
-						<Box width={"100%"} mt={2}>
-							<TimePicker
-								label="Time"
-								value={time}
-								onChange={(newTime) => setTime(newTime)}
-								error={Boolean(errors.time)}
-								helperText={errors.time}
-							/>
-						</Box>
-					</LocalizationProvider>
-				</DialogContent>
-				<DialogActions>
-					<Button onClick={handleClose}>Cancel</Button>
-					<Button onClick={handleSave}>Save</Button>
-				</DialogActions>
-			</Dialog>
-		</Box>
-	);
+  const handleSave = () => {
+    if (errors.name || errors.date || errors.time) {
+      alert("Please enter valid inputs before saving.");
+      return;
+    }
+    const updatedItinerary = {
+      ...itinerary,
+      schedule: itinerary.schedule.map((day) => ({
+        ...day,
+        events: day.events.map((e) => {
+          if (e.name === event.name) {
+            return {
+              ...e,
+              name,
+              startTime: date.toDate(),
+              endTime: date
+                .add(dayjs(e.endTime).diff(dayjs(e.startTime), "hour"), "hour")
+                .toDate(),
+            };
+          }
+          return e;
+        }),
+      })),
+    };
+
+    setItinerary(updatedItinerary);
+    setOpen(false);
+  };
+
+  return (
+    <Box display="flex" justifyContent="stretch" width="100%">
+      <Card variant="outlined" style={{ width: "100%" }}>
+        <CardHeader
+          avatar={<PlaceIcon />}
+          title={event.name}
+          subheader={
+            "DURATION: " +
+            Math.floor((event.endTime - event.startTime) / (1000 * 60 * 60)) +
+            " HRS"
+          }
+        />
+        <CardContent>{event.description}</CardContent>
+        <CardActions>
+          <Button size="small" onClick={handleDeleteOpen}>
+            Delete
+          </Button>
+          <Button size="small" onClick={handleClickOpen}>
+            Edit
+          </Button>
+        </CardActions>
+      </Card>
+
+      <Dialog open={deleteOpen} onClose={handleDeleteClose}>
+        <DialogTitle>This action cannot be undon</DialogTitle>
+        <DialogContent>
+          Deleting this item will remove it from the itinerary and cannot be
+          undone.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteClose}>Cancel</Button>
+          <Button onClick={handleDeleteConfirm}>Confirm</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={open} onClose={handleClose} maxWidth="xs">
+        <DialogTitle>Edit Event</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Name"
+            type="text"
+            fullWidth
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            error={Boolean(errors.name)}
+            helperText={errors.name}
+          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Box width={"100%"} mt={2}>
+              <DatePicker
+                label="Date"
+                value={date}
+                onChange={(newDate) => setDate(newDate)}
+                error={Boolean(errors.date)}
+                helperText={errors.date}
+              />
+            </Box>
+            <Box width={"100%"} mt={2}>
+              <TimePicker
+                label="Time"
+                value={time}
+                onChange={(newTime) => setTime(newTime)}
+                error={Boolean(errors.time)}
+                helperText={errors.time}
+              />
+            </Box>
+          </LocalizationProvider>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSave}>Save</Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
 }
