@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -22,6 +22,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
   const [name, setName] = useState(event.name);
   const [date, setDate] = useState(dayjs(event.startTime));
   const [time, setTime] = useState(dayjs(event.startTime));
+  const [errors, setErrors] = useState({ name: "", date: "", time: "" });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,9 +30,35 @@ export function EventCardView({ event, itinerary, setItinerary }) {
 
   const handleClose = () => {
     setOpen(false);
+    setErrors({ name: "", date: "", time: "" });
   };
 
+  useEffect(() => {
+    let nameError = "";
+    let dateError = "";
+    let timeError = "";
+
+    // Check if name field is empty
+    if (!name.trim()) {
+      nameError = "Name is required";
+    }
+    // Check if date is valid
+    if (!date.isValid()) {
+      dateError = "Date is not valid";
+    }
+    // Check if time is valid
+    if (!time.isValid()) {
+      timeError = "Time is not valid";
+    }
+
+    setErrors({ name: nameError, date: dateError, time: timeError });
+  }, [name, date, time]);
+
   const handleSave = () => {
+    if (errors.name || errors.date || errors.time) {
+      alert("Please fix the errors before saving");
+      return;
+    }
     const updatedItinerary = {
       ...itinerary,
       schedule: itinerary.schedule.map((day) => ({
@@ -88,17 +115,23 @@ export function EventCardView({ event, itinerary, setItinerary }) {
             fullWidth
             value={name}
             onChange={(e) => setName(e.target.value)}
+            error={Boolean(errors.name)}
+            helperText={errors.name}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Controlled picker"
               value={date}
               onChange={(newDate) => setDate(newDate)}
+              error={Boolean(errors.date)}
+              helperText={errors.date}
             />
             <TimePicker
               label="Controlled Time Picker"
               value={time}
               onChange={(newTime) => setTime(newTime)}
+              error={Boolean(errors.time)}
+              helperText={errors.time}
             />
           </LocalizationProvider>
         </DialogContent>
