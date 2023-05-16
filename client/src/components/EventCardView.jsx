@@ -16,7 +16,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
-import { Grid } from "@mui/material";
 
 export function EventCardView({ event, itinerary, setItinerary }) {
   const [open, setOpen] = useState(false);
@@ -43,8 +42,20 @@ export function EventCardView({ event, itinerary, setItinerary }) {
     setDeleteOpen(false);
   };
 
-  // Function to handle the delete confirmation
   const handleDeleteConfirm = () => {
+    // Remove the event from the itinerary
+    const updatedItinerary = {
+      ...itinerary,
+      schedule: itinerary.schedule.map((day) => ({
+        ...day,
+        events: day.events.filter((e) => e.name !== event.name),
+      })),
+    };
+
+    // Update the itinerary
+    setItinerary(updatedItinerary);
+
+    // Close the delete confirmation dialog
     setDeleteOpen(false);
   };
 
@@ -53,15 +64,12 @@ export function EventCardView({ event, itinerary, setItinerary }) {
     let dateError = "";
     let timeError = "";
 
-    // Check if name field is empty
     if (!name.trim()) {
       nameError = "Name is required";
     }
-    // Check if date is valid
     if (!date.isValid()) {
       dateError = "Date is not valid";
     }
-    // Check if time is valid
     if (!time.isValid()) {
       timeError = "Time is not valid";
     }
