@@ -56,7 +56,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
 
   const handleSave = () => {
     if (errors.name || errors.date || errors.time) {
-      alert("Please fix the errors before saving");
+      alert("Please enter valid inputs before saving.");
       return;
     }
     const updatedItinerary = {
@@ -120,14 +120,14 @@ export function EventCardView({ event, itinerary, setItinerary }) {
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
-              label="Controlled picker"
+              label="Date"
               value={date}
               onChange={(newDate) => setDate(newDate)}
               error={Boolean(errors.date)}
               helperText={errors.date}
             />
             <TimePicker
-              label="Controlled Time Picker"
+              label="Time"
               value={time}
               onChange={(newTime) => setTime(newTime)}
               error={Boolean(errors.time)}
