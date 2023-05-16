@@ -17,7 +17,9 @@ export default function ExamplePage() {
         >
           We are here to help{" "}
         </Typography>
-        <HelpMenu />
+        <div style={{ marginTop: "50px" }}>
+          <HelpMenu />
+        </div>
       </Background>
     </>
   );

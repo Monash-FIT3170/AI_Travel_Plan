@@ -4,6 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React from "react";
+import "./HelpMenuStyles.css";
 
 /**
  * Contains the entire code for the help accordian menu
@@ -11,7 +12,7 @@ import React from "react";
  */
 export default function HelpMenu() {
   return (
-    <div>
+    <div className="help-menu">
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -30,7 +31,46 @@ export default function HelpMenu() {
           aria-controls="panel2a-content"
           id="panel2a-header"
         >
-          <Typography>Question 2</Typography>
+          <Typography>How do I add items to the itinerary?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>idk</Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography>Is there a way for me to export my itinerary</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Response 2</Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography>Is my itinerary information up to date?</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>Response 2</Typography>
+        </AccordionDetails>
+      </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel2a-content"
+          id="panel2a-header"
+        >
+          <Typography>
+            Where can I find emergency contact information about the place I am
+            visiting?
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography>Response 2</Typography>
