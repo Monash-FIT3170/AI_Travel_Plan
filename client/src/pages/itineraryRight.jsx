@@ -5,8 +5,21 @@ import { EventCardView } from "../components/EventCardView"
 import { ItineraryTimeLine } from "../components/ItineraryTimeLine"
 import Grid from '@mui/material/Grid';
 import { mockTravel_Itinerary1 } from "../MockItinerary";
+import { useLocalStorage } from "../components/LocalStorageGeneric";
 
 export function ItineraryRight(){
+
+    // For testing purpose, to add data into local storage beforehand
+    // updateValueInLocalStorage(mockTravel_Itinerary1);
+    
+    // To retrieve data from local storage
+    const [event, setEvent, updateValueInLocalStorage] = useLocalStorage("travelItinerary", "");
+   
+    // console.log(event);
+
+    // Assign the retrieved data to the travelItinerary variable
+    const travelItinerary = event; 
+ 
     return (
         <div>
             <BackgroundImage/>
@@ -16,7 +29,7 @@ export function ItineraryRight(){
                 Follow figma for the components here
                 </Grid>
                 <Grid item xs={6} style={{ height: '100vh', overflowY: 'auto' }}>
-    <ItineraryTimeLine travelItinerary={mockTravel_Itinerary1}/>
+    <ItineraryTimeLine travelItinerary={travelItinerary}/>
                 </Grid>
         
             </Grid>
