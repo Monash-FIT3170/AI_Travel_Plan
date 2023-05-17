@@ -1,8 +1,11 @@
 import React from "react";
 import MessageCard from "./MessageCard";
 import Stack from "@mui/material/Stack";
-import { Box, Typography } from "@mui/material";
 
+/**
+ * List of messages to be shown on the screen
+ * @returns component containing a list of messages
+ */
 export default function MessageList() {
   return (
     <div

@@ -27,6 +27,10 @@ export default function ChatBox() {
    * TODO: create new message and add it to the message list
    */
   const handleButtonClick = () => {
+    if (inputValue.length <= 0) {
+      // ignore empty string
+      return;
+    }
     addMessage(inputValue);
     setInputValue("");
   };
@@ -70,7 +74,13 @@ export default function ChatBox() {
       <Box height="84vh" width="100%">
         <MessageList />
       </Box>
-      <Box display="flex" alignItems="center" padding="10px">
+      <Box
+        display="flex"
+        alignItems="center"
+        padding="10px"
+        borderRadius={4}
+        //backgroundColor="#DDDDDD" // in case we want the background to not be transperant
+      >
         <TextField
           style={{ width: "100%" }}
           multiline
