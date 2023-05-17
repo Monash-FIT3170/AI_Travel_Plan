@@ -29,8 +29,8 @@ export function EventCardView({ event, itinerary, setItinerary }) {
   const [cost, setCost] = useState(event.cost);
   const [location, setLocation] = useState(event.location);
   const [chatResponse, setResponse] = useState(event.chatResponse);
-  const [date, setDate] = useState(dayjs(event.startTime));
-  const [time, setTime] = useState(dayjs(event.startTime));
+  const [date, setDate] = useState(dayjs(event.startTime).toDate());
+  const [time, setTime] = useState(dayjs(event.startTime).toDate());
   const [errors, setErrors] = useState({ name: "", date: "", time: "" });
   let specificTimezone = "America/New_York";
 
@@ -76,10 +76,10 @@ export function EventCardView({ event, itinerary, setItinerary }) {
     if (!name.trim()) {
       nameError = "Name is required";
     }
-    if (!date.isValid()) {
+    if (isNaN(date)) {
       dateError = "Date is not valid";
     }
-    if (!time.isValid()) {
+    if (isNaN(time)) {
       timeError = "Time is not valid";
     }
 
@@ -92,42 +92,47 @@ export function EventCardView({ event, itinerary, setItinerary }) {
       return;
     }
 
-    const updatedItinerary = {
-      ...itinerary,
-      schedule: itinerary.schedule.map((day) => {
-        // Filter out the event with a matching name from the original events array
-        const updatedEvents = day.events.filter((e) => e.name !== event.name);
-
-        // Check if the current day's date matches the selected date
-        if (dayjs(day.date).isSame(date, "day")) {
-          // Create a new event object with updated values
-          const newEvent = {
-            chatResponse,
-            cost,
-            description,
-            endTime: date
-              .add(
-                dayjs(event.endTime).diff(dayjs(event.startTime), "hour"),
-                "hour",
-              )
-              .toDate(),
-            location,
-            name,
-            startTime: date.toDate(),
-          };
-
-          // Add the new event to the end of the array
-          updatedEvents.push(newEvent);
-        }
-
-        return {
-          ...day,
-          events: updatedEvents,
-        };
-      }),
+    // Create a new event object with updated values
+    const newEvent = {
+      chatResponse,
+      cost,
+      description,
+      endTime: dayjs(date)
+        .add(dayjs(event.endTime).diff(dayjs(event.startTime), "hour"), "hour")
+        .format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      startTime: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      name,
+      location,
     };
 
-    setItinerary(updatedItinerary);
+    // Flatten all events and replace the old event with the new event
+    const allEvents = itinerary.schedule.flatMap((day) => {
+      return day.events.map((e) => (e.name === event.name ? newEvent : e));
+    });
+
+    // Sort all events by startTime
+    allEvents.sort((a, b) => dayjs(a.startTime).diff(dayjs(b.startTime)));
+
+    // Create a map of dates to events
+    const dateToEventsMap = allEvents.reduce((map, event) => {
+      const eventDate = dayjs(event.startTime).format("YYYY-MM-DD");
+      if (!map[eventDate]) {
+        map[eventDate] = [];
+      }
+      map[eventDate].push(event);
+      return map;
+    }, {});
+
+    // Reconstruct the schedule array
+    const newSchedule = Object.entries(dateToEventsMap).map(
+      ([date, events], index) => ({
+        day: index + 1,
+        date: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+        events,
+      }),
+    );
+
+    setItinerary({ ...itinerary, schedule: newSchedule });
     setOpen(false);
   };
 
@@ -184,9 +189,8 @@ export function EventCardView({ event, itinerary, setItinerary }) {
             <Box width={"100%"} mt={2}>
               <DatePicker
                 label="Date"
-                // Removing localisation for now.
-                value={date.tz(specificTimezone)}
-                onChange={(newDate) => setDate(newDate)}
+                value={dayjs(date)}
+                onChange={(newDate) => setDate(newDate.toDate())}
                 error={Boolean(errors.date)}
                 helperText={errors.date}
               />

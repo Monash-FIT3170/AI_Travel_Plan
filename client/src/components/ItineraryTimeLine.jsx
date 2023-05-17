@@ -12,6 +12,8 @@ import "./ItineraryTimeLine.css";
 function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
   // to fix date time
   // - {dailyItinerary.events[0].startTime.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true })}
+  const date = new Date(dailyItinerary.date);
+
   return (
     <TimelineItem>
       <TimelineOppositeContent display="none" />
@@ -22,7 +24,7 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
       <TimelineContent>
         <h5>
           Day {dailyItinerary.day}{" "}
-          {dailyItinerary.date.toLocaleDateString("en-US", {
+          {date.toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
             year: "numeric",
@@ -30,6 +32,8 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
         </h5>
         {dailyItinerary.events.map((event) => (
           <EventCardView
+            // Using a name identifier for the key so react doesn't re-use the same component
+            key={event.name}
             event={event}
             itinerary={itinerary}
             setItinerary={setItinerary}
@@ -41,7 +45,6 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
 }
 
 export function ItineraryTimeLine({ travelItinerary, setItinerary }) {
-  // console.log(travelItinerary.schedule[0])
   return (
     <Timeline sx={0.2}>
       {travelItinerary.schedule.map((dailyItinerary) =>
