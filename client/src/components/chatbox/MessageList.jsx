@@ -16,24 +16,20 @@ export default function MessageList() {
       }}
     >
       <Stack display="flex" spacing={2} width="100%">
-        <Box style={{
-        width:"max-content",
-        minWidth: "0px",
-        maxWidth: "500px",
-        alignSelf: "flex-end",
-        marginBottom: "1",
-      }}>
-          <Box padding={1} borderRadius={4} bgcolor="#AAAAAA">
-            <Typography variant="body1">{"find me in MessageList.jsx"}</Typography>
-          </Box>
-        </Box>
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
-        <MessageCard />
+        <MessageCard sender="me"/>
+        <MessageCard sender="bot"/>
+        <MessageCard sender="me"/>
+        <MessageCard sender="bot"/>
+        <MessageCard sender="me"/>
+        <MessageCard sender="bot"/>
+        <MessageCard sender="me"/>
+        <MessageCard sender="me"/>
+        <MessageCard sender="bot"/>
+        <MessageCard sender="me"/>
+        <MessageCard sender="bot"/>
+        <MessageCard sender="me"/>
+        <MessageCard sender="bot"/>
+        <MessageCard sender="me"/>
       </Stack>
     </div>
   );

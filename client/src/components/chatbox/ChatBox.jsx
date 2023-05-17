@@ -70,7 +70,7 @@ export default function ChatBox() {
       <Box height="84vh" width="100%">
         <MessageList />
       </Box>
-      <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" padding="10px">
         <TextField
           style={{ width: "100%" }}
           multiline
