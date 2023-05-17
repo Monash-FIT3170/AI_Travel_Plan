@@ -63,16 +63,16 @@ export default function ChatBox() {
         position: "fixed",
         bottom: "20px",
         left: "20px",
-        right: "0px",
-        width:"49%"
+        right: "20px",
+        width: "49%",
       }}
     >
-      <Box display="flex" alignItems="center">
+      <Box height="84vh" width="100%">
         <MessageList />
       </Box>
       <Box display="flex" alignItems="center">
         <TextField
-          style={{width:"100%"}}
+          style={{ width: "100%" }}
           multiline
           onChange={(value) => handleInputEnter(value)}
           value={inputValue}
