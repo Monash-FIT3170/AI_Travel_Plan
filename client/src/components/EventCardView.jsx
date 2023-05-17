@@ -144,7 +144,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
           title={event.name}
           subheader={
             "DURATION: " +
-            Math.floor((event.endTime - event.startTime) / (1000 * 60 * 60)) +
+            dayjs(event.endTime).diff(dayjs(event.startTime), "hour") +
             " HRS"
           }
         />
