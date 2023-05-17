@@ -3,7 +3,6 @@ import SendIcon from "@mui/icons-material/Send";
 import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import MessageList from "./MessageList";
-import MessageCard from "./MessageCard";
 
 import React, { useState } from "react";
 
@@ -62,9 +61,10 @@ export default function ChatBox() {
     <div
       style={{
         position: "fixed",
-        bottom: "50px",
-        left: "10px",
-        right: "150px",
+        bottom: "20px",
+        left: "20px",
+        right: "0px",
+        width:"49%"
       }}
     >
       <Box display="flex" alignItems="center">
@@ -72,7 +72,7 @@ export default function ChatBox() {
       </Box>
       <Box display="flex" alignItems="center">
         <TextField
-          
+          style={{width:"100%"}}
           multiline
           onChange={(value) => handleInputEnter(value)}
           value={inputValue}
