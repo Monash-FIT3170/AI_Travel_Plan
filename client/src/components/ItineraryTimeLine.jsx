@@ -29,7 +29,6 @@ function timelineGenerator(dailyItinerary){
 }
 
 export  function ItineraryTimeLine({travelItinerary}) {
-  // console.log(travelItinerary.schedule[0])
   return (
     <Timeline   sx={0.2}>
       {travelItinerary.schedule.map(dailyItinerary=> timelineGenerator(dailyItinerary))}
