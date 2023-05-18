@@ -5,14 +5,16 @@ import Box from "@mui/material/Box";
 import MessageList from "./MessageList";
 import MessageCard from "./MessageCard";
 import { Form, FormControl } from "react-bootstrap";
+import axios from "axios";
 
 import React, { useState } from "react";
+import { json } from "react-router-dom";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
  */
-export default function Chatbox() {
+export default function Chatbox({travelItinerary, setItinerary}) {
   /**
    * State - inputValue: the value in the text box
    */
@@ -32,6 +34,7 @@ export default function Chatbox() {
       sender: "server",
     },
   ]);
+ 
 
   /**
    * Method call when the button is clicked
@@ -39,28 +42,58 @@ export default function Chatbox() {
    * TODO: create new message and add it to the message list
    */
   const handleButtonClick = (event) => {
+     const conversation =[]
+
+  for (let i = 1; i < messages.length; i+=2) {
+      
+      const tempConversation = {prompt: messages[i].text, reply: messages[i+1].text}
+      conversation.push(tempConversation)
+  }
+
     if (inputValue.length > 0) {
       addMessage(inputValue);
-      event.preventDefault();
+      const requestMessage ={
+        prompt: inputValue,
+        travelItinerary: travelItinerary,
+        chatHistory: conversation
 
-      // Placeholder message while fetching
-      setOutboxValue("Loading...");
-
-      // Simulating API call, replace with actual server's response
-      setTimeout(() => {
-        const response = "testing";
-
-        // Add user's input message and server's response to the messages state
+      }
+      axios.post('http://localhost:4000/api/chatMessage', requestMessage).then((response) => {
+        console.log(response)
+        if (response.data.travelItinerary){
+          const jsonTravelItinerary = JSON.parse(response.data.travelItinerary)
+          console.log(jsonTravelItinerary)
+          setItinerary(jsonTravelItinerary)
+        }
+        //to do update itinerary page 
         const updatedMessages = [
           ...messages,
           { text: inputValue, sender: "user" },
-          { text: response, sender: "server" },
+
+          { text: response.data.chatResponse, sender: "server" },
         ];
         setMessages(updatedMessages);
 
         // Clear the input field
         setInputValue("");
-      });
+      })
+
+      console.log(messages)
+
+      
+      event.preventDefault();
+
+      // Placeholder message while fetching
+      setOutboxValue("Loading...");
+      
+
+      // // Simulating API call, replace with actual server's response
+      // setTimeout(() => {
+      //   const response = "testing";
+
+      //   // Add user's input message and server's response to the messages state
+       
+      // });
     }
   };
 
