@@ -36,6 +36,10 @@ export default function Chatbox () {
    * TODO: create new message and add it to the message list
    */
   const handleButtonClick = (event) => {
+    if (inputValue.length <= 0) {
+      // ignore empty string
+      return;
+    }
     addMessage(inputValue);
     event.preventDefault();
 
