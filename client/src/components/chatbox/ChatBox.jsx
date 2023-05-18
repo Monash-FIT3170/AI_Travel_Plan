@@ -6,7 +6,12 @@ import MessageList from "./MessageList";
 import MessageCard from "./MessageCard";
 import { Form, FormControl } from "react-bootstrap";
 
-import React, { useState } from "react";
+import { useLocalStorage } from "../LocalStorageGeneric";
+
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
+
+import { mockTravel_Itinerary1 } from "../../MockItinerary";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
@@ -17,6 +22,7 @@ export default function Chatbox() {
    * State - inputValue: the value in the text box
    */
   const [inputValue, setInputValue] = useState("");
+
 
   /**
    * State - outboxValue: the output value from the server
@@ -32,6 +38,12 @@ export default function Chatbox() {
       sender: "server",
     },
   ]);
+
+  const [chatHistory, setChatHistory, updateValueInLocalStorage] =
+    useLocalStorage("chatHistory", []);
+
+  const [itinerary, setItinerary, updateValueInLocalStorage1] = useLocalStorage("travelItinerary", mockTravel_Itinerary1);
+
 
   /**
    * Method call when the button is clicked
@@ -76,9 +88,45 @@ export default function Chatbox() {
    * adds a new message to the list of messages
    * @param {String} newMessage new message to add to the message list
    */
-  const addMessage = (newMessage) => {
-    setMessages([...messages, newMessage]);
+
+  const addMessage = async (newMessage) => {
+    try {
+      const response = await axios.post('http://localhost:4000/api/chatMessage', 
+        {
+          prompt: newMessage,
+          travelItinerary: itinerary,
+          chatHistory: chatHistory,
+        }
+      )
+      console.log("message is"+response.data.message);
+      const reply = response.data.message.chatResponse ? response.data.message.chatResponse : response.data.message;
+      console.log("chatresponse is"+response.data.message.chatResponse);
+      console.log("startDate is"+response.data.message.startDate);
+      console.log("endate is"+response.data.message.endDate);
+      console.log("schedule is"+response.data.message.schedule);
+      const newTravelItinerary = {
+        startDate: response.data.message.startDate ? response.data.message.startDate : "",
+        endDate: response.data.message.endDate ? response.data.message.endDate : "",
+        schedule: response.data.message.schedule ? response.data.message.schedule : [],
+      }
+      setChatHistory((prevChatHistory) => [
+        ...prevChatHistory,
+        { prompt: newMessage, reply: reply },
+      ]);
+      setItinerary(() => [newTravelItinerary]);
+    } catch (error) {
+      console.error('API call error:',error);
+    }
+    
   };
+
+  useEffect(() => {
+    updateValueInLocalStorage(chatHistory);
+  }, [chatHistory, updateValueInLocalStorage]);
+
+  useEffect(() => {
+    updateValueInLocalStorage1(itinerary);
+  }, [itinerary, updateValueInLocalStorage1]);
 
   /**
    * jsx render
