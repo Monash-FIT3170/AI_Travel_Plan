@@ -58,11 +58,22 @@ export default function ChatBox() {
           chatHistory: chatHistory,
         }
       )
-      const reply = response.data;
+      console.log("message is"+response.data.message);
+      const reply = response.data.message.chatResponse ? response.data.message.chatResponse : response.data.message;
+      console.log("chatresponse is"+response.data.message.chatResponse);
+      console.log("startDate is"+response.data.message.startDate);
+      console.log("endate is"+response.data.message.endDate);
+      console.log("schedule is"+response.data.message.schedule);
+      const newTravelItinerary = {
+        startDate: response.data.message.startDate ? response.data.message.startDate : "",
+        endDate: response.data.message.endDate ? response.data.message.endDate : "",
+        schedule: response.data.message.schedule ? response.data.message.schedule : [],
+      }
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
         { prompt: newMessage, reply: reply },
       ]);
+      setItinerary(() => [newTravelItinerary]);
     } catch (error) {
       console.error('API call error:',error);
     }
@@ -74,8 +85,8 @@ export default function ChatBox() {
   }, [chatHistory, updateValueInLocalStorage]);
 
   useEffect(() => {
-    updateValueInLocalStorage1(mockTravel_Itinerary1);
-  }, [updateValueInLocalStorage1]);
+    updateValueInLocalStorage1(itinerary);
+  }, [itinerary, updateValueInLocalStorage1]);
 
   /**
    * jsx render
