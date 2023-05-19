@@ -48,16 +48,14 @@ export default function Chatbox({travelItinerary, setItinerary}) {
    * TODO: need to add openai api routing here.
    * TODO: create new message and add it to the message list
    */
-  const handleButtonClick = async (event) => {
+  const handleButtonClick = (event) => {
      
     if (inputValue.length > 0) {
-       const chatResponse = await addMessage(inputValue)
-       console.log(chatResponse)
-      const updatedMessages = [
+       addMessage(inputValue)
+
+         const updatedMessages = [
           ...messages,
           { text: inputValue, sender: "user" },
-
-          { text: chatResponse, sender: "server" },
         ];
         setMessages(updatedMessages);
 
@@ -105,13 +103,8 @@ export default function Chatbox({travelItinerary, setItinerary}) {
           chatHistory: chatHistory,
         }
       )
-      
-      console.log("message is"+response.data.message);
-      const reply = response.data.message.chatResponse ? response.data.message.chatResponse : response.data.message;
-      console.log("chatresponse is"+response.data.message.chatResponse);
-      console.log("startDate is"+response.data.message.startDate);
-      console.log("endate is"+response.data.message.endDate);
-      console.log("schedule is"+response.data.message.schedule);
+      console.log("message is"+response.data.chatResponse);
+      const reply = response.data.chatResponse ? response.data.chatResponse : "Sorry, I don't understand that.";
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
         { prompt: newMessage, reply: reply },
@@ -122,7 +115,13 @@ export default function Chatbox({travelItinerary, setItinerary}) {
           setItinerary(jsonVal)
         }
 
-        return response.data.chatResponse
+        const updatedMessages = [
+          ...messages,
+        
+          { text: response.data.chatResponse, sender: "server" },
+        ];
+        setMessages(updatedMessages);
+
     } catch (error) {
       console.error('API call error:',error);
     }
