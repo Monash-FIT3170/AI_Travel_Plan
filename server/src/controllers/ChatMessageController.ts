@@ -6,7 +6,7 @@ import { ChatResponse } from '../models/chatResponse.model'
 import { parse } from 'path'
 
 //for mock data testing only
-const getMockResponse = (req: Request, res: Response) => (res.status(200).json(mockTravelItinerary1))
+const getMockResponse = (req: Request, res: Response) => (res.status(200).json({ travelItinerary: mockTravelItinerary1, chatResponse: "mock response" }))
 
 
 
@@ -36,10 +36,11 @@ function parseResponse(response: string): ChatResponse {
     if (startIndex === -1 || endIndex === -1) {
         return { chatResponse: response }
     }
+
     const jsonString = response.substring(startIndex, endIndex + 1);
     const other = response.substring(0, startIndex) + response.substring(endIndex + 1)
     const json = JSON.parse(jsonString)
-    return { ...json, chatResponse: other }
+    return { travelItinerary: json, chatResponse: other }
 }
 
 

@@ -21,9 +21,10 @@ function timelineGenerator(dailyItinerary){
         </TimelineSeparator>
         <TimelineContent>
           <h5>
-          Day {dailyItinerary.day} {dailyItinerary.date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})} 
+          Day {dailyItinerary.day} 
+          {/* {dailyItinerary.date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}  */}
           </h5>
-          {dailyItinerary.events.map(event=> <EventCardView event={event}/>)}
+          {dailyItinerary.activities.map(event=> <EventCardView event={event}/>)}
         </TimelineContent>
       </TimelineItem>)
 }
