@@ -42,7 +42,7 @@ function parseResponse(response: string): ChatResponse {
 
     const findString = response.indexOf('```')
     const endString = response.lastIndexOf('`')
-    const other = response.substring(0, findString) + response.substring(endString + 1)
+    const other = response.substring(0, startIndex < findString ? startIndex : findString) + response.substring(endIndex > endString ? endIndex + 1 : endString + 1)
     const json = JSON.parse(jsonString)
     return { travelItinerary: json, chatResponse: other }
 }

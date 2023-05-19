@@ -39,7 +39,6 @@ export default function Chatbox({travelItinerary, setItinerary, updateTravelItin
 
   const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
     useLocalStorage("chatHistory", []);
-
   
   /**
    * Method call when the button is clicked
@@ -83,6 +82,8 @@ export default function Chatbox({travelItinerary, setItinerary, updateTravelItin
   const addMessage = async (newMessage) => {
     try {
       setOutboxValue("Loading...");
+      // const response = await axios.get('http://localhost:4000/api/chatMessage',
+      // )
       const response = await axios.post('http://localhost:4000/api/chatMessage',
         {
           prompt: newMessage,
@@ -90,6 +91,7 @@ export default function Chatbox({travelItinerary, setItinerary, updateTravelItin
           chatHistory: chatHistory,
         }
       )
+      console.log(response.data)
       const reply = response.data.chatResponse ? response.data.chatResponse : "Sorry, I don't understand that.";
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
@@ -111,17 +113,24 @@ export default function Chatbox({travelItinerary, setItinerary, updateTravelItin
 
     } catch (error) {
       console.error('API call error:',error);
+       const updatedMessages = [
+          ...messages,
+        { text: inputValue, sender: "user" },
+          { text: "please try again", sender: "server" },
+        ];
+        setMessages(updatedMessages);
+
     }
     
   };
 
-  useEffect(() => {
-    updateChatMessageInLocalStorage(chatHistory);
-  }, [chatHistory, updateChatMessageInLocalStorage]);
+  // useEffect(() => {
+  //   updateChatMessageInLocalStorage(chatHistory);
+  // }, [chatHistory, updateChatMessageInLocalStorage]);
 
-  useEffect(() => {
-    updateTravelItineraryInLocalStorage(travelItinerary);
-  }, [travelItinerary, updateTravelItineraryInLocalStorage]);
+  // useEffect(() => {
+  //   updateTravelItineraryInLocalStorage(travelItinerary);
+  // }, [travelItinerary, updateTravelItineraryInLocalStorage]);
 
   /**
    * jsx render
