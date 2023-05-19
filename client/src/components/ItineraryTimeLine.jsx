@@ -9,34 +9,11 @@ import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import { EventCardView } from "./EventCardView";
 import "./ItineraryTimeLine.css";
 
-function timelineGenerator(dailyItinerary){
+function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
   const formattedMonth = new Date(dailyItinerary.date).toLocaleString("default", { month: "long" });
   const formattedDate = new Date(dailyItinerary.date).getUTCDate();
   const formattedYear = new Date(dailyItinerary.date).getUTCFullYear();
   const formattedStartTime = formatTimeToAMPM(new Date(dailyItinerary.events[0].startTime));
-
-  return (
-      <TimelineItem>
-        <TimelineOppositeContent display='none'/> 
-        <TimelineSeparator>
-          <TimelineDot sx={{ bgcolor: 'white' }}/>
-          <TimelineConnector sx={{ bgcolor: 'white' }}/>
-        </TimelineSeparator>
-        <TimelineContent>
-          <h5>
-          Day {dailyItinerary.day} {formattedMonth} {formattedDate}, {formattedYear} - {formattedStartTime}
-          </h5>
-          {dailyItinerary.events.map(event=> <EventCardView event={event}/>)}
-        </TimelineContent>
-      </TimelineItem>)
-}
-
-export  function ItineraryTimeLine({travelItinerary}) {
-
-function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
-  // to fix date time
-  // - {dailyItinerary.events[0].startTime.toLocaleTimeString('en-US', { hour: 'numeric', hour12: true })}
-  const date = new Date(dailyItinerary.date);
 
   return (
     <TimelineItem>
@@ -47,12 +24,7 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
       </TimelineSeparator>
       <TimelineContent>
         <h5>
-          Day {dailyItinerary.day}{" "}
-          {date.toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
+        Day {dailyItinerary.day} {formattedMonth} {formattedDate}, {formattedYear} - {formattedStartTime}
         </h5>
         {dailyItinerary.events.map((event) => (
           <EventCardView
