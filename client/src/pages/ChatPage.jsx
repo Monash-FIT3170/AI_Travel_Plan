@@ -4,18 +4,21 @@ import BackgroundImage from "../components/BackgroundImage";
 import Grid from "@mui/material/Grid";
 import { ItineraryTimeLine } from "../components/ItineraryTimeLine";
 import { mockTravel_Itinerary1 } from "../MockItinerary";
+import { useLocalStorage } from "../components/LocalStorageGeneric";
 
 export function ChatPage() {
+const [travelItinerary, setItinerary, updateValueInLocalStorage] = useLocalStorage("travelItinerary", {startDate:null, endDate:null, schedule:[]});
+
   return (
     <>
       <BackgroundImage />
       <Background>
         <Grid container>
           <Grid item xs={6}>
-            <ChatBox></ChatBox>
+            <ChatBox travelItinerary={travelItinerary} setItinerary = {setItinerary}></ChatBox>
           </Grid>
           <Grid item xs={6} style={{ height: "93vh", overflowY: "auto" }}>
-            <ItineraryTimeLine travelItinerary={mockTravel_Itinerary1} />
+            <ItineraryTimeLine travelItinerary={travelItinerary} />
           </Grid>
         </Grid>
       </Background>

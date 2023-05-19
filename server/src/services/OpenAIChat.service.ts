@@ -42,11 +42,12 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
     const returnMessage: ChatCompletionRequestMessage = {
         role: "system",
         content: "help the user build an itinerary and return the updated itinerary, the itinerary should be in the format {startDate: date, endDate: date, schedule: [dailtItinerary]}. Daily itinerary should be in the format {day: int, date: date, activities: [activity]}. Activity should be in the format {name: str, startTime: time, endTime: time, location: str, description: str, cost: number]}" +
-            "the current itinerary is passed in as a json oject and its started as a empty itinerary" + "start generting the itinerary by asking the user what they want to do each day"
+            "the current itinerary is passed in as a json oject and its started as a empty itinerary"
 
     }
     messages.push(itineraryContextMessage)
     messages.push(returnMessage)
+    console.log(messages)
 
     const completion = await openai.createChatCompletion(
         {
