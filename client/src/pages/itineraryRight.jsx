@@ -11,6 +11,8 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import React, { useEffect } from "react";
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -76,7 +78,7 @@ export function ItineraryRight() {
   }, []);
 
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <BackgroundImage />
       <Background>
         <Grid container>
@@ -88,6 +90,11 @@ export function ItineraryRight() {
               travelItinerary={itinerary}
               setItinerary={setItinerary}
             />
+            <div style={{ position: 'fixed', bottom: '20px', right: '50px' }}>
+                <Button variant="contained" endIcon={<AddIcon />}>
+                  ADD NEW LOCATION
+                </Button>
+              </div>
           </Grid>
         </Grid>
       </Background>
