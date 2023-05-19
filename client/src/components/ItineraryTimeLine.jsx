@@ -30,7 +30,7 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
             year: "numeric",
           })}
         </h5>
-        {dailyItinerary.events.map((event) => (
+        {dailyItinerary.activities.map((event) => (
           <EventCardView
             // Using a name identifier for the key so react doesn't re-use the same component
             key={event.name}

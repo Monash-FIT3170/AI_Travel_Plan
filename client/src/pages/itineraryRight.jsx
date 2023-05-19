@@ -1,11 +1,9 @@
 import Background from "../components/Background";
 import BackgroundImage from "../components/BackgroundImage";
-import Chatbox from "../components/Chatbox";
-import { EventCardView } from "../components/EventCardView";
 import { ItineraryTimeLine } from "../components/ItineraryTimeLine";
 import Grid from "@mui/material/Grid";
-import { mockTravel_Itinerary1 } from "../MockItinerary";
 import { useLocalStorage } from "../components/LocalStorageGeneric";
+import ChatBox from "../components/chatbox/ChatBox";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -16,17 +14,15 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export function ItineraryRight() {
-  const [itinerary, setItinerary] = useLocalStorage(
-    "dailyItinerary",
-    mockTravel_Itinerary1,
+  const [itinerary, setItinerary, updateTravelItineraryLocalStorage] = useLocalStorage(
+    "travelItinerary",{startDate:null, endDate:null, schedule:[]}
   );
-
   // NOTE: Reconstructing because the timezone in the mock data is not the same as the timezone in the browser.
   // TODO: When prompting gpt, provide user's timezone such that GPT returns event times in the user's timezone.
   const reformItinerary = (itinerary) => {
     // Flatten all events
     const allEvents = itinerary.schedule.flatMap(
-      (dailyItinerary) => dailyItinerary.events,
+      (dailyItinerary) => dailyItinerary.activities,
     );
 
     // Sort all events by startTime
@@ -44,10 +40,10 @@ export function ItineraryRight() {
 
     // Reconstruct the schedule array
     const newSchedule = Object.entries(dateToEventsMap).map(
-      ([date, events], index) => ({
+      ([date, activities], index) => ({
         day: index + 1,
         date: new Date(date),
-        events,
+        activities,
       }),
     );
 
@@ -64,8 +60,9 @@ export function ItineraryRight() {
       const newItinerary = reformItinerary(itinerary);
 
       newItinerary.schedule.forEach((dailyItinerary) => {
+        console.log(dailyItinerary)
         dailyItinerary.date = dayjs(dailyItinerary.date).format(format);
-        dailyItinerary.events.forEach((event) => {
+        dailyItinerary.activities.forEach((event) => {
           event.startTime = dayjs(event.startTime).format(format);
           event.endTime = dayjs(event.endTime).format(format);
         });
@@ -81,7 +78,8 @@ export function ItineraryRight() {
       <Background>
         <Grid container>
           <Grid item xs={6}>
-            Follow figma for the components here
+        <ChatBox travelItinerary={itinerary} setItinerary = {setItinerary}  updateTravelItineraryInLocalStorage={updateTravelItineraryLocalStorage}></ChatBox>
+
           </Grid>
           <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
             <ItineraryTimeLine
