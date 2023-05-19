@@ -42,9 +42,10 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
     const returnMessage: ChatCompletionRequestMessage = {
         role: "system",
         content: "help the user build an itinerary and return the updated itinerary, the itinerary should be in the format {startDate: date, endDate: date, schedule: [dailtItinerary]}. " +
-            "Daily itinerary should be in the format {day: int, date: date, activities: [activity]}. Activity should be in the format {name: str, startTime: time, endTime: time, location: str, description: str, cost: number]}" +
+            "Daily itinerary should be in the format {day: int, date: date, activities: [activity]}. Activity should be in the format {name: str, startTime: time, endTime: time, location: str, description: str, cost: number]}" + "provide a descriptive description for the activity" +
             "the current itinerary is passed in as a json oject and its started as a empty itinerary" +
-            "strictly follow the return format"
+            "strictly follow itinerary structrure." + "example itinerary: {startDate: 2021-07-01, endDate: 2021-07-05, schedule: [{day: 1, date: 2021-07-01, activities: [{name: 'Tokyo Tower', startTime: '10:00', endTime: '11:00', location: 'Tokyo', description: 'A tower in Tokyo', cost: 10}]}]}" +
+            "if you want to suggest an itinineray always return the itinerary following the structre and format provided above"
     }
 
     messages.push(itineraryContextMessage)

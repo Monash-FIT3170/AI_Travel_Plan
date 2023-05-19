@@ -5,8 +5,6 @@ import Box from "@mui/material/Box";
 import MessageList from "./MessageList";
 import MessageCard from "./MessageCard";
 import axios from "axios";
-
-import { json } from "react-router-dom";
 import { useLocalStorage } from "../LocalStorageGeneric";
 
 import React, { useState, useEffect } from "react";
@@ -16,7 +14,7 @@ import React, { useState, useEffect } from "react";
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
  */
-export default function Chatbox({travelItinerary, setItinerary}) {
+export default function Chatbox({travelItinerary, setItinerary, updateTravelItineraryInLocalStorage}) {
   /**
    * State - inputValue: the value in the text box
    */
@@ -39,7 +37,7 @@ export default function Chatbox({travelItinerary, setItinerary}) {
   ]);
  
 
-  const [chatHistory, setChatHistory, updateValueInLocalStorage] =
+  const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
     useLocalStorage("chatHistory", []);
 
   
@@ -53,7 +51,7 @@ export default function Chatbox({travelItinerary, setItinerary}) {
     if (inputValue.length > 0) {
        addMessage(inputValue)
 
-         const updatedMessages = [
+        const updatedMessages = [
           ...messages,
           { text: inputValue, sender: "user" },
         ];
@@ -61,23 +59,11 @@ export default function Chatbox({travelItinerary, setItinerary}) {
 
         // Clear the input field
         setInputValue("");
-
-      console.log(messages)
-
       
       event.preventDefault();
 
       // Placeholder message while fetching
-      setOutboxValue("Loading...");
       
-
-      // // Simulating API call, replace with actual server's response
-      // setTimeout(() => {
-      //   const response = "testing";
-
-      //   // Add user's input message and server's response to the messages state
-       
-      // });
     }
   };
 
@@ -96,14 +82,14 @@ export default function Chatbox({travelItinerary, setItinerary}) {
 
   const addMessage = async (newMessage) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/chatMessage', 
+      setOutboxValue("Loading...");
+      const response = await axios.post('http://localhost:4000/api/chatMessage',
         {
           prompt: newMessage,
           travelItinerary: travelItinerary,
           chatHistory: chatHistory,
         }
       )
-      console.log("message is"+response.data.chatResponse);
       const reply = response.data.chatResponse ? response.data.chatResponse : "Sorry, I don't understand that.";
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
@@ -112,12 +98,13 @@ export default function Chatbox({travelItinerary, setItinerary}) {
 
       if (response.data.travelItinerary){
           const jsonVal= JSON.parse(JSON.stringify(response.data.travelItinerary))
+          console.log(jsonVal)
           setItinerary(jsonVal)
         }
 
         const updatedMessages = [
           ...messages,
-        
+        { text: inputValue, sender: "user" },
           { text: response.data.chatResponse, sender: "server" },
         ];
         setMessages(updatedMessages);
@@ -129,12 +116,12 @@ export default function Chatbox({travelItinerary, setItinerary}) {
   };
 
   useEffect(() => {
-    updateValueInLocalStorage(chatHistory);
-  }, [chatHistory, updateValueInLocalStorage]);
+    updateChatMessageInLocalStorage(chatHistory);
+  }, [chatHistory, updateChatMessageInLocalStorage]);
 
-  // useEffect(() => {
-  //   updateValueInLocalStorage1(itinerary);
-  // }, [itinerary, updateValueInLocalStorage1]);
+  useEffect(() => {
+    updateTravelItineraryInLocalStorage(travelItinerary);
+  }, [travelItinerary, updateTravelItineraryInLocalStorage]);
 
   /**
    * jsx render

@@ -1,4 +1,4 @@
-import ChatBox1 from "../components/chatbox/ChatBox1";
+import ChatBox from "../components/chatbox/ChatBox";
 import Background from "../components/Background";
 import BackgroundImage from "../components/BackgroundImage";
 import Grid from "@mui/material/Grid";
@@ -14,7 +14,7 @@ const [travelItinerary, setItinerary, updateTravelItineraryInLocalStorage] = use
       <Background>
         <Grid container>
           <Grid item xs={6}>
-            <ChatBox1 travelItinerary={travelItinerary} setItinerary = {setItinerary}  updateTravelItineraryInLocalStorage={updateTravelItineraryInLocalStorage}></ChatBox1>
+            <ChatBox travelItinerary={travelItinerary} setItinerary = {setItinerary}  updateTravelItineraryInLocalStorage={updateTravelItineraryInLocalStorage}></ChatBox>
           </Grid>
           <Grid item xs={6} style={{ height: "93vh", overflowY: "auto" }}>
             <ItineraryTimeLine travelItinerary={travelItinerary} />
