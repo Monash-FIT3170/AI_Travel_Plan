@@ -24,9 +24,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -48,56 +49,88 @@ export function ItineraryRight() {
 
   const handleClose = () => {
     setOpen(false);
-    setErrors({ name: "", date: "", time: "" });
+    setName("");
+    setDescription("");
+    setCost("");
+    setLocation("");
+    setResponse("");
+    setDate(dayjs().toDate()); // Set to the current date or an initial date value
+    setTime(dayjs().toDate()); // Set to the current time or an initial time value
+    // setErrors({ name: "", date: "", time: "" });
   };
 
   const handleSave = () => {
-    // if (errors.name || errors.date || errors.time) {
-    //   alert("Please enter valid inputs before saving.");
-    //   return;
-    // }
+    if (errors.name || errors.date || errors.time) {
+      alert("Please enter valid inputs before saving.");
+      return;
+    }
 
-    // // Create a new event object with updated values
-    // const newEvent = {
-    //   chatResponse,
-    //   cost,
-    //   description,
-    //   endTime: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-    //   startTime: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-    //   name,
-    //   location,
-    // };
+    // Create a new event object with updated values
+    const newEvent = {
+      chatResponse,
+      cost,
+      description,
+      endTime: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      startTime: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      name,
+      location,
+    };
+    // console.log(newEvent);
 
-    // // Flatten all events and replace the old event with the new event
-    // const allEvents = itinerary.schedule.flatMap((day) => {
-    //   return day.events.map((e) => (e.name === event.name ? newEvent : e));
-    // });
+    //TODO: below
+    const [itinerary, setItinerary] = useLocalStorage(
+      "dailyItinerary",
+      mockTravel_Itinerary1,
+    );
 
-    // // Sort all events by startTime
-    // allEvents.sort((a, b) => dayjs(a.startTime).diff(dayjs(b.startTime)));
+    // Flatten all events
+    const allEvents = itinerary.schedule.flatMap((day) => {
+      return day.events.map((e) => (newEvent));
+    });
+    console.log(allEvents);
+    // Sort all events by startTime
+    allEvents.sort((a, b) => a.startTime - b.startTime);
 
-    // // Create a map of dates to events
-    // const dateToEventsMap = allEvents.reduce((map, event) => {
-    //   const eventDate = dayjs(event.startTime).format("YYYY-MM-DD");
-    //   if (!map[eventDate]) {
-    //     map[eventDate] = [];
-    //   }
-    //   map[eventDate].push(event);
-    //   return map;
-    // }, {});
+    // Create a map of dates to events
+    const dateToEventsMap = allEvents.reduce((map, event) => {
+      const eventDate = dayjs(event.startTime).format("YYYY-MM-DD");
+      if (!map[eventDate]) {
+        map[eventDate] = [];
+      }
+      map[eventDate].push(event);
+      return map;
+    }, {});
 
-    // // Reconstruct the schedule array
-    // const newSchedule = Object.entries(dateToEventsMap).map(
-    //   ([date, events], index) => ({
-    //     day: index + 1,
-    //     date: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-    //     events,
-    //   }),
-    // );
+    // Reconstruct the schedule array
+    const newSchedule = Object.entries(dateToEventsMap).map(
+      ([date, events], index) => ({
+        day: index + 1,
+        date: new Date(date),
+        events,
+      }),
+    );
 
-    // setItinerary({ ...itinerary, schedule: newSchedule });
-    // setOpen(false);
+    setItinerary({ ...itinerary, schedule: newSchedule });
+    setOpen(false);
   };
+
+  // useEffect(() => {
+  //   let nameError = "";
+  //   let dateError = "";
+  //   let timeError = "";
+
+  //   if (!name.trim()) {
+  //     nameError = "Name is required";
+  //   }
+  //   if (isNaN(date)) {
+  //     dateError = "Date is not valid";
+  //   }
+  //   if (isNaN(time)) {
+  //     timeError = "Time is not valid";
+  //   }
+
+  //   setErrors({ name: nameError, date: dateError, time: timeError });
+  // }, [name, date, time]);
 
   const [itinerary, setItinerary] = useLocalStorage(
     "dailyItinerary",
@@ -195,27 +228,49 @@ export function ItineraryRight() {
             error={Boolean(errors.name)}
             helperText={errors.name}
           />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box width={"100%"} mt={2}>
-              <DatePicker
-                label="Date"
-                value={dayjs(date)}
-                onChange={(newDate) => setDate(newDate.toDate())}
-                error={Boolean(errors.date)}
-                helperText={errors.date}
-              />
-            </Box>
-            {/* <Box width={"100%"} mt={2}>
-              <TimePicker
-                label="Time"
-                // Removing localisation for now.
-                value={time.tz(specificTimezone)}
-                onChange={(newTime) => setTime(newTime)}
-                error={Boolean(errors.time)}
-                helperText={errors.time}
-              />
-            </Box> */}
-          </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker 
+            label="Start Date"
+            />
+        </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker 
+            label="End Date"
+            />
+        </LocalizationProvider>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Location"
+            type="text"
+            fullWidth
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            // error={Boolean(errors.name)}
+            // helperText={errors.name}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Description"
+            type="text"
+            fullWidth
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            // error={Boolean(errors.name)}
+            // helperText={errors.name}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Cost"
+            type="number"
+            fullWidth
+            value={cost}
+            onChange={(e) => setCost(e.target.value)}
+            // error={Boolean(errors.name)}
+            // helperText={errors.name}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
