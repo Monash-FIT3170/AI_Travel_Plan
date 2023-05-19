@@ -30,4 +30,5 @@ export interface ChatMessage {
     prompt: string
     travelItinerary: TravelItinerary
     chatHistory: ChatHistoryItem[]
+    additionalInfo: string
 }
