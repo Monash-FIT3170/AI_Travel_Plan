@@ -92,3 +92,4 @@ export function ItineraryRight() {
     </div>
   );
 }
+
