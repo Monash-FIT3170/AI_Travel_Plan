@@ -80,14 +80,12 @@ export function ItineraryRight() {
       name,
       location,
     };
-    // console.log(newEvent);
 
-    // Todo: Add event object to local storage
-    
+    // Add the new event to the itinerary without sorting
+    itinerary.schedule[0].events.push(newEvent);
 
-    // Todo: reform itinerary
-    setItinerary(reformItinerary);
-    console.log(itinerary);
+    // Reform itinerary
+    setItinerary(reformItinerary(itinerary));
     setOpen(false);
   };
 
