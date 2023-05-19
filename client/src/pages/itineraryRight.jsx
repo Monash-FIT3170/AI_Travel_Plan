@@ -39,9 +39,9 @@ export function ItineraryRight() {
   const [cost, setCost] = useState();
   const [location, setLocation] = useState();
   const [chatResponse, setResponse] = useState();
-  const [date, setDate] = useState(dayjs().toDate());
-  const [time, setTime] = useState(dayjs().toDate());
-  const [errors, setErrors] = useState({ name: "", date: "", time: "" });
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [errors, setErrors] = useState({ name: "", startDate: "", endDate: "" });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -54,13 +54,18 @@ export function ItineraryRight() {
     setCost("");
     setLocation("");
     setResponse("");
-    setDate(dayjs().toDate()); // Set to the current date or an initial date value
-    setTime(dayjs().toDate()); // Set to the current time or an initial time value
+    setStartDate(null); // Set to the current date or an initial date value
+    setEndDate(null); // Set to the current date or an initial date value
     // setErrors({ name: "", date: "", time: "" });
   };
 
+  const [itinerary, setItinerary, updateValueInLocalStorage] = useLocalStorage(
+    "dailyItinerary",
+    mockTravel_Itinerary1,
+  );
+
   const handleSave = () => {
-    if (errors.name || errors.date || errors.time) {
+    if (errors.name || errors.startDateError || errors.endDateError) {
       alert("Please enter valid inputs before saving.");
       return;
     }
@@ -70,72 +75,41 @@ export function ItineraryRight() {
       chatResponse,
       cost,
       description,
-      endTime: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-      startTime: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      endTime: dayjs(endDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      startTime: dayjs(startDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
       name,
       location,
     };
     // console.log(newEvent);
 
-    //TODO: below
-    const [itinerary, setItinerary] = useLocalStorage(
-      "dailyItinerary",
-      mockTravel_Itinerary1,
-    );
+    // Todo: Add event object to local storage
+    
 
-    // Flatten all events
-    const allEvents = itinerary.schedule.flatMap((day) => {
-      return day.events.map((e) => (newEvent));
-    });
-    console.log(allEvents);
-    // Sort all events by startTime
-    allEvents.sort((a, b) => a.startTime - b.startTime);
-
-    // Create a map of dates to events
-    const dateToEventsMap = allEvents.reduce((map, event) => {
-      const eventDate = dayjs(event.startTime).format("YYYY-MM-DD");
-      if (!map[eventDate]) {
-        map[eventDate] = [];
-      }
-      map[eventDate].push(event);
-      return map;
-    }, {});
-
-    // Reconstruct the schedule array
-    const newSchedule = Object.entries(dateToEventsMap).map(
-      ([date, events], index) => ({
-        day: index + 1,
-        date: new Date(date),
-        events,
-      }),
-    );
-
-    setItinerary({ ...itinerary, schedule: newSchedule });
+    // Todo: reform itinerary
+    setItinerary(reformItinerary);
+    console.log(itinerary);
     setOpen(false);
   };
 
-  // useEffect(() => {
-  //   let nameError = "";
-  //   let dateError = "";
-  //   let timeError = "";
+  useEffect(() => {
+    let nameError = "";
+    let startDateError = "";
+    let endDateError = "";
 
-  //   if (!name.trim()) {
-  //     nameError = "Name is required";
-  //   }
-  //   if (isNaN(date)) {
-  //     dateError = "Date is not valid";
-  //   }
-  //   if (isNaN(time)) {
-  //     timeError = "Time is not valid";
-  //   }
+    if (!name || !name.trim()) {
+      nameError = "Name is required";
+    }
 
-  //   setErrors({ name: nameError, date: dateError, time: timeError });
-  // }, [name, date, time]);
+    // TODO: Check null Date
+    if (startDate === null) {
+      startDateError = "Start Date is required";
+    }
+    if (endDate === null) {
+      endDateError = "End Date is required";
+    }
 
-  const [itinerary, setItinerary] = useLocalStorage(
-    "dailyItinerary",
-    mockTravel_Itinerary1,
-  );
+    setErrors({ name: nameError, startDate: startDateError, endDate: endDateError });
+  }, [name, startDate, endDate]);
 
   // NOTE: Reconstructing because the timezone in the mock data is not the same as the timezone in the browser.
   // TODO: When prompting gpt, provide user's timezone such that GPT returns event times in the user's timezone.
@@ -231,11 +205,13 @@ export function ItineraryRight() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker 
             label="Start Date"
+            onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
             />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker 
             label="End Date"
+            onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
             />
         </LocalizationProvider>
           <TextField
