@@ -4,16 +4,13 @@ import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import MessageList from "./MessageList";
 import MessageCard from "./MessageCard";
-import { Form, FormControl } from "react-bootstrap";
 import axios from "axios";
 
 import { json } from "react-router-dom";
 import { useLocalStorage } from "../LocalStorageGeneric";
 
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
 
-import { mockTravel_Itinerary1 } from "../../MockItinerary";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
@@ -45,50 +42,27 @@ export default function Chatbox({travelItinerary, setItinerary}) {
   const [chatHistory, setChatHistory, updateValueInLocalStorage] =
     useLocalStorage("chatHistory", []);
 
-  const [itinerary, setItinerary, updateValueInLocalStorage1] = useLocalStorage("travelItinerary", mockTravel_Itinerary1);
-
-
+  
   /**
    * Method call when the button is clicked
    * TODO: need to add openai api routing here.
    * TODO: create new message and add it to the message list
    */
-  const handleButtonClick = (event) => {
-     const conversation =[]
-
-  for (let i = 1; i < messages.length; i+=2) {
-      
-      const tempConversation = {prompt: messages[i].text, reply: messages[i+1].text}
-      conversation.push(tempConversation)
-  }
-
+  const handleButtonClick = async (event) => {
+     
     if (inputValue.length > 0) {
-      addMessage(inputValue);
-      const requestMessage ={
-        prompt: inputValue,
-        travelItinerary: travelItinerary,
-        chatHistory: conversation
-
-      }
-      axios.post('http://localhost:4000/api/chatMessage', requestMessage).then((response) => {
-        console.log(response)
-        if (response.data.travelItinerary){
-          const jsonTravelItinerary = JSON.parse(response.data.travelItinerary)
-          console.log(jsonTravelItinerary)
-          setItinerary(jsonTravelItinerary)
-        }
-        //to do update itinerary page 
-        const updatedMessages = [
+       const chatResponse = await addMessage(inputValue)
+       console.log(chatResponse)
+      const updatedMessages = [
           ...messages,
           { text: inputValue, sender: "user" },
 
-          { text: response.data.chatResponse, sender: "server" },
+          { text: chatResponse, sender: "server" },
         ];
         setMessages(updatedMessages);
 
         // Clear the input field
         setInputValue("");
-      })
 
       console.log(messages)
 
@@ -127,26 +101,28 @@ export default function Chatbox({travelItinerary, setItinerary}) {
       const response = await axios.post('http://localhost:4000/api/chatMessage', 
         {
           prompt: newMessage,
-          travelItinerary: itinerary,
+          travelItinerary: travelItinerary,
           chatHistory: chatHistory,
         }
       )
+      
       console.log("message is"+response.data.message);
       const reply = response.data.message.chatResponse ? response.data.message.chatResponse : response.data.message;
       console.log("chatresponse is"+response.data.message.chatResponse);
       console.log("startDate is"+response.data.message.startDate);
       console.log("endate is"+response.data.message.endDate);
       console.log("schedule is"+response.data.message.schedule);
-      const newTravelItinerary = {
-        startDate: response.data.message.startDate ? response.data.message.startDate : "",
-        endDate: response.data.message.endDate ? response.data.message.endDate : "",
-        schedule: response.data.message.schedule ? response.data.message.schedule : [],
-      }
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
         { prompt: newMessage, reply: reply },
       ]);
-      setItinerary(() => [newTravelItinerary]);
+
+      if (response.data.travelItinerary){
+          const jsonVal= JSON.parse(JSON.stringify(response.data.travelItinerary))
+          setItinerary(jsonVal)
+        }
+
+        return response.data.chatResponse
     } catch (error) {
       console.error('API call error:',error);
     }
@@ -157,9 +133,9 @@ export default function Chatbox({travelItinerary, setItinerary}) {
     updateValueInLocalStorage(chatHistory);
   }, [chatHistory, updateValueInLocalStorage]);
 
-  useEffect(() => {
-    updateValueInLocalStorage1(itinerary);
-  }, [itinerary, updateValueInLocalStorage1]);
+  // useEffect(() => {
+  //   updateValueInLocalStorage1(itinerary);
+  // }, [itinerary, updateValueInLocalStorage1]);
 
   /**
    * jsx render
