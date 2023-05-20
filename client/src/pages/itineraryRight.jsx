@@ -122,11 +122,11 @@ export function ItineraryRight() {
   const reformItinerary = (itinerary) => {
     // Flatten all events
     const allEvents = itinerary.schedule.flatMap(
-      (dailyItinerary) => dailyItinerary.activities
+      (dailyItinerary) => dailyItinerary.activities,
     );
 
     // Sort all events by startTime
-    allEvents.sort((a, b) => a.startTime - b.startTime);
+    allEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
 
     // Create a map of dates to events
     const dateToEventsMap = allEvents.reduce((map, event) => {
@@ -144,7 +144,7 @@ export function ItineraryRight() {
         day: index + 1,
         date: new Date(date),
         activities,
-      })
+      }),
     );
 
     // Return a new itinerary object
