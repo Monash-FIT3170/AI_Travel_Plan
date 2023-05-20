@@ -26,7 +26,7 @@ const MyAppBar = () => {
           to="/chat"
           style={{ color: "white", marginRight: "88px" }}
         >
-          Chat
+          Travel Planner
         </Button>
         <Button
           color="inherit"
@@ -42,7 +42,7 @@ const MyAppBar = () => {
           to="/example"
           style={{ color: "white", marginRight: "88px" }}
         >
-          Example
+          Help
         </Button>
       </Toolbar>
     </AppBar>
