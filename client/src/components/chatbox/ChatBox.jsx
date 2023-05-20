@@ -4,32 +4,66 @@ import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import MessageList from "./MessageList";
 import MessageCard from "./MessageCard";
+import axios from "axios";
+import { useLocalStorage } from "../LocalStorageGeneric";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
  */
-export default function ChatBox() {
+export default function Chatbox({travelItinerary, setItinerary, updateTravelItineraryInLocalStorage}) {
   /**
    * State - inputValue: the value in the text box
    */
   const [inputValue, setInputValue] = useState("");
 
+
+  /**
+   * State - outboxValue: the output value from the server
+   */
+  const [outboxValue, setOutboxValue] = useState("");
+
   /**
    * State - messges: list of messages in this chat
    */
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    {
+      text: "Hello, I am your AI Travel Planner. How can I help you today?",
+      sender: "server",
+    },
+  ]);
+ 
 
+  const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
+    useLocalStorage("chatHistory", []);
+  
   /**
    * Method call when the button is clicked
    * TODO: need to add openai api routing here.
    * TODO: create new message and add it to the message list
    */
-  const handleButtonClick = () => {
-    addMessage(inputValue);
-    setInputValue("");
+  const handleButtonClick = (event) => {
+     
+    if (inputValue.length > 0) {
+       addMessage(inputValue)
+
+        const updatedMessages = [
+          ...messages,
+          { text: inputValue, sender: "user" },
+        ];
+        setMessages(updatedMessages);
+
+        // Clear the input field
+        setInputValue("");
+      
+      event.preventDefault();
+
+      // Placeholder message while fetching
+      
+    }
   };
 
   /**
@@ -44,52 +78,118 @@ export default function ChatBox() {
    * adds a new message to the list of messages
    * @param {String} newMessage new message to add to the message list
    */
-  const addMessage = (newMessage) => {
-    setMessages([...messages, newMessage]);
-    //just for testing vv
-    //TODO: the messages printed are delayed by 1 message. Why is that?
-    console.log("\nhere is the array contents:");
-    for (let i = 0; i < messages.length; i++) {
-      console.log(messages[i]);
+
+  const addMessage = async (newMessage) => {
+    try {
+      setOutboxValue("Loading...");
+      // const response = await axios.get('http://localhost:4000/api/chatMessage',
+      // )
+      const response = await axios.post('http://localhost:4000/api/chatMessage',
+        {
+          prompt: newMessage,
+          travelItinerary: travelItinerary,
+          chatHistory: chatHistory,
+        }
+      )
+      console.log(response.data)
+      const reply = response.data.chatResponse ? response.data.chatResponse : "Sorry, I don't understand that.";
+      setChatHistory((prevChatHistory) => [
+        ...prevChatHistory,
+        { prompt: newMessage, reply: reply },
+      ]);
+
+      if (response.data.travelItinerary){
+          const jsonVal= JSON.parse(JSON.stringify(response.data.travelItinerary))
+          console.log(jsonVal)
+          setItinerary(jsonVal)
+        }
+
+        const updatedMessages = [
+          ...messages,
+        { text: inputValue, sender: "user" },
+          { text: response.data.chatResponse, sender: "server" },
+        ];
+        setMessages(updatedMessages);
+
+    } catch (error) {
+      console.error('API call error:',error);
+       const updatedMessages = [
+          ...messages,
+        { text: inputValue, sender: "user" },
+          { text: "please try again", sender: "server" },
+        ];
+        setMessages(updatedMessages);
+
     }
-    console.log("end of contents\n");
+    
   };
+
+  // useEffect(() => {
+  //   updateChatMessageInLocalStorage(chatHistory);
+  // }, [chatHistory, updateChatMessageInLocalStorage]);
+
+  // useEffect(() => {
+  //   updateTravelItineraryInLocalStorage(travelItinerary);
+  // }, [travelItinerary, updateTravelItineraryInLocalStorage]);
 
   /**
    * jsx render
    */
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: "50px",
-        left: "10px",
-        right: "150px",
-      }}
-    >
-      <Box display="flex" alignItems="center">
-        <MessageList />
-      </Box>
-      <Box display="flex" alignItems="center">
-        <TextField
-          
-          multiline
-          onChange={(value) => handleInputEnter(value)}
-          value={inputValue}
-          maxRows="4"
-          minRows="1"
-          label="Message"
-          variant="outlined"
-          id="fullWidth"
-          InputProps={{
-            endAdornment: (
-              <IconButton onClick={handleButtonClick} edge="end">
-                <SendIcon />
-              </IconButton>
-            ),
-          }}
-        />
-      </Box>
+    // Flexbox with 73% fixed height so messages don't overlap on the input text field
+    <div style={{ display: "flex", height: "73vh" }}>
+      {/* Scrolling div for messages*/}
+      <div style={{ flex: "1", overflowY: "auto", overflowX: "none", paddingTop: "20px" }}>
+        {/* Display each Message */}
+        {messages.map((message, index) => (
+          <div key={index} style={{ display: "flex" }}>
+            <div
+              style={{
+                marginBottom: "10px",
+                marginLeft: "15px",
+                marginRight: "15px",
+                width: "98%",
+              }}
+            >
+              <MessageCard message={message.text} sender={message.sender} />
+            </div>
+          </div>
+        ))}
+      </div>
+      {/* Input message text field */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "0",
+          left: "0",
+          width: "100%",
+          padding: "15px",
+        }}
+      >
+        <Box display="flex" alignItems="center">
+          <TextField
+            placeholder="Type in your message"
+            value={inputValue}
+            onChange={handleInputEnter}
+            multiline
+            maxRows="4"
+            minRows="1"
+            style={{ width: "50%", resize: "none" }}
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <IconButton
+                  onClick={handleButtonClick}
+                  edge="end"
+                  style={{ color: "white", backgroundColor: "black" }}
+                >
+                  <SendIcon />
+                </IconButton>
+              ),
+            }}
+          />
+        </Box>
+      </div>
     </div>
   );
 }

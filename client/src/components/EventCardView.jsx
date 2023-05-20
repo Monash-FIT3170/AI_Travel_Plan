@@ -57,7 +57,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
       ...itinerary,
       schedule: itinerary.schedule.map((day) => ({
         ...day,
-        events: day.events.filter((e) => e.name !== event.name),
+        activities: day.activities.filter((e) => e.name !== event.name),
       })),
     };
 
@@ -107,7 +107,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
 
     // Flatten all events and replace the old event with the new event
     const allEvents = itinerary.schedule.flatMap((day) => {
-      return day.events.map((e) => (e.name === event.name ? newEvent : e));
+      return day.activities.map((e) => (e.name === event.name ? newEvent : e));
     });
 
     // Sort all events by startTime
@@ -125,10 +125,10 @@ export function EventCardView({ event, itinerary, setItinerary }) {
 
     // Reconstruct the schedule array
     const newSchedule = Object.entries(dateToEventsMap).map(
-      ([date, events], index) => ({
+      ([date, activities], index) => ({
         day: index + 1,
         date: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-        events,
+        activities,
       }),
     );
 
