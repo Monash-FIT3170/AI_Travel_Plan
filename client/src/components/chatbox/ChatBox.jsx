@@ -4,25 +4,24 @@ import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import MessageList from "./MessageList";
 import MessageCard from "./MessageCard";
-import { Form, FormControl } from "react-bootstrap";
-
+import axios from "axios";
 import { useLocalStorage } from "../LocalStorageGeneric";
-
+import dayjs from "dayjs";
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
-
-import { mockTravel_Itinerary1 } from "../../MockItinerary";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
  */
-export default function Chatbox() {
+export default function Chatbox({
+  travelItinerary,
+  setItinerary,
+  updateTravelItineraryInLocalStorage,
+}) {
   /**
    * State - inputValue: the value in the text box
    */
   const [inputValue, setInputValue] = useState("");
-
 
   /**
    * State - outboxValue: the output value from the server
@@ -39,11 +38,8 @@ export default function Chatbox() {
     },
   ]);
 
-  const [chatHistory, setChatHistory, updateValueInLocalStorage] =
+  const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
     useLocalStorage("chatHistory", []);
-
-  const [itinerary, setItinerary, updateValueInLocalStorage1] = useLocalStorage("travelItinerary", mockTravel_Itinerary1);
-
 
   /**
    * Method call when the button is clicked
@@ -53,26 +49,19 @@ export default function Chatbox() {
   const handleButtonClick = (event) => {
     if (inputValue.length > 0) {
       addMessage(inputValue);
+
+      const updatedMessages = [
+        ...messages,
+        { text: inputValue, sender: "user" },
+      ];
+      setMessages(updatedMessages);
+
+      // Clear the input field
+      setInputValue("");
+
       event.preventDefault();
 
       // Placeholder message while fetching
-      setOutboxValue("Loading...");
-
-      // Simulating API call, replace with actual server's response
-      setTimeout(() => {
-        const response = "testing";
-
-        // Add user's input message and server's response to the messages state
-        const updatedMessages = [
-          ...messages,
-          { text: inputValue, sender: "user" },
-          { text: response, sender: "server" },
-        ];
-        setMessages(updatedMessages);
-
-        // Clear the input field
-        setInputValue("");
-      });
     }
   };
 
@@ -84,6 +73,56 @@ export default function Chatbox() {
     setInputValue(event.target.value);
   };
 
+  const reformItinerary = (itinerary) => {
+    // Flatten all events
+    const allEvents = itinerary.schedule.flatMap(
+      (dailyItinerary) => dailyItinerary.activities,
+    );
+
+    // Sort all events by startTime
+    allEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+
+    // Create a map of dates to events
+    const dateToEventsMap = allEvents.reduce((map, event) => {
+      const eventDate = dayjs(event.startTime).format("YYYY-MM-DD");
+      if (!map[eventDate]) {
+        map[eventDate] = [];
+      }
+      map[eventDate].push(event);
+      return map;
+    }, {});
+
+    // Reconstruct the schedule array
+    const newSchedule = Object.entries(dateToEventsMap).map(
+      ([date, activities], index) => ({
+        day: index + 1,
+        date: new Date(date),
+        activities,
+      }),
+    );
+
+    // Return a new itinerary object
+    return { ...itinerary, schedule: newSchedule };
+  };
+
+  const refactorItinerary = (itinerary) => {
+    const format = "YYYY-MM-DDTHH:mm:ss.SSSZ";
+
+    if (itinerary.schedule.length > 0) {
+      const newItinerary = reformItinerary(itinerary);
+
+      newItinerary.schedule.forEach((dailyItinerary) => {
+        console.log(dailyItinerary);
+        dailyItinerary.date = dayjs(dailyItinerary.date).format(format);
+        dailyItinerary.activities.forEach((event) => {
+          event.startTime = dayjs(event.startTime).format(format);
+          event.endTime = dayjs(event.endTime).format(format);
+        });
+      });
+
+      setItinerary(newItinerary);
+    }
+  };
   /**
    * adds a new message to the list of messages
    * @param {String} newMessage new message to add to the message list
@@ -91,42 +130,58 @@ export default function Chatbox() {
 
   const addMessage = async (newMessage) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/chatMessage', 
+      setOutboxValue("Loading...");
+      // const response = await axios.get('http://localhost:4000/api/chatMessage',
+      // )
+      const response = await axios.get(
+        "http://localhost:4000/api/chatMessage",
         {
           prompt: newMessage,
-          travelItinerary: itinerary,
+          travelItinerary: travelItinerary,
           chatHistory: chatHistory,
-        }
-      )
-      console.log("message is"+response.data.message);
-      const reply = response.data.message.chatResponse ? response.data.message.chatResponse : response.data.message;
-      console.log("chatresponse is"+response.data.message.chatResponse);
-      console.log("startDate is"+response.data.message.startDate);
-      console.log("endate is"+response.data.message.endDate);
-      console.log("schedule is"+response.data.message.schedule);
-      const newTravelItinerary = {
-        startDate: response.data.message.startDate ? response.data.message.startDate : "",
-        endDate: response.data.message.endDate ? response.data.message.endDate : "",
-        schedule: response.data.message.schedule ? response.data.message.schedule : [],
-      }
+        },
+      );
+      console.log(response.data);
+      const reply = response.data.chatResponse
+        ? response.data.chatResponse
+        : "Sorry, I don't understand that.";
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
         { prompt: newMessage, reply: reply },
       ]);
-      setItinerary(() => [newTravelItinerary]);
+
+      if (response.data.travelItinerary) {
+        const jsonVal = JSON.parse(
+          JSON.stringify(response.data.travelItinerary),
+        );
+        console.log(jsonVal);
+        refactorItinerary(jsonVal);
+      }
+
+      const updatedMessages = [
+        ...messages,
+        { text: inputValue, sender: "user" },
+        { text: response.data.chatResponse, sender: "server" },
+      ];
+      setMessages(updatedMessages);
     } catch (error) {
-      console.error('API call error:',error);
+      console.error("API call error:", error);
+      const updatedMessages = [
+        ...messages,
+        { text: inputValue, sender: "user" },
+        { text: "please try again", sender: "server" },
+      ];
+      setMessages(updatedMessages);
     }
-    
   };
 
-  useEffect(() => {
-    updateValueInLocalStorage(chatHistory);
-  }, [chatHistory, updateValueInLocalStorage]);
+  // useEffect(() => {
+  //   updateChatMessageInLocalStorage(chatHistory);
+  // }, [chatHistory, updateChatMessageInLocalStorage]);
 
-  useEffect(() => {
-    updateValueInLocalStorage1(itinerary);
-  }, [itinerary, updateValueInLocalStorage1]);
+  // useEffect(() => {
+  //   updateTravelItineraryInLocalStorage(travelItinerary);
+  // }, [travelItinerary, updateTravelItineraryInLocalStorage]);
 
   /**
    * jsx render
@@ -135,7 +190,14 @@ export default function Chatbox() {
     // Flexbox with 73% fixed height so messages don't overlap on the input text field
     <div style={{ display: "flex", height: "73vh" }}>
       {/* Scrolling div for messages*/}
-      <div style={{ flex: "1", overflowY: "auto", overflowX: "none", paddingTop: "20px" }}>
+      <div
+        style={{
+          flex: "1",
+          overflowY: "auto",
+          overflowX: "none",
+          paddingTop: "20px",
+        }}
+      >
         {/* Display each Message */}
         {messages.map((message, index) => (
           <div key={index} style={{ display: "flex" }}>
