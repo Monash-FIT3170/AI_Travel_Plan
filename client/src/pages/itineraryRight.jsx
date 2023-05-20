@@ -12,11 +12,6 @@ import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import PlaceIcon from "@mui/icons-material/Place";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -150,27 +145,6 @@ export function ItineraryRight() {
     // Return a new itinerary object
     return { ...itinerary, schedule: newSchedule };
   };
-
-  // Currently being used to change the time in the mock data to the user's timezone.
-  // NOTE: Not good practice to directly alter the state of itinerary.
-  useEffect(() => {
-    const format = "YYYY-MM-DDTHH:mm:ss.SSSZ";
-
-    if (itinerary.schedule.length > 0) {
-      const newItinerary = reformItinerary(itinerary);
-
-      newItinerary.schedule.forEach((dailyItinerary) => {
-        console.log(dailyItinerary);
-        dailyItinerary.date = dayjs(dailyItinerary.date).format(format);
-        dailyItinerary.activities.forEach((event) => {
-          event.startTime = dayjs(event.startTime).format(format);
-          event.endTime = dayjs(event.endTime).format(format);
-        });
-      });
-
-      setItinerary(newItinerary);
-    }
-  }, []);
 
   return (
     <div style={{ position: "relative" }}>
