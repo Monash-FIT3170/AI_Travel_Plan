@@ -13,7 +13,9 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
   const formattedMonth = new Date(dailyItinerary.date).toLocaleString("default", { month: "long" });
   const formattedDate = new Date(dailyItinerary.date).getUTCDate();
   const formattedYear = new Date(dailyItinerary.date).getUTCFullYear();
-  const formattedStartTime = formatTimeToAMPM(new Date(dailyItinerary.events[0].startTime));
+  console.log(dailyItinerary)
+
+  const formattedStartTime = formatTimeToAMPM(new Date(dailyItinerary.activities[0].startTime));
 
   return (
     <TimelineItem>
