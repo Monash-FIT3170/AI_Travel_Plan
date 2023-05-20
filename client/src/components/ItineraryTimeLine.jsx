@@ -13,7 +13,9 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
   const formattedMonth = new Date(dailyItinerary.date).toLocaleString("default", { month: "long" });
   const formattedDate = new Date(dailyItinerary.date).getUTCDate();
   const formattedYear = new Date(dailyItinerary.date).getUTCFullYear();
-  const formattedStartTime = formatTimeToAMPM(new Date(dailyItinerary.events[0].startTime));
+  console.log(dailyItinerary)
+
+  const formattedStartTime = formatTimeToAMPM(new Date(dailyItinerary.activities[0].startTime));
 
   return (
     <TimelineItem>
@@ -26,7 +28,7 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
         <h5>
         Day {dailyItinerary.day} {formattedMonth} {formattedDate}, {formattedYear} - {formattedStartTime}
         </h5>
-        {dailyItinerary.events.map((event) => (
+        {dailyItinerary.activities.map((event) => (
           <EventCardView
             // Using a name identifier for the key so react doesn't re-use the same component
             key={event.name}
