@@ -1,0 +1,22 @@
+.help-menu {
+  max-width: 700px;
+  margin: 0 auto;
+  .MuiAccordionSummary-root {
+    background-color: #f0f0f0;
+  }
+  .accordion-summary {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 12px 16px; /* Add padding */
+    border-radius: 4px; /* Add border-radius */
+  }
+  .accordion-summary:hover {
+    background-color: #e0e0e0; /* Change the background color on hover for a subtle effect */
+    cursor: pointer; /* Change the cursor to indicate interactivity */
+    transform: translateY(
+      -1px
+    ); /* Add a slight vertical translation on hover */
+  }
+  .MuiTypography-h6 {
+    font-weight: bold; /* Make the Accordion title bold for better visibility */
+  }
+}
