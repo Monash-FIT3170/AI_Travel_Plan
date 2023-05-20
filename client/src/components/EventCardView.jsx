@@ -160,7 +160,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
       </Card>
 
       <Dialog open={deleteOpen} onClose={handleDeleteClose}>
-        <DialogTitle>This action cannot be undon</DialogTitle>
+        <DialogTitle>This action cannot be undone</DialogTitle>
         <DialogContent>
           Deleting this item will remove it from the itinerary and cannot be
           undone.
