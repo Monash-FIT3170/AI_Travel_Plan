@@ -1,12 +1,10 @@
 import React from "react";
-import ExampleBox from "../components/examples/ExampleBox";
 import Background from "../components/Background";
 import BackgroundImage from "../components/BackgroundImage";
 import Typography from "@mui/material/Typography";
-// import Grid from "@mui/material/Grid";
 import HelpMenu from "../components/help/HelpMenu";
 
-export default function ExamplePage() {
+export default function HelpPage() {
   return (
     <>
       <BackgroundImage />

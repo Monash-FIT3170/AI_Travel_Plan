@@ -39,7 +39,7 @@ const MyAppBar = () => {
         <Button
           color="inherit"
           component={Link}
-          to="/example"
+          to="/help"
           style={{ color: "white", marginRight: "88px" }}
         >
           Help
