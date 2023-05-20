@@ -12,10 +12,7 @@ import React, { useState } from "react";
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
  */
-export default function Chatbox({
-  travelItinerary,
-  setItinerary,
-}) {
+export default function Chatbox({ travelItinerary, setItinerary }) {
   /**
    * State - inputValue: the value in the text box
    */
@@ -31,8 +28,7 @@ export default function Chatbox({
     },
   ]);
 
-  const [chatHistory, setChatHistory] =
-    useLocalStorage("chatHistory", []);
+  const [chatHistory, setChatHistory] = useLocalStorage("chatHistory", []);
 
   /**
    * Method call when the button is clicked
@@ -69,7 +65,7 @@ export default function Chatbox({
   const reformItinerary = (itinerary) => {
     // Flatten all events
     const allEvents = itinerary.schedule.flatMap(
-      (dailyItinerary) => dailyItinerary.activities,
+      (dailyItinerary) => dailyItinerary.activities
     );
 
     // Sort all events by startTime
@@ -91,7 +87,7 @@ export default function Chatbox({
         day: index + 1,
         date: new Date(date),
         activities,
-      }),
+      })
     );
 
     // Return a new itinerary object
@@ -131,7 +127,12 @@ export default function Chatbox({
           prompt: newMessage,
           travelItinerary: travelItinerary,
           chatHistory: chatHistory,
-        },
+          additionalInfo: {
+            userTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            currentTime: dayjs().format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+            userLanguage: "english",
+          },
+        }
       );
       console.log(response.data);
       const reply = response.data.chatResponse
@@ -144,7 +145,7 @@ export default function Chatbox({
 
       if (response.data.travelItinerary) {
         const jsonVal = JSON.parse(
-          JSON.stringify(response.data.travelItinerary),
+          JSON.stringify(response.data.travelItinerary)
         );
         console.log(jsonVal);
         refactorItinerary(jsonVal);
