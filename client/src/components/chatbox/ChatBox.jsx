@@ -2,12 +2,11 @@ import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
-import MessageList from "./MessageList";
 import MessageCard from "./MessageCard";
 import axios from "axios";
 import { useLocalStorage } from "../LocalStorageGeneric";
 import dayjs from "dayjs";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
@@ -16,17 +15,11 @@ import React, { useState, useEffect } from "react";
 export default function Chatbox({
   travelItinerary,
   setItinerary,
-  updateTravelItineraryInLocalStorage,
 }) {
   /**
    * State - inputValue: the value in the text box
    */
   const [inputValue, setInputValue] = useState("");
-
-  /**
-   * State - outboxValue: the output value from the server
-   */
-  const [outboxValue, setOutboxValue] = useState("");
 
   /**
    * State - messges: list of messages in this chat
@@ -38,7 +31,7 @@ export default function Chatbox({
     },
   ]);
 
-  const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
+  const [chatHistory, setChatHistory] =
     useLocalStorage("chatHistory", []);
 
   /**
@@ -130,10 +123,9 @@ export default function Chatbox({
 
   const addMessage = async (newMessage) => {
     try {
-      setOutboxValue("Loading...");
       // const response = await axios.get('http://localhost:4000/api/chatMessage',
       // )
-      const response = await axios.get(
+      const response = await axios.post(
         "http://localhost:4000/api/chatMessage",
         {
           prompt: newMessage,
@@ -174,14 +166,6 @@ export default function Chatbox({
       setMessages(updatedMessages);
     }
   };
-
-  // useEffect(() => {
-  //   updateChatMessageInLocalStorage(chatHistory);
-  // }, [chatHistory, updateChatMessageInLocalStorage]);
-
-  // useEffect(() => {
-  //   updateTravelItineraryInLocalStorage(travelItinerary);
-  // }, [travelItinerary, updateTravelItineraryInLocalStorage]);
 
   /**
    * jsx render

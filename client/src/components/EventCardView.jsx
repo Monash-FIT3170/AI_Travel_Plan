@@ -14,7 +14,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -32,7 +31,6 @@ export function EventCardView({ event, itinerary, setItinerary }) {
   const [date, setDate] = useState(dayjs(event.startTime).toDate());
   const [time, setTime] = useState(dayjs(event.startTime).toDate());
   const [errors, setErrors] = useState({ name: "", date: "", time: "" });
-  let specificTimezone = "America/New_York";
 
   const handleClickOpen = () => {
     setOpen(true);

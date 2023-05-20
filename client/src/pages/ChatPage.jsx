@@ -105,7 +105,7 @@ export function ChatPage() {
     });
   }, [name, startDate, endDate]);
 
-  const [itinerary, setItinerary, updateTravelItineraryLocalStorage] =
+  const [itinerary, setItinerary] =
     useLocalStorage("travelItinerary", {
       startDate: null,
       endDate: null,
@@ -155,9 +155,6 @@ export function ChatPage() {
             <ChatBox
               travelItinerary={itinerary}
               setItinerary={setItinerary}
-              updateTravelItineraryInLocalStorage={
-                updateTravelItineraryLocalStorage
-              }
             ></ChatBox>
           </Grid>
           <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>

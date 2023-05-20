@@ -1,9 +1,7 @@
 import { Request, Response } from 'express'
 import { sendOpenAIChat } from '../services/OpenAIChat.service'
-import { TravelItinerary } from '../models/travelItinerary.model'
 import { mockTravelItinerary1 } from '../MockItinerary'
 import { ChatResponse } from '../models/chatResponse.model'
-import { parse } from 'path'
 
 //for mock data testing only
 const getMockResponse = (req: Request, res: Response) => (res.status(200).json({ travelItinerary: mockTravelItinerary1, chatResponse: "mock response" }))
