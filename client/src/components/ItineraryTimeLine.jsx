@@ -10,12 +10,17 @@ import { EventCardView } from "./EventCardView";
 import "./ItineraryTimeLine.css";
 
 function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
-  const formattedMonth = new Date(dailyItinerary.date).toLocaleString("default", { month: "long" });
-  const formattedDate = new Date(dailyItinerary.date).getUTCDate();
-  const formattedYear = new Date(dailyItinerary.date).getUTCFullYear();
-  console.log(dailyItinerary)
+  const formattedMonth = new Date(dailyItinerary.date).toLocaleString(
+    "default",
+    { month: "long" },
+  );
+  const formattedDate = new Date(dailyItinerary.date).getDate();
+  const formattedYear = new Date(dailyItinerary.date).getFullYear();
+  console.log(dailyItinerary);
 
-  const formattedStartTime = formatTimeToAMPM(new Date(dailyItinerary.activities[0].startTime));
+  const formattedStartTime = formatTimeToAMPM(
+    new Date(dailyItinerary.activities[0].startTime),
+  );
 
   return (
     <TimelineItem>
@@ -26,7 +31,8 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
       </TimelineSeparator>
       <TimelineContent>
         <h5>
-        Day {dailyItinerary.day} {formattedMonth} {formattedDate}, {formattedYear} - {formattedStartTime}
+          Day {dailyItinerary.day} {formattedMonth} {formattedDate},{" "}
+          {formattedYear} - {formattedStartTime}
         </h5>
         {dailyItinerary.activities.map((event) => (
           <EventCardView
@@ -54,10 +60,10 @@ export function ItineraryTimeLine({ travelItinerary, setItinerary }) {
 
 // Function to format time into AM or PM based on Given DateTime object
 function formatTimeToAMPM(time) {
-  const hours = time.getUTCHours();
-  const minutes = time.getUTCMinutes();
-  const ampm = hours >= 12 ? 'pm' : 'am';
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+  const ampm = hours >= 12 ? "pm" : "am";
   const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
-  const formattedMinutes = minutes.toString().padStart(2, '0');
+  const formattedMinutes = minutes.toString().padStart(2, "0");
   return `${formattedHours}:${formattedMinutes}${ampm}`;
 }
