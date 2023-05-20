@@ -20,6 +20,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { motion } from "framer-motion";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -105,19 +106,18 @@ export function ChatPage() {
     });
   }, [name, startDate, endDate]);
 
-  const [itinerary, setItinerary] =
-    useLocalStorage("travelItinerary", {
-      startDate: null,
-      endDate: null,
-      schedule: [],
-    });
+  const [itinerary, setItinerary] = useLocalStorage("travelItinerary", {
+    startDate: null,
+    endDate: null,
+    schedule: [],
+  });
 
   // NOTE: Reconstructing because the timezone in the mock data is not the same as the timezone in the browser.
   // TODO: When prompting gpt, provide user's timezone such that GPT returns event times in the user's timezone.
   const reformItinerary = (itinerary) => {
     // Flatten all events
     const allEvents = itinerary.schedule.flatMap(
-      (dailyItinerary) => dailyItinerary.activities
+      (dailyItinerary) => dailyItinerary.activities,
     );
 
     // Sort all events by startTime
@@ -139,7 +139,7 @@ export function ChatPage() {
         day: index + 1,
         date: new Date(date),
         activities,
-      })
+      }),
     );
 
     // Return a new itinerary object
@@ -147,101 +147,108 @@ export function ChatPage() {
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      <BackgroundImage />
-      <Background>
-        <Grid container>
-          <Grid item xs={6}>
-            <ChatBox
-              travelItinerary={itinerary}
-              setItinerary={setItinerary}
-            ></ChatBox>
+    <motion.div
+      initial={{ y: "100vh" }}
+      animate={{ y: 0 }}
+      exit={{ y: "100vh" }}
+      transition={{ duration: 0.5 }}
+    >
+      <div style={{ position: "relative" }}>
+        <BackgroundImage />
+        <Background>
+          <Grid container>
+            <Grid item xs={6}>
+              <ChatBox
+                travelItinerary={itinerary}
+                setItinerary={setItinerary}
+              ></ChatBox>
+            </Grid>
+            <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
+              <ItineraryTimeLine
+                travelItinerary={itinerary}
+                setItinerary={setItinerary}
+              />
+              <div style={{ position: "fixed", bottom: "20px", right: "50px" }}>
+                <Button
+                  variant="contained"
+                  endIcon={<AddIcon />}
+                  onClick={handleClickOpen}
+                >
+                  ADD NEW LOCATION
+                </Button>
+              </div>
+            </Grid>
           </Grid>
-          <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
-            <ItineraryTimeLine
-              travelItinerary={itinerary}
-              setItinerary={setItinerary}
-            />
-            <div style={{ position: "fixed", bottom: "20px", right: "50px" }}>
-              <Button
-                variant="contained"
-                endIcon={<AddIcon />}
-                onClick={handleClickOpen}
-              >
-                ADD NEW LOCATION
-              </Button>
-            </div>
-          </Grid>
-        </Grid>
-      </Background>
+        </Background>
 
-      <Box display="flex" justifyContent="stretch" width="100%">
-        <Dialog open={open} onClose={handleClose} maxWidth="xs">
-          <DialogTitle>Add New Itinerary Item</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Name"
-              type="text"
-              fullWidth
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              error={Boolean(errors.name)}
-              helperText={errors.name}
-            />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                label="Start Date"
-                onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
+        <Box display="flex" justifyContent="stretch" width="100%">
+          <Dialog open={open} onClose={handleClose} maxWidth="xs">
+            <DialogTitle>Add New Itinerary Item</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Name"
+                type="text"
+                fullWidth
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                error={Boolean(errors.name)}
+                helperText={errors.name}
               />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                label="End Date"
-                onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  label="Start Date"
+                  onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
+                />
+              </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  label="End Date"
+                  onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
+                />
+              </LocalizationProvider>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Location"
+                type="text"
+                fullWidth
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                // error={Boolean(errors.name)}
+                // helperText={errors.name}
               />
-            </LocalizationProvider>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Location"
-              type="text"
-              fullWidth
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              // error={Boolean(errors.name)}
-              // helperText={errors.name}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Description"
-              type="text"
-              fullWidth
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              // error={Boolean(errors.name)}
-              // helperText={errors.name}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Cost"
-              type="number"
-              fullWidth
-              value={cost}
-              onChange={(e) => setCost(e.target.value)}
-              // error={Boolean(errors.name)}
-              // helperText={errors.name}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-    </div>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Description"
+                type="text"
+                fullWidth
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                // error={Boolean(errors.name)}
+                // helperText={errors.name}
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Cost"
+                type="number"
+                fullWidth
+                value={cost}
+                onChange={(e) => setCost(e.target.value)}
+                // error={Boolean(errors.name)}
+                // helperText={errors.name}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleSave}>Save</Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
+      </div>
+    </motion.div>
   );
 }
