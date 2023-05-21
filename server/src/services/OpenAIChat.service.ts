@@ -14,14 +14,14 @@ const openai = new OpenAIApi(configuration);
  * @param history array of ChatHistoryItem that define the past prompts and responses to requests.
  * @returns new response to the message argument based on context provided in history argument
  */
-export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: ChatMessage) {
+export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory, additionalInfo }: ChatMessage) {
     //array of messages to be sent to chatgpt
     const messages: ChatCompletionRequestMessage[] = []
 
     // define chat-bot's role
     const systemMessage: ChatCompletionRequestMessage = {
         role: "system",
-        content: "You are a travel agent",
+        content: "You are a friendly and multilingual travel agent. You are helping the user build an itinerary.",
     }
     messages.push(systemMessage)
 
@@ -32,26 +32,43 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
     messages.push(userMessage)
     const contextMessage: ChatCompletionRequestMessage = {
         role: "assistant",
-        content: chatHistory.reduce((acc, cur) => acc + `prompt: ${cur.prompt} reply: ${cur.reply}}`, "")
+        content: "chat history" + chatHistory.reduce((acc, cur) => acc + `prompt: ${cur.prompt} reply: ${cur.reply}}`, "")
     }
     messages.push(contextMessage)
 
     const itineraryContextMessage: ChatCompletionRequestMessage = {
         role: "assistant",
-        content: JSON.stringify(travelItinerary)
+        content: "current itinerary" + JSON.stringify(travelItinerary)
+    }
+    const addtionalInfoMessage: ChatCompletionRequestMessage = {
+        role: "assistant",
+        content: "additional info" + JSON.stringify(additionalInfo)
     }
     const returnMessage: ChatCompletionRequestMessage = {
         role: "system",
-        content: "help the user build an itinerary and return the updated itinerary, the Travel itinerary should be in the format {startDate: date, endDate: date, schedule: [dailtItinerary]}. " +
-            "Daily itinerary should be in the format {day: int, date: date, activities: [activity]}. Activity should be in the format {name: str, startTime: date, endTime: date, location: str,     description: str, cost: number]}" + "provide a descriptive description for the activity" +
+        content: "help the user build an itinerary and return the updated itinerary. The Travel itinerary  strictly follow the format {startDate: date, endDate: date, schedule: [dailtItinerary]}. " +
+            "Daily itinerary strictly follow the format {day: int, date: date, activities: [activity]}. Activity strictly follow the format {name: str, startTime: date, endTime: date, location: str, description: str, cost: number]}" + "provide a descriptive description for the activity" +
+            "the date should follow the usertimezone specified in the additionalinfo" + "use the user location specified in the additionalinfo for the holiday calendar" +
             "the current itinerary is passed in as a json oject and its started as a empty itinerary" +
-            "strictly follow travel itinerary structrure." + "example itinerary " + `${JSON.stringify(mockTravelItinerary1)}` +
-            "if you want to suggest an itinineray <strictly> return the travel itinerary following the structre and format provided above" +
-            "along with the itinerary provide a short response to the user" + "make sure to response quickly, start by building the itineray day by day" + "make sure user is happy with the day before moving on to the next day"
+            + "make sure you ask when, where and the duration before generating the itinerary" +
+            "if you want to suggest an itinineray strictly return the travel itinerary following the structre and format provided above" +
+            "provide a short response along with the travel itineray and specified the next line is travel itinerary by using the ``` symbol"
+
     }
+
+    // "help the user build an itinerary and return the updated itinerary. Start by asking the location then the date the user is traveling, then the duration of the travel. Make sure you have these information before continuing withe the itinerary generation.The Travel itinerary  strictly follow the format {startDate: date, endDate: date, schedule: [dailtItinerary]}. " +
+    //     "Daily itinerary strictly follow the format {day: int, date: date, activities: [activity]}. Activity strictly follow the format {name: str, startTime: dateTime, endTime: dateTime, location: str, description: str, cost: number]}" + "provide a descriptive description for the activity" +
+    //     "the date should follow the usertimezone specified in the additionalinfo" + "the current date provided in the additional info is for reference" +
+    //     "the current itinerary is passed in as a json oject and its started as a empty itinerary" +
+    //     "if you want to suggest an itinineray strictly return the travel itinerary following the structre and format provided above" +
+    //     "provide a short response along with the travel itineray"
+
+
+
 
     messages.push(itineraryContextMessage)
     messages.push(returnMessage)
+    messages.push(addtionalInfoMessage)
     console.log(messages)
 
     const completion = await openai.createChatCompletion(

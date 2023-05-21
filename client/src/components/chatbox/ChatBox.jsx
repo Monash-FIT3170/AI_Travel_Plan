@@ -30,8 +30,8 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
   ]);
 
   const [chatHistory, setChatHistory] = useLocalStorage("chatHistory", []);
-
   const [loading, setLoading] = useState(false);
+
 
   /**
    * Method call when the button is clicked
@@ -68,7 +68,7 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
   const reformItinerary = (itinerary) => {
     // Flatten all events
     const allEvents = itinerary.schedule.flatMap(
-      (dailyItinerary) => dailyItinerary.activities,
+      (dailyItinerary) => dailyItinerary.activities
     );
 
     // Sort all events by startTime
@@ -90,7 +90,7 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
         day: index + 1,
         date: new Date(date),
         activities,
-      }),
+      })
     );
 
     // Return a new itinerary object
@@ -135,7 +135,13 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
           prompt: newMessage,
           travelItinerary: travelItinerary,
           chatHistory: chatHistory,
-        },
+          additionalInfo: {
+            userTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            currentTime: dayjs().format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+            userLanguage: "english",
+            userLocation: "Melbourne",
+          },
+        }
       );
       await delay(10000); // NOTE: Remove during production
       console.log(response.data);
@@ -149,7 +155,7 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
 
       if (response.data.travelItinerary) {
         const jsonVal = JSON.parse(
-          JSON.stringify(response.data.travelItinerary),
+          JSON.stringify(response.data.travelItinerary)
         );
         console.log(jsonVal);
         refactorItinerary(jsonVal);

@@ -10,9 +10,7 @@ const getMockResponse = (req: Request, res: Response) => (res.status(200).json({
 
 const postMessageRequest = async (req: Request, res: Response) => {
 
-
     try {
-
         const response = await sendOpenAIChat(req.body)
         const reply = response[0].message?.content
         console.log(reply)
@@ -20,10 +18,12 @@ const postMessageRequest = async (req: Request, res: Response) => {
         //need to parse
         console.log(parsedResponse)
         res.status(201).json(parsedResponse)
-
     } catch (error) {
         res.status(400).json({ message: error })
     }
+
+
+
 
 }
 
@@ -40,9 +40,9 @@ function parseResponse(response: string): ChatResponse {
 
     const jsonString = response.substring(startIndex, endIndex + 1);
 
-    // const findString = response.indexOf('```')
-    // const endString = response.lastIndexOf('`')
-    const other = response.substring(0, startIndex) + response.substring(endIndex + 1)
+    const findString = response.indexOf('```')
+    const endString = response.lastIndexOf('`')
+    const other = response.substring(0, startIndex < findString ? startIndex : findString) + response.substring(endIndex > endString ? endIndex + 1 : endString + 1)
     const json = JSON.parse(jsonString)
     console.log(json)
     console.log(other)
