@@ -7,6 +7,7 @@ import axios from "axios";
 import { useLocalStorage } from "../LocalStorageGeneric";
 import dayjs from "dayjs";
 import React, { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
@@ -29,6 +30,8 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
   ]);
 
   const [chatHistory, setChatHistory] = useLocalStorage("chatHistory", []);
+  const [loading, setLoading] = useState(false);
+
 
   /**
    * Method call when the button is clicked
@@ -112,16 +115,21 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
       setItinerary(newItinerary);
     }
   };
+
+  // NOTE: this is for testing purposes only
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
   /**
    * adds a new message to the list of messages
    * @param {String} newMessage new message to add to the message list
    */
-
   const addMessage = async (newMessage) => {
+    setLoading(true);
     try {
       // const response = await axios.get('http://localhost:4000/api/chatMessage',
       // )
-      const response = await axios.post(
+      // NOTE: axios.get is getting mock data, should use post for real data.
+      const response = await axios.get(
         "http://localhost:4000/api/chatMessage",
         {
           prompt: newMessage,
@@ -135,6 +143,7 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
           },
         }
       );
+      await delay(10000); // NOTE: Remove during production
       console.log(response.data);
       const reply = response.data.chatResponse
         ? response.data.chatResponse
@@ -167,6 +176,7 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
       ];
       setMessages(updatedMessages);
     }
+    setLoading(false);
   };
 
   /**
@@ -200,6 +210,24 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
           </div>
         ))}
       </div>
+
+      {/* Loading indicator */}
+      {loading && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </Box>
+      )}
       {/* Input message text field */}
       <div
         style={{
