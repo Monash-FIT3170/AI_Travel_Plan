@@ -189,33 +189,39 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
         }}
       >
         {/* Display each Message */}
-        {loading ? (
-          <CircularProgress
-            sx={{
-              color: "white",
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-            }}
-          />
-        ) : (
-          messages.map((message, index) => (
-            <div key={index} style={{ display: "flex" }}>
-              <div
-                style={{
-                  marginBottom: "10px",
-                  marginLeft: "15px",
-                  marginRight: "15px",
-                  width: "98%",
-                }}
-              >
-                <MessageCard message={message.text} sender={message.sender} />
-              </div>
+        {messages.map((message, index) => (
+          <div key={index} style={{ display: "flex" }}>
+            <div
+              style={{
+                marginBottom: "10px",
+                marginLeft: "15px",
+                marginRight: "15px",
+                width: "98%",
+              }}
+            >
+              <MessageCard message={message.text} sender={message.sender} />
             </div>
-          ))
-        )}
+          </div>
+        ))}
       </div>
+
+      {/* Loading indicator */}
+      {loading && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </Box>
+      )}
       {/* Input message text field */}
       <div
         style={{

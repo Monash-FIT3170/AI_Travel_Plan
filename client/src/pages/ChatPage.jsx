@@ -43,6 +43,7 @@ export function ChatPage() {
   });
   const locationHistory = useLocation();
   const fromHomePage = locationHistory.state?.fromHomePage;
+  const [loading, setLoading] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -162,6 +163,7 @@ export function ChatPage() {
           <Grid container>
             <Grid item xs={6}>
               <ChatBox
+                loading={loading}
                 travelItinerary={itinerary}
                 setItinerary={setItinerary}
               ></ChatBox>
