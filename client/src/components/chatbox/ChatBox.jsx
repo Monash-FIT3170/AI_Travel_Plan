@@ -115,17 +115,21 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
       setItinerary(newItinerary);
     }
   };
+
+  // NOTE: this is for testing purposes only
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
   /**
    * adds a new message to the list of messages
    * @param {String} newMessage new message to add to the message list
    */
-
   const addMessage = async (newMessage) => {
     setLoading(true);
     try {
       // const response = await axios.get('http://localhost:4000/api/chatMessage',
       // )
-      const response = await axios.post(
+      // NOTE: axios.get is getting mock data, should use post for real data.
+      const response = await axios.get(
         "http://localhost:4000/api/chatMessage",
         {
           prompt: newMessage,
@@ -133,6 +137,7 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
           chatHistory: chatHistory,
         },
       );
+      await delay(10000); // NOTE: Remove during production
       console.log(response.data);
       const reply = response.data.chatResponse
         ? response.data.chatResponse
@@ -185,7 +190,15 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
       >
         {/* Display each Message */}
         {loading ? (
-          <CircularProgress />
+          <CircularProgress
+            sx={{
+              color: "white",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          />
         ) : (
           messages.map((message, index) => (
             <div key={index} style={{ display: "flex" }}>
