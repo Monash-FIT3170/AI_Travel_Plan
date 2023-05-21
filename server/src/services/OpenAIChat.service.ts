@@ -48,13 +48,23 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory, add
         role: "system",
         content: "help the user build an itinerary and return the updated itinerary. The Travel itinerary  strictly follow the format {startDate: date, endDate: date, schedule: [dailtItinerary]}. " +
             "Daily itinerary strictly follow the format {day: int, date: date, activities: [activity]}. Activity strictly follow the format {name: str, startTime: date, endTime: date, location: str, description: str, cost: number]}" + "provide a descriptive description for the activity" +
-            "the date should follow the usertimezone specified in the additionalinfo" +
+            "the date should follow the usertimezone specified in the additionalinfo" + "use the user location specified in the additionalinfo for the holiday calendar" +
             "the current itinerary is passed in as a json oject and its started as a empty itinerary" +
             + "make sure you ask when, where and the duration before generating the itinerary" +
             "if you want to suggest an itinineray strictly return the travel itinerary following the structre and format provided above" +
             "provide a short response along with the travel itineray and specified the next line is travel itinerary by using the ``` symbol"
 
     }
+
+    // "help the user build an itinerary and return the updated itinerary. Start by asking the location then the date the user is traveling, then the duration of the travel. Make sure you have these information before continuing withe the itinerary generation.The Travel itinerary  strictly follow the format {startDate: date, endDate: date, schedule: [dailtItinerary]}. " +
+    //     "Daily itinerary strictly follow the format {day: int, date: date, activities: [activity]}. Activity strictly follow the format {name: str, startTime: dateTime, endTime: dateTime, location: str, description: str, cost: number]}" + "provide a descriptive description for the activity" +
+    //     "the date should follow the usertimezone specified in the additionalinfo" + "the current date provided in the additional info is for reference" +
+    //     "the current itinerary is passed in as a json oject and its started as a empty itinerary" +
+    //     "if you want to suggest an itinineray strictly return the travel itinerary following the structre and format provided above" +
+    //     "provide a short response along with the travel itineray"
+
+
+
 
     messages.push(itineraryContextMessage)
     messages.push(returnMessage)

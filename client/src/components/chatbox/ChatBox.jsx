@@ -131,6 +131,7 @@ export default function Chatbox({ travelItinerary, setItinerary }) {
             userTimeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             currentTime: dayjs().format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
             userLanguage: "english",
+            userLocation: "Melbourne",
           },
         }
       );
