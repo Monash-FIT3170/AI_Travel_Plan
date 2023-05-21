@@ -21,7 +21,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { motion } from "framer-motion";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -43,7 +43,6 @@ export function ChatPage() {
   });
   const locationHistory = useLocation();
   const fromHomePage = locationHistory.state?.fromHomePage;
-  console.log(fromHomePage);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -157,111 +156,102 @@ export function ChatPage() {
       exit={{ y: "100vh" }}
       transition={{ duration: 0.5 }}
     >
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <div style={{ position: "relative" }}>
-          <BackgroundImage />
-          <Background>
-            <Grid container>
-              <Grid item xs={6}>
-                <ChatBox
-                  travelItinerary={itinerary}
-                  setItinerary={setItinerary}
-                ></ChatBox>
-              </Grid>
-              <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
-                <ItineraryTimeLine
-                  travelItinerary={itinerary}
-                  setItinerary={setItinerary}
-                />
-                <div
-                  style={{ position: "fixed", bottom: "20px", right: "50px" }}
-                >
-                  <Button
-                    variant="contained"
-                    endIcon={<AddIcon />}
-                    onClick={handleClickOpen}
-                  >
-                    ADD NEW LOCATION
-                  </Button>
-                </div>
-              </Grid>
+      <div style={{ position: "relative" }}>
+        <BackgroundImage />
+        <Background>
+          <Grid container>
+            <Grid item xs={6}>
+              <ChatBox
+                travelItinerary={itinerary}
+                setItinerary={setItinerary}
+              ></ChatBox>
             </Grid>
-          </Background>
+            <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
+              <ItineraryTimeLine
+                travelItinerary={itinerary}
+                setItinerary={setItinerary}
+              />
+              <div style={{ position: "fixed", bottom: "20px", right: "50px" }}>
+                <Button
+                  variant="contained"
+                  endIcon={<AddIcon />}
+                  onClick={handleClickOpen}
+                >
+                  ADD NEW LOCATION
+                </Button>
+              </div>
+            </Grid>
+          </Grid>
+        </Background>
 
-          <Box display="flex" justifyContent="stretch" width="100%">
-            <Dialog open={open} onClose={handleClose} maxWidth="xs">
-              <DialogTitle>Add New Itinerary Item</DialogTitle>
-              <DialogContent>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  label="Name"
-                  type="text"
-                  fullWidth
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  error={Boolean(errors.name)}
-                  helperText={errors.name}
+        <Box display="flex" justifyContent="stretch" width="100%">
+          <Dialog open={open} onClose={handleClose} maxWidth="xs">
+            <DialogTitle>Add New Itinerary Item</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Name"
+                type="text"
+                fullWidth
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                error={Boolean(errors.name)}
+                helperText={errors.name}
+              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  label="Start Date"
+                  onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
                 />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    label="Start Date"
-                    onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
-                  />
-                </LocalizationProvider>
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    label="End Date"
-                    onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
-                  />
-                </LocalizationProvider>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  label="Location"
-                  type="text"
-                  fullWidth
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  // error={Boolean(errors.name)}
-                  // helperText={errors.name}
+              </LocalizationProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  label="End Date"
+                  onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
                 />
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  label="Description"
-                  type="text"
-                  fullWidth
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  // error={Boolean(errors.name)}
-                  // helperText={errors.name}
-                />
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  label="Cost"
-                  type="number"
-                  fullWidth
-                  value={cost}
-                  onChange={(e) => setCost(e.target.value)}
-                  // error={Boolean(errors.name)}
-                  // helperText={errors.name}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button onClick={handleSave}>Save</Button>
-              </DialogActions>
-            </Dialog>
-          </Box>
-        </div>
-      </motion.div>
+              </LocalizationProvider>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Location"
+                type="text"
+                fullWidth
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                // error={Boolean(errors.name)}
+                // helperText={errors.name}
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Description"
+                type="text"
+                fullWidth
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                // error={Boolean(errors.name)}
+                // helperText={errors.name}
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Cost"
+                type="number"
+                fullWidth
+                value={cost}
+                onChange={(e) => setCost(e.target.value)}
+                // error={Boolean(errors.name)}
+                // helperText={errors.name}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleSave}>Save</Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
+      </div>
     </motion.div>
   );
 }
