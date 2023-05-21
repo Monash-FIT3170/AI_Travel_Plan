@@ -7,15 +7,13 @@ import axios from "axios";
 import { useLocalStorage } from "../LocalStorageGeneric";
 import dayjs from "dayjs";
 import React, { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
  */
-export default function Chatbox({
-  travelItinerary,
-  setItinerary,
-}) {
+export default function Chatbox({ travelItinerary, setItinerary }) {
   /**
    * State - inputValue: the value in the text box
    */
@@ -31,8 +29,9 @@ export default function Chatbox({
     },
   ]);
 
-  const [chatHistory, setChatHistory] =
-    useLocalStorage("chatHistory", []);
+  const [chatHistory, setChatHistory] = useLocalStorage("chatHistory", []);
+
+  const [loading, setLoading] = useState(false);
 
   /**
    * Method call when the button is clicked
@@ -122,6 +121,7 @@ export default function Chatbox({
    */
 
   const addMessage = async (newMessage) => {
+    setLoading(true);
     try {
       // const response = await axios.get('http://localhost:4000/api/chatMessage',
       // )
@@ -165,6 +165,7 @@ export default function Chatbox({
       ];
       setMessages(updatedMessages);
     }
+    setLoading(false);
   };
 
   /**
@@ -183,20 +184,24 @@ export default function Chatbox({
         }}
       >
         {/* Display each Message */}
-        {messages.map((message, index) => (
-          <div key={index} style={{ display: "flex" }}>
-            <div
-              style={{
-                marginBottom: "10px",
-                marginLeft: "15px",
-                marginRight: "15px",
-                width: "98%",
-              }}
-            >
-              <MessageCard message={message.text} sender={message.sender} />
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          messages.map((message, index) => (
+            <div key={index} style={{ display: "flex" }}>
+              <div
+                style={{
+                  marginBottom: "10px",
+                  marginLeft: "15px",
+                  marginRight: "15px",
+                  width: "98%",
+                }}
+              >
+                <MessageCard message={message.text} sender={message.sender} />
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
       {/* Input message text field */}
       <div
