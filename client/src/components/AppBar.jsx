@@ -15,7 +15,12 @@ const MyAppBar = () => {
     >
       <Toolbar>
         <Box display="flex" alignItems="center" flexGrow={1}>
-          <HomeIcon style={{ marginRight: "10px", color: "white" }} />
+          <HomeIcon
+            style={{ marginRight: "10px", color: "white" }}
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          />
           <Typography variant="h6" style={{ color: "white" }}>
             Get Packing Traveller
           </Typography>
