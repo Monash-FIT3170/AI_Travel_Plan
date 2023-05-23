@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -8,6 +8,12 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 
 const MyAppBar = () => {
+  const [activeButton, setActiveButton] = useState("");
+
+  const handleClick = (buttonName) => {
+    setActiveButton(buttonName);
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -24,7 +30,12 @@ const MyAppBar = () => {
           color="inherit"
           component={Link}
           to="/chat"
-          style={{ color: "white", marginRight: "88px" }}
+          style={{
+            color: "white",
+            marginRight: "88px",
+            backgroundColor: activeButton === "travel" ? "brown" : "transparent",
+          }}
+          onClick={() => handleClick("travel")}
         >
           Travel Planner
         </Button>
@@ -32,7 +43,12 @@ const MyAppBar = () => {
           color="inherit"
           component={Link}
           to="/itinerary"
-          style={{ color: "white", marginRight: "88px" }}
+          style={{
+            color: "white",
+            marginRight: "88px",
+            backgroundColor: activeButton === "itinerary" ? "brown" : "transparent",
+          }}
+          onClick={() => handleClick("itinerary")}
         >
           Itinerary
         </Button>
@@ -40,7 +56,12 @@ const MyAppBar = () => {
           color="inherit"
           component={Link}
           to="/example"
-          style={{ color: "white", marginRight: "88px" }}
+          style={{
+            color: "white",
+            marginRight: "88px",
+            backgroundColor: activeButton === "help" ? "brown" : "transparent",
+          }}
+          onClick={() => handleClick("help")}
         >
           Help
         </Button>
@@ -50,3 +71,4 @@ const MyAppBar = () => {
 };
 
 export default MyAppBar;
+ 
