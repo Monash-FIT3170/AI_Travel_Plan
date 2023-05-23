@@ -160,31 +160,41 @@ export default function Chatbox() {
           left: "0",
           width: "100%",
           padding: "15px",
+
+          
         }}
       >
-        <Box display="flex" alignItems="center">
-          <TextField
-            placeholder="Type in your message"
-            value={inputValue}
-            onChange={handleInputEnter}
-            multiline
-            maxRows="4"
-            minRows="1"
-            style={{ width: "50%", resize: "none" }}
-            variant="outlined"
-            InputProps={{
-              endAdornment: (
-                <IconButton
-                  onClick={handleButtonClick}
-                  edge="end"
-                  style={{ color: "white", backgroundColor: "black" }}
-                >
-                  <SendIcon />
-                </IconButton>
-              ),
-            }}
-          />
-        </Box>
+        <Box
+              display="flex"
+              alignItems="center"
+              style={{ backgroundColor: "rgb(23, 17, 50)", width: "51%", height: "100%", padding: "20px",marginLeft: "-20px", marginBottom: "-20px" , borderTopRightRadius: "20px",}}
+            >
+              <TextField
+                placeholder="Enter message here"
+                value={inputValue}
+                onChange={handleInputEnter}
+                multiline
+                maxRows="4"
+                minRows="1"
+                style={{
+                  width: "70%",
+                  resize: "none",
+                  backgroundColor: "white",
+                  color: "black",
+                  marginLeft: "20px",
+                  borderRadius: "8px",
+                }}
+                variant="outlined"
+              />
+              <IconButton
+                onClick={handleButtonClick}
+                edge="end"
+                style={{ color: "black", backgroundColor: "white", marginLeft: "30px", }}
+              >
+    <SendIcon />
+  </IconButton>
+</Box>
+
       </div>
     </div>
   );

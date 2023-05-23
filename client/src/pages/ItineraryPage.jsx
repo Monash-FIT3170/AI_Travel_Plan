@@ -9,7 +9,7 @@ import DeleteAlert from "../components/DeleteAlert";
 import NewDestination from "../components/NewDestination";
 import ItinerarySumarryButton from "../components/ItinerarySummaryButton";
 import Background from "../components/Background";
-import BackgroundImage from "../components/BackgroundImage";
+import BackgroundImage2 from "../components/BackgroundImage2";
 
 export function ItineraryPage() {
   useEffect(() => {
@@ -24,7 +24,7 @@ export function ItineraryPage() {
   }, []);
   return (
     <div>
-      <BackgroundImage />
+      <BackgroundImage2 />
       <Background>
         <ItinerarySumarryButton />
         <AddButton />
