@@ -1,6 +1,6 @@
 import ChatBox from "../components/chatbox/ChatBox";
 import Background from "../components/Background";
-import BackgroundImage from "../components/BackgroundImage";
+import BackgroundImage2 from "../components/BackgroundImage2";
 import Grid from "@mui/material/Grid";
 import { ItineraryTimeLine } from "../components/ItineraryTimeLine";
 import { useLocalStorage } from "../components/LocalStorageGeneric";
@@ -10,7 +10,7 @@ const [travelItinerary, setItinerary, updateTravelItineraryInLocalStorage] = use
 
   return (
     <>
-      <BackgroundImage />
+      <BackgroundImage2 />
       <Background>
         <Grid container>
           <Grid item xs={6}>
