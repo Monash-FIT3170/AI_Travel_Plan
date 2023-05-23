@@ -1,4 +1,4 @@
-import "../style.css"
+import "./Template.css"
 
 const styles = {
   backgroundColor: 'blue',
