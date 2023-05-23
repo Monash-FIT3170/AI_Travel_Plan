@@ -9,9 +9,8 @@ const getMockResponse = (req: Request, res: Response) => (res.status(200).json({
 
 
 const postMessageRequest = async (req: Request, res: Response) => {
-
+    const response = await sendOpenAIChat(req.body)
     try {
-        const response = await sendOpenAIChat(req.body)
         const reply = response[0].message?.content
         console.log(reply)
         const parsedResponse: ChatResponse = reply ? parseResponse(reply) : { chatResponse: "error" }
@@ -19,7 +18,7 @@ const postMessageRequest = async (req: Request, res: Response) => {
         console.log(parsedResponse)
         res.status(201).json(parsedResponse)
     } catch (error) {
-        res.status(400).json({ message: error })
+        res.status(400).json({ response })
     }
 
 
