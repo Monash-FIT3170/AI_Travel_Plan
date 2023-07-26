@@ -1,11 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ChatPage } from "./pages/ChatPage";
-import { ItineraryPage } from "./pages/ItineraryPage";
 import { ItineraryRight } from "./pages/itineraryRight";
 import ExamplePage from "./pages/ExamplePage";
 import HomePage from "./pages/HomePage";
-import MyAppBar from "./components/AppBar";
+import MyAppBar from "./components/appbar-landing/AppBar";
 /**
  * The high level component that contains all pages and components of the application
  * @returns The application's view

@@ -1,6 +1,6 @@
-import Background from "../components/Background";
-import BackgroundImage from "../components/BackgroundImage";
-import { ItineraryTimeLine } from "../components/ItineraryTimeLine";
+import Background from "../components/background/Background";
+import BackgroundImage from "../components/background/BackgroundImage";
+import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
 import Grid from "@mui/material/Grid";
 import { useLocalStorage } from "../components/LocalStorageGeneric";
 import ChatBox from "../components/chatbox/ChatBox";

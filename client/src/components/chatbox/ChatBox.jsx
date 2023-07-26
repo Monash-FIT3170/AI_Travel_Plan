@@ -2,12 +2,11 @@ import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
-import MessageList from "./MessageList";
 import MessageCard from "./MessageCard";
 import axios from "axios";
 import { useLocalStorage } from "../LocalStorageGeneric";
 import dayjs from "dayjs";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
@@ -222,41 +221,50 @@ export default function Chatbox({
           left: "0",
           width: "100%",
           padding: "15px",
-
-          
         }}
       >
         <Box
-              display="flex"
-              alignItems="center"
-              style={{ backgroundColor: "rgb(23, 17, 50)", width: "51%", height: "100%", padding: "20px",marginLeft: "-20px", marginBottom: "-20px" , borderTopRightRadius: "20px",}}
-            >
-              <TextField
-                placeholder="Enter message here"
-                value={inputValue}
-                onChange={handleInputEnter}
-                multiline
-                maxRows="4"
-                minRows="1"
-                style={{
-                  width: "70%",
-                  resize: "none",
-                  backgroundColor: "white",
-                  color: "black",
-                  marginLeft: "20px",
-                  borderRadius: "8px",
-                }}
-                variant="outlined"
-              />
-              <IconButton
-                onClick={handleButtonClick}
-                edge="end"
-                style={{ color: "black", backgroundColor: "white", marginLeft: "30px", }}
-              >
-    <SendIcon />
-  </IconButton>
-</Box>
-
+          display="flex"
+          alignItems="center"
+          style={{
+            backgroundColor: "rgb(23, 17, 50)",
+            width: "51%",
+            height: "100%",
+            padding: "20px",
+            marginLeft: "-20px",
+            marginBottom: "-20px",
+            borderTopRightRadius: "20px",
+          }}
+        >
+          <TextField
+            placeholder="Enter message here"
+            value={inputValue}
+            onChange={handleInputEnter}
+            multiline
+            maxRows="4"
+            minRows="1"
+            style={{
+              width: "70%",
+              resize: "none",
+              backgroundColor: "white",
+              color: "black",
+              marginLeft: "20px",
+              borderRadius: "8px",
+            }}
+            variant="outlined"
+          />
+          <IconButton
+            onClick={handleButtonClick}
+            edge="end"
+            style={{
+              color: "black",
+              backgroundColor: "white",
+              marginLeft: "30px",
+            }}
+          >
+            <SendIcon />
+          </IconButton>
+        </Box>
       </div>
     </div>
   );

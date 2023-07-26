@@ -1,7 +1,7 @@
 import React from "react";
-import DragUp from "../components/DragUp";
-import Background from "../components/Background";
-import BackgroundImage from "../components/BackgroundImage";
+import DragUp from "../components/appbar-landing/DragUp";
+import Background from "../components/background/Background";
+import BackgroundImage from "../components/background/BackgroundImage";
 import Typography from "@mui/material/Typography";
 
 function HomePage() {
