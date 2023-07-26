@@ -42,3 +42,11 @@ Recommended but not required:
 
 If at any point your project stops working, it's possible someone added new dependencies to work on their code, but you haven't installed them yet
 When pulling from their branch. Repeat the npm install steps found earlier in this guide to help resolve your issue. If not, report to your team's SAs
+
+To run docker containers
+
+1. download docker or check if docker exist in the system by typing `docker -v`
+2. run `docker-compose up` make sure to run this in the root project folder
+3. Download docker extension on vs code.
+4. Open Command Palette (Ctrl+Shift+P) and Click on attached to running container
+5. Once finish run `docker-compose down`
