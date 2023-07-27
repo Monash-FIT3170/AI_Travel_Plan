@@ -132,7 +132,7 @@ export default function Chatbox({
       setOutboxValue("Loading...");
       // const response = await axios.get('http://localhost:4000/api/chatMessage',
       // )
-      const response = await axios.get(
+      const response = await axios.post(
         "http://localhost:4000/api/chatMessage",
         {
           prompt: newMessage,
