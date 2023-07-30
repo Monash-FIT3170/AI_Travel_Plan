@@ -18,6 +18,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { fetchWeatherData } from "../api/weatherAPI.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -32,7 +33,13 @@ export function EventCardView({ event, itinerary, setItinerary }) {
   const [date, setDate] = useState(dayjs(event.startTime).toDate());
   const [time, setTime] = useState(dayjs(event.startTime).toDate());
   const [errors, setErrors] = useState({ name: "", date: "", time: "" });
-  let specificTimezone = "America/New_York";
+  const [weatherData, setWeatherData] = useState(null);
+
+
+  const fetchWeather = async () => {
+    const data = await fetchWeatherData(44.34, 10.99);
+    setWeatherData(data);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -156,6 +163,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
           <Button size="small" onClick={handleClickOpen}>
             Edit
           </Button>
+          <Button onClick={fetchWeather}>Fetch Weather</Button>
         </CardActions>
       </Card>
 
