@@ -15,10 +15,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { fetchWeatherData } from "../api/weatherAPI.js";
+import { fetchWeatherForLocation, getLocationDetails } from "../api/weatherAPI.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -34,12 +35,6 @@ export function EventCardView({ event, itinerary, setItinerary }) {
   const [time, setTime] = useState(dayjs(event.startTime).toDate());
   const [errors, setErrors] = useState({ name: "", date: "", time: "" });
   const [weatherData, setWeatherData] = useState(null);
-
-
-  const fetchWeather = async () => {
-    const data = await fetchWeatherData(44.34, 10.99);
-    setWeatherData(data);
-  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -143,6 +138,17 @@ export function EventCardView({ event, itinerary, setItinerary }) {
     setOpen(false);
   };
 
+  const fetchWeather = async () => {
+    const placeName = getLocationDetails(location)
+    const weatherData = await fetchWeatherForLocation(placeName)
+    setWeatherData(weatherData);
+  };
+
+  // Do not delete, this is to call the api on load.
+  // useEffect(() => {
+  //   fetchWeather();
+  // }, []);
+
   return (
     <Box display="flex" justifyContent="stretch" width="100%">
       <Card variant="outlined" style={{ width: "100%" }}>
@@ -153,6 +159,11 @@ export function EventCardView({ event, itinerary, setItinerary }) {
             "DURATION: " +
             ((new Date(event.endTime) - new Date(event.startTime)) / (1000 * 60 * 60)) +
             " HRS"
+          }
+          action={
+            <Typography>
+              {weatherData ? `Current temperature: ${weatherData.main.temp}` : 'Fetching weather...'}
+            </Typography>
           }
         />
         <CardContent>{event.description}</CardContent>
