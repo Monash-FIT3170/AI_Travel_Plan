@@ -1,4 +1,5 @@
 import { TravelItinerary } from "./travelItinerary.model"
+import { DailyItinerary } from "./dailyitinerary.model"
 /**
  * @openapi
  * components:
@@ -25,6 +26,7 @@ import { TravelItinerary } from "./travelItinerary.model"
  */
 
 export interface ChatResponse {
-    travelItinerary?: TravelItinerary
+    dailyItinerary?: DailyItinerary
     chatResponse: string
+    travelItinerary?: TravelItinerary
 }

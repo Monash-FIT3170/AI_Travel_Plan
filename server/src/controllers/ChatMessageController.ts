@@ -14,16 +14,26 @@ const postMessageRequest = async (req: Request, res: Response) => {
 
 
     try {
-
+        let travelItinerary = req.body.travelItinerary as TravelItinerary
         const response = await sendOpenAIChat(req.body)
         const reply = response[0].message?.content
         console.log(reply)
         const parsedResponse: ChatResponse = reply ? parseResponse(reply) : { chatResponse: "error" }
+        // const res = reply ? JSON.parse(reply) : {}
         //need to parse
         console.log(parsedResponse)
-        res.status(201).json(parsedResponse)
+        if (parsedResponse.dailyItinerary) {
+            travelItinerary.schedule.push(parsedResponse.dailyItinerary)
+        }
+
+        if (parsedResponse.travelItinerary) {
+            travelItinerary = { ...parsedResponse.travelItinerary, schedule: travelItinerary.schedule }
+        }
+
+        res.status(201).json({ ...parsedResponse, travelItinerary: travelItinerary })
 
     } catch (error) {
+        console.log(error)
         res.status(400).json({ message: error })
     }
 
@@ -45,10 +55,11 @@ function parseResponse(response: string): ChatResponse {
     // const findString = response.indexOf('```')
     // const endString = response.lastIndexOf('`')
     const other = response.substring(0, startIndex) + response.substring(endIndex + 1)
-    const json = JSON.parse(jsonString)
+    const json = JSON.parse(jsonString) as ChatResponse
+
     console.log(json)
     console.log(other)
-    return { travelItinerary: json, chatResponse: other }
+    return json
 }
 
 
