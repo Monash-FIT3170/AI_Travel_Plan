@@ -10,7 +10,7 @@ _chai.should();
         this.number = "hello"
     }
 
-    @test 'should do something when call a method'() {
+    @test sampleTest() {
         console.assert(this.number == "hello")
     }
 
