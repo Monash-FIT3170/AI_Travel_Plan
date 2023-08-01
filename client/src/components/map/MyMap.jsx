@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import React, { useRef, useEffect, useState } from "react";
-import Map from "react-map-gl";
-// require("dotenv").config();
+import "mapbox-gl/dist/mapbox-gl.css";
+import Map, { Marker } from "react-map-gl";
 
 const ACCESS_TOKEN = "";
 
@@ -10,6 +10,8 @@ const ACCESS_TOKEN = "";
  * requires a mapbox access token. Can be generated here: https://docs.mapbox.com/help/getting-started/access-tokens/
  * @returns jsx for the map
  */
+const markerIconUrl = "../assets/marker_blue.png";
+
 export default function MyMap() {
   return (
     <div>
@@ -20,10 +22,45 @@ export default function MyMap() {
           latitude: -37.840935,
           zoom: 10,
         }}
-        style={{ width: "100%", height: "calc(100vh - 200px)" }} //reponsive map
+        style={{ width: "100%", height: "calc(100vh - 200px)" }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
-        attributionControl={false} // Remove default attribution
-      />
+        attributionControl={false}
+      >
+        {/* Add the marker with label here */}
+        <Marker
+          longitude={144.946457}
+          latitude={-37.840935}
+          offsetLeft={-20}
+          offsetTop={-10}
+        >
+          {/* for marker customization*/}
+          <div
+            style={{
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              backgroundImage: `url(${markerIconUrl})`,
+              backgroundSize: "cover",
+            }}
+          >
+            {/* <img src="../../assets/marker_blue.png" /> */}
+          </div>
+          {/* Add the label */}
+          <Typography
+            variant="caption"
+            style={{
+              position: "relative",
+              top: "-20px",
+              left: "-10px",
+              background: "white",
+              padding: "4px 8px",
+              borderRadius: "4px",
+            }}
+          >
+            Marker
+          </Typography>
+        </Marker>
+      </Map>
     </div>
   );
 }
