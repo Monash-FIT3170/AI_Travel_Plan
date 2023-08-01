@@ -24,7 +24,7 @@ services:
     
   tests:
     build:
-      context: .
+      context: ./test
       dockerfile: Dockerfile
       target: tests
     image: tests
