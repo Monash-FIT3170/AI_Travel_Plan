@@ -34,6 +34,11 @@ jobs:
         env:
           version: ${{ needs.calculate-version.outputs.version }}
         run: docker buildx bake --set *.cache-from="type=gha" --set *.cache-to="type=gha,mode=max" --progress plain --load
+      - name: Test
+        timeout-minutes: 10
+        env:
+          version: ${{ needs.calculate-version.outputs.version }}
+        run: docker compose up tests --no-build --abort-on-container-exit
       - name: Create publish folder
         run: mkdir publish
       - name: Publish Docker Images
