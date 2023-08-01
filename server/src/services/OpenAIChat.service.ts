@@ -20,15 +20,22 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
     const messages: ChatCompletionRequestMessage[] = []
 
     const messageHistory = chatHistory.reduce((acc, cur) => acc + `Customer: ${cur.prompt}\n Agent: ${cur.reply}}`, "")
-
+    const travelItineraryString = "current travel itinerary" + JSON.stringify(travelItinerary)
+    console.log(messageHistory)
     const returnMessage: ChatCompletionRequestMessage = {
         role: "system",
         content: "You are a friendly travel agent that is trying to help the user plan their trip and create an iteinrary for them" + "The following is a converstion between a travel agent and a customer. The travel agent will attemp to gather information from the customer in order to help plan a trip for them" +
-            "some information required are the country, date and time of departure, date and time of return, budget, number of people going, and their preferences for activities." +
-            "Once you have the required information start buiding the itineray day by day and appending it to the schedule by suggesting activities for customer to do each day " +
-            +"once customer is satisfy you can move on to the next day by suggesting new activities" +
+            "some information are the country, start date, end date, budget, number of people going, and their preferences for activities." +
+            "Once you have all the required information provide a recap of the information make sure customer confirms before continue" +
+            "once customer confirms the information start buiding the itineray iteratively from day 1 " +
+            + "once customer is satisfy with current day <strictly> return the daily itineray following the dailyItineray schema and move on to the next day by suggesting new activities" +
             "Only stop once you have a complete itinerary for the customer." +
             `
+          interface TravelItinerary {
+    startDate: Date
+    endDate: Date
+    country: string
+}
         interface DailyItinerary {
             day: number
             date: Date
@@ -42,17 +49,16 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
             endTime: Date
             cost?: number
             }
+        
             interface Response{
                 chatResponse: "string",
+                travelItinerary?: TravelItinerary,
                 dailyItinerary?: DailyItinerary[]
-                information?: {    country: string
-                    budget?: number
-                numberOfPeople?: number
-                preferences?: string[]
-            }}
+                }
             
-        Write the basics section according to the Response schema. leave the field blank if theres no information except for the chatResponseField. always write some response in the chatResponse field.
-On the response, include only the JSON.` + JSON.stringify(travelItinerary) +
+        Write the basics section according to the Response schema. Response in the chatResponse field is required do not use any schema in the chatResponse. always end the response with a question to the customer.
+        only use the travelItinerary field for the startdate,enddate and country when recapping the information after the customer confirms the information. do not store return dailyItinerary in the travelItinerary field.        
+        On the response, include only the JSON.` + travelItineraryString
             + messageHistory + "customer:" + prompt + " Response:"
 
     }
