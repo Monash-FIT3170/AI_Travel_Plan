@@ -2,6 +2,7 @@ import { Configuration, OpenAIApi, ChatCompletionRequestMessage, CreateChatCompl
 import dotenv from 'dotenv';
 import { ChatMessage } from '../models/chatMessage.model';
 import { mockTravelItinerary1 } from '../MockItinerary';
+import { json } from 'stream/consumers';
 dotenv.config()
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
@@ -18,39 +19,50 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
     //array of messages to be sent to chatgpt
     const messages: ChatCompletionRequestMessage[] = []
 
-    // define chat-bot's role
-    const systemMessage: ChatCompletionRequestMessage = {
-        role: "system",
-        content: "You are a travel agent",
-    }
-    messages.push(systemMessage)
-
-    const userMessage: ChatCompletionRequestMessage = {
-        role: "user",
-        content: prompt
-    }
-    messages.push(userMessage)
-    const contextMessage: ChatCompletionRequestMessage = {
-        role: "assistant",
-        content: chatHistory.reduce((acc, cur) => acc + `prompt: ${cur.prompt} reply: ${cur.reply}}`, "")
-    }
-    messages.push(contextMessage)
-
-    const itineraryContextMessage: ChatCompletionRequestMessage = {
-        role: "assistant",
-        content: JSON.stringify(travelItinerary)
-    }
+    const messageHistory = chatHistory.reduce((acc, cur) => acc + `Customer: ${cur.prompt}\n Agent: ${cur.reply}}`, "")
+    const travelItineraryString = "current travel itinerary" + JSON.stringify(travelItinerary)
+    console.log(messageHistory)
     const returnMessage: ChatCompletionRequestMessage = {
         role: "system",
-        content: "help the user build an itinerary and return the updated itinerary, the Travel itinerary should be in the format {startDate: date, endDate: date, schedule: [dailtItinerary]}. " +
-            "Daily itinerary should be in the format {day: int, date: date, activities: [activity]}. Activity should be in the format {name: str, startTime: date, endTime: date, location: str,     description: str, cost: number]}" + "provide a descriptive description for the activity" +
-            "the current itinerary is passed in as a json oject and its started as a empty itinerary" +
-            "strictly follow travel itinerary structrure." + "example itinerary " + `${JSON.stringify(mockTravelItinerary1)}` +
-            "if you want to suggest an itinineray <strictly> return the travel itinerary following the structre and format provided above" +
-            "along with the itinerary provide a short response to the user" + "make sure to response quickly, start by building the itineray day by day" + "make sure user is happy with the day before moving on to the next day"
+        content: "You are a friendly travel agent that is trying to help the user plan their trip and create an iteinrary for them" + "The following is a converstion between a travel agent and a customer. The travel agent will attemp to gather information from the customer in order to help plan a trip for them" +
+            "some information are the country, start date, end date, budget, number of people going, and their preferences for activities." +
+            "Once you have all the required information provide a recap of the information make sure customer confirms before continue" +
+            "once customer confirms the information start buiding the itineray iteratively from day 1 " +
+            + "once customer is satisfy with current day <strictly> return the daily itineray following the dailyItineray schema and move on to the next day by suggesting new activities" +
+            "Only stop once you have a complete itinerary for the customer." +
+            `
+          interface TravelItinerary {
+    startDate: Date
+    endDate: Date
+    country: string
+}
+        interface DailyItinerary {
+            day: number
+            date: Date
+            activities: Activity[]
+            }
+        interface Activity {
+            name: string
+            city: string
+            description: string
+            startTime: Date
+            endTime: Date
+            cost?: number
+            }
+        
+            interface Response{
+                chatResponse: "string",
+                travelItinerary?: TravelItinerary,
+                dailyItinerary?: DailyItinerary[]
+                }
+            
+        Write the basics section according to the Response schema. Response in the chatResponse field is required do not use any schema in the chatResponse. always end the response with a question to the customer.
+        only use the travelItinerary field for the startdate,enddate and country when recapping the information after the customer confirms the information. do not store return dailyItinerary in the travelItinerary field.        
+        On the response, include only the JSON.` + travelItineraryString
+            + messageHistory + "customer:" + prompt + " Response:"
+
     }
 
-    messages.push(itineraryContextMessage)
     messages.push(returnMessage)
     console.log(messages)
 
