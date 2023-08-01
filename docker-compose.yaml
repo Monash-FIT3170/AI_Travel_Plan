@@ -21,3 +21,10 @@ services:
     volumes:
       - "./server/src:/app/src"
     stdin_open: true
+    
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: tests
+    image: tests
