@@ -18,3 +18,4 @@ CMD ["npm", "run", "start"]
 
 FROM build as tests
 RUN npm run test
+CMD ["npm", "run", "test"]
