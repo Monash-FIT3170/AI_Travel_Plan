@@ -5,6 +5,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+    image: app
     ports:
       - "3000:3000"
     volumes:
