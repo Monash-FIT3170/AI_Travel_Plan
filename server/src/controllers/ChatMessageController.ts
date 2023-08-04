@@ -6,11 +6,11 @@ import { ChatResponse } from '../models/chatResponse.model'
 import { parse } from 'path'
 
 //for mock data testing only
-const getMockResponse = (req: Request, res: Response) => (res.status(200).json({ travelItinerary: { startDate: '2023-08-02', endDate: '2023-08-10', country: "hong kong", schedule: [] }, chatResponse: "mock response" }))
+export const getMockResponse = (req: Request, res: Response) => (res.status(200).json({ travelItinerary: { startDate: '2023-08-02', endDate: '2023-08-10', country: "hong kong", schedule: [] }, chatResponse: "mock response" }))
 
 
 
-const postMessageRequest = async (req: Request, res: Response) => {
+export const postMessageRequest = async (req: Request, res: Response) => {
 
 
     try {
@@ -33,7 +33,7 @@ const postMessageRequest = async (req: Request, res: Response) => {
 
 }
 
-const convertToStructuredResponse = async (req: Request, res: Response) => {
+export const convertToStructuredResponse = async (req: Request, res: Response) => {
     const text = req.body.text as string
     const travelItinerary = req.body.travelItinerary as TravelItinerary
     try {
