@@ -38,7 +38,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
 
   const [place, setPlace] = useState(null);
   const fetchImage = () => {
-    const data = PlaceSearch('Ueno Park, Tokyo');
+    const data = PlaceSearch('Disneyland, Tokyo');
     setPlace(data);
     console.log(place);
   };
@@ -158,8 +158,8 @@ export function EventCardView({ event, itinerary, setItinerary }) {
           }
         />
         <CardMedia
-        sx={{ height: 140 }}
-        image="../../assets/test-image.jpg"
+        sx={{ height: 200 }}
+        image="https://media.istockphoto.com/id/1153172622/photo/vacation-travel-planning-concept-with-map-overhead-view-of-equipment-for-travelers-travel.jpg?s=1024x1024&w=is&k=20&c=AtKof-VaXW5xgsZjwF78jwQZ59XB5ogu5TiRKIdPqXE="
         />
         <CardContent>{event.description}</CardContent>
         <CardActions>
