@@ -1,5 +1,5 @@
 import express from 'express';
-const router = express.Router();
+const router1 = express.Router();
 
 /**
 * @openapi
@@ -23,6 +23,6 @@ const router = express.Router();
 *           description: Too many requests
 
 */
-router.post('/', require('../controllers/EmergencyContactController').getEmergencyContactRequest)
+router1.get('/', require('../controllers/EmergencyContactController').getEmergencyContactRequest)
 
-module.exports = router;
+module.exports = router1;

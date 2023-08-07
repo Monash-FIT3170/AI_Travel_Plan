@@ -19,6 +19,7 @@ app.use(express.json())
 app.use('/api/healthCheck', require('./routes/healthCheckRoutes'));
 app.use('/api/exampleRoute', require('./routes/ExampleRoute'));
 app.use('/api/chatMessage', require('./routes/chatMessageRoute'));
+app.use('/api/emergencyContact', require('./routes/emergencyContactRoute'));
 
 /**
  * We define a route as follows. 
