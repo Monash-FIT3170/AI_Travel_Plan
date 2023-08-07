@@ -20,6 +20,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import ExchangeRateView from "../components/itinerary/ExchangeRateView";
+import CurrencyExchangeView from "../components/itinerary/ExchangeRateView";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -34,11 +36,6 @@ export function ItineraryRight() {
   const [chatResponse, setResponse] = useState();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [exchangeRate, setExchangeRate] = useState(1);
-  const [currencyInput, setCurrencyInput] = useState(""); 
-  const [currencyOutput, setCurrencyOutput] = useState("N/A"); 
-  const [currencyCode, setCurrencyCode] = useState(null);
-  const [country, setCountry] = useState("india")
   const [errors, setErrors] = useState({
   
     name: "",
@@ -86,11 +83,6 @@ export function ItineraryRight() {
     setItinerary(reformItinerary(itinerary));
     setOpen(false);
   };
-
-  useEffect(() => {
-    fetchCurrencyCode();
-    getExchangeRate();
-  }, []);
 
   useEffect(() => {
     let nameError = "";
@@ -157,61 +149,6 @@ export function ItineraryRight() {
     return { ...itinerary, schedule: newSchedule };
   };
 
-  // Fetch the Currency Code for Exchange Rate
-  const fetchCurrencyCode = async () => {
-    const apiKey = "ptrDvnw9Al7TzU0GAl9Qx9beSgnGG5geWK9m6nLe";
-    try {
-      const response = await fetch(
-        `https://countryapi.io/api/name/${country}?apikey=${apiKey}`
-      );
-      const data = await response.json();
-      const countryKey = Object.keys(data)[0];
-      if (data && data[countryKey] && data[countryKey].currencies) {
-        const currencyCode = Object.keys(data[countryKey].currencies)[0];
-        setCurrencyCode(currencyCode); 
-        return currencyCode
-      }
-    } catch (error) {
-      console.error("Error fetching currency code", error);
-      return null;
-    }
-  };
-  
-  // Fetch exchange rate based on the currency code
-  const fetchExchangeRate = async () => {
-    const currencyCode = await fetchCurrencyCode()
-    try {
-      const response = await fetch(
-        `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/aud/${currencyCode.toLowerCase()}.json`
-      );
-      const data = await response.json();
-      if (data && Object.keys(data).length > 0) {
-        const currencyCode = Object.keys(data)[1];
-        const exchangeRate = data[currencyCode];
-        return exchangeRate.toFixed(2);  
-      }
-    } catch (error) {
-      console.error("Error fetching exchange rate:", error);
-      return null;
-    }
-  };
-
-  const getExchangeRate = async () => {
-    const exchangeRate = await fetchExchangeRate();
-    setExchangeRate(exchangeRate); 
-  };
-
-  // Allow user to perform calculations with the exchange rate
-  const handleCurrencyInputChange = (event) => {
-    const inputValue = event.target.value;
-    setCurrencyInput(inputValue);  
-
-    if (!isNaN(inputValue)) {
-      const convertedValue = parseFloat(inputValue) * exchangeRate;
-      setCurrencyOutput(convertedValue.toFixed(2)); 
-    } 
-  };
-
   return (
     <div style={{ position: "relative" }}>
       <BackgroundImage />
@@ -225,6 +162,9 @@ export function ItineraryRight() {
                 updateTravelItineraryLocalStorage
               }
             ></ChatBox>
+
+              <CurrencyExchangeView></CurrencyExchangeView>
+
           </Grid>
           <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
             <ItineraryTimeLine
@@ -240,45 +180,6 @@ export function ItineraryRight() {
                 ADD NEW LOCATION
               </Button>
             </div>
-
-            <div style={{ position: "fixed", bottom: "170px", right: "130px" }}>
-              <label><b>Exchange Rate:</b> </label>
-            </div>
-
-            <div style={{ position: "fixed", bottom: "135px", right: "65px" }}>
-              <input
-                type="text"
-                id="exchangeRate"
-                name="exchangeRate"
-                value={`1 AUD = ${exchangeRate} ${currencyCode}`}
-                readonly
-              />
-            </div>
-
-            <div style={{ position: "fixed", bottom: "100px", right: "65px" }}>
-              <input
-                type="number"
-                id="currencyInput"
-                name="currencyInput"
-                size="4"
-                value={currencyInput}
-                placeholder = "Enter a Value (AUD)"
-                min = "0"
-                onChange={handleCurrencyInputChange}
-              />
-            </div>
-
-            <div style={{ position: "fixed", bottom: "65px", right: "65px" }}>
-              <input
-                type="number"
-                id="currencyOutput"
-                name="currencyOutput"
-                size="4"
-                value={currencyOutput}
-                placeholder = {`Output Value (${currencyCode})`}
-                readOnly
-              />
-            </div>   
           </Grid>
         </Grid>
       </Background>
