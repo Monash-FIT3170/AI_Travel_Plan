@@ -36,11 +36,11 @@ export function EventCardView({ event, itinerary, setItinerary }) {
   const [errors, setErrors] = useState({ name: "", date: "", time: "" });
   let specificTimezone = "America/New_York";
 
-  const [place, setPlace] = useState(null);
-  const fetchImage = () => {
-    const data = PlaceSearch('Disneyland, Tokyo');
-    setPlace(data);
-    console.log(place);
+  const [imageUrl, setImageUrl] = useState(null);
+  const fetchImage = async () => {
+    const data = await PlaceSearch(event.name);
+    console.log(event);
+    setImageUrl(data);
   };
   
   const handleClickOpen = () => {
@@ -159,7 +159,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
         />
         <CardMedia
         sx={{ height: 200 }}
-        image="https://media.istockphoto.com/id/1153172622/photo/vacation-travel-planning-concept-with-map-overhead-view-of-equipment-for-travelers-travel.jpg?s=1024x1024&w=is&k=20&c=AtKof-VaXW5xgsZjwF78jwQZ59XB5ogu5TiRKIdPqXE="
+        image={imageUrl}
         />
         <CardContent>{event.description}</CardContent>
         <CardActions>
