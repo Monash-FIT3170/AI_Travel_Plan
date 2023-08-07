@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from 'axios';
+/*global google*/
+import React, {useState, useEffect, useRef} from "react";
+import axios from "axios";
 
-// to retrieve the place id 
+const google = (window.google = window.google ? window.google : {});
+
+// to retrieve the place id
 // export const PlaceSearchhhh = async ({ query }) => {
-  
+
 //   const placesServiceRef = useRef(null); // Create a ref
 
 //     // Initialize the Places Service
@@ -36,18 +39,19 @@ import axios from 'axios';
 //         return null;
 //       }
 //     };
-    
+
 // };
 
-export function PlaceSearch (query){
-
+export function PlaceSearch(query) {
   // Define search query
   const request = {
-    query: query
+    query: query,
   };
 
   // Initialize the Places Service
-  const service = new google.maps.places.PlacesService(document.createElement('div'));
+  const service = new google.maps.places.PlacesService(
+    document.createElement("div")
+  );
 
   try {
     // Perform the Places Text Search
@@ -58,15 +62,15 @@ export function PlaceSearch (query){
         console.log(results);
         return results;
       } else {
-        console.error('Error fetching places:', status);
+        console.error("Error fetching places:", status);
         return null;
       }
     }
   } catch (error) {
-    console.error('Error fetching places:', error);
+    console.error("Error fetching places:", error);
     return null;
   }
-};
+}
 
 // export async function PlaceSearch(query) {
 //   try {
@@ -100,7 +104,7 @@ export function PlaceSearch (query){
 // retrieve api using web services
 // const FetchImageAPI = ({ placeId, apiKey }) => {
 //     const [images, setImages] = useState([]);
-  
+
 //     useEffect(() => {
 //       const fetchImages = async () => {
 //         try {
@@ -114,7 +118,7 @@ export function PlaceSearch (query){
 //               },
 //             }
 //           );
-  
+
 //           const photos = response.data.result.photos || [];
 //           const imageUrls = photos.map((photo) => {
 //             return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=${apiKey}`;
@@ -124,12 +128,12 @@ export function PlaceSearch (query){
 //           console.error('Error fetching images:', error);
 //         }
 //       };
-  
+
 //       if (placeId && apiKey) {
 //         fetchImages();
 //       }
 //     }, [placeId, apiKey]);
-  
+
 //     return (
 //       <div>
 //         {images.map((imageUrl, index) => (
@@ -139,30 +143,27 @@ export function PlaceSearch (query){
 //     );
 //   };
 
-  
-  
 //   export default FetchImageAPI;
 
-  // const FetchImageAPI = () => {
-  //   const apiKey = 'AIzaSyCtRPFx7tsN9zO6n9hSoxFFFGDmEBAm2JM';
-  
-  //   // State to store the query for the Text Search
-  //   const [searchQuery, setSearchQuery] = React.useState('');
-  
-  //   return (
-  //     <div>
-  //       <h1>Images from Google Places API</h1>
-  //       <PlaceSearch apiKey={apiKey} query={searchQuery} />
-  //       <input
-  //         type="text"
-  //         value={searchQuery}
-  //         onChange={(e) => setSearchQuery(e.target.value)}
-  //         placeholder="Enter a place name for Text Search"
-  //       />
-  //       {searchQuery && <ImageGallery apiKey={apiKey} placeId={searchQuery} />}
-  //     </div>
-  //   );
-  // };
-  
-  // export default FetchImageAPI;
-  
+// const FetchImageAPI = () => {
+//   const apiKey = 'AIzaSyCtRPFx7tsN9zO6n9hSoxFFFGDmEBAm2JM';
+
+//   // State to store the query for the Text Search
+//   const [searchQuery, setSearchQuery] = React.useState('');
+
+//   return (
+//     <div>
+//       <h1>Images from Google Places API</h1>
+//       <PlaceSearch apiKey={apiKey} query={searchQuery} />
+//       <input
+//         type="text"
+//         value={searchQuery}
+//         onChange={(e) => setSearchQuery(e.target.value)}
+//         placeholder="Enter a place name for Text Search"
+//       />
+//       {searchQuery && <ImageGallery apiKey={apiKey} placeId={searchQuery} />}
+//     </div>
+//   );
+// };
+
+// export default FetchImageAPI;
