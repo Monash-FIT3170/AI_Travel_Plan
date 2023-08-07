@@ -39,10 +39,14 @@ export function EventCardView({ event, itinerary, setItinerary }) {
   const [imageUrl, setImageUrl] = useState(null);
   const fetchImage = async () => {
     const data = await PlaceSearch(event.name);
-    console.log(event);
     setImageUrl(data);
   };
-  
+
+  // To call the api on load.
+  useEffect(() => {
+    fetchImage();
+  }, []);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -169,7 +173,6 @@ export function EventCardView({ event, itinerary, setItinerary }) {
           <Button size="small" onClick={handleClickOpen}>
             Edit
           </Button>
-          <Button onClick={fetchImage}>Fetch Image</Button>
         </CardActions>
       </Card>
 
