@@ -1,12 +1,12 @@
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import Box from "@mui/material/Box";
 import MessageCard from "./MessageCard";
 import axios from "axios";
-import { useLocalStorage } from "../LocalStorageGeneric";
+import {useLocalStorage} from "../LocalStorageGeneric";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, {useState} from "react";
 
 /**
  * Contains the entire code for a chat box area, including text field, message display.
@@ -49,10 +49,7 @@ export default function Chatbox({
     if (inputValue.length > 0) {
       addMessage(inputValue);
 
-      const updatedMessages = [
-        ...messages,
-        { text: inputValue, sender: "user" },
-      ];
+      const updatedMessages = [...messages, {text: inputValue, sender: "user"}];
       setMessages(updatedMessages);
 
       // Clear the input field
@@ -75,7 +72,7 @@ export default function Chatbox({
   const reformItinerary = (itinerary) => {
     // Flatten all events
     const allEvents = itinerary.schedule.flatMap(
-      (dailyItinerary) => dailyItinerary.activities,
+      (dailyItinerary) => dailyItinerary.activities
     );
 
     // Sort all events by startTime
@@ -97,11 +94,11 @@ export default function Chatbox({
         day: index + 1,
         date: new Date(date),
         activities,
-      }),
+      })
     );
 
     // Return a new itinerary object
-    return { ...itinerary, schedule: newSchedule };
+    return {...itinerary, schedule: newSchedule};
   };
 
   const refactorItinerary = (itinerary) => {
@@ -138,7 +135,7 @@ export default function Chatbox({
           prompt: newMessage,
           travelItinerary: travelItinerary,
           chatHistory: chatHistory,
-        },
+        }
       );
       console.log(response.data);
       const reply = response.data.chatResponse
@@ -146,12 +143,12 @@ export default function Chatbox({
         : "Sorry, I don't understand that.";
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
-        { prompt: newMessage, reply: reply },
+        {prompt: newMessage, reply: reply},
       ]);
 
       if (response.data.travelItinerary) {
         const jsonVal = JSON.parse(
-          JSON.stringify(response.data.travelItinerary),
+          JSON.stringify(response.data.travelItinerary)
         );
         console.log(jsonVal);
         refactorItinerary(jsonVal);
@@ -159,16 +156,21 @@ export default function Chatbox({
 
       const updatedMessages = [
         ...messages,
-        { text: inputValue, sender: "user" },
-        { text: response.data.chatResponse, sender: "server" },
+        {text: inputValue, sender: "user"},
+        {
+          text: response.data.chatResponse,
+          needConfirmation: response.data.needConfirmation,
+          sender: "server",
+        },
       ];
+
       setMessages(updatedMessages);
     } catch (error) {
       console.error("API call error:", error);
       const updatedMessages = [
         ...messages,
-        { text: inputValue, sender: "user" },
-        { text: "please try again", sender: "server" },
+        {text: inputValue, sender: "user"},
+        {text: "please try again", sender: "server"},
       ];
       setMessages(updatedMessages);
     }
@@ -187,7 +189,7 @@ export default function Chatbox({
    */
   return (
     // Flexbox with 73% fixed height so messages don't overlap on the input text field
-    <div style={{ display: "flex", height: "73vh" }}>
+    <div style={{display: "flex", height: "73vh"}}>
       {/* Scrolling div for messages*/}
       <div
         style={{
@@ -199,7 +201,7 @@ export default function Chatbox({
       >
         {/* Display each Message */}
         {messages.map((message, index) => (
-          <div key={index} style={{ display: "flex" }}>
+          <div key={index} style={{display: "flex"}}>
             <div
               style={{
                 marginBottom: "10px",
@@ -208,7 +210,14 @@ export default function Chatbox({
                 width: "98%",
               }}
             >
-              <MessageCard message={message.text} sender={message.sender} />
+              <MessageCard
+                message={message.text}
+                sender={message.sender}
+                needConfirmation={message.needConfirmation}
+                travelItinerary={
+                  message.needConfirmation ? travelItinerary : null
+                }
+              />
             </div>
           </div>
         ))}
