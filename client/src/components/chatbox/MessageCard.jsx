@@ -1,6 +1,10 @@
 import React from "react";
 import {Box, Typography} from "@mui/material";
 import axios from "axios";
+import {
+  useTravelItinerary,
+  useTravelItineraryDispatch,
+} from "../../TravelItineraryContext";
 /**
  * Component for a chat message
  * @param {JSON} props the properties passed to the component
@@ -12,17 +16,18 @@ export default function MessageCard(props) {
 
   //determine the background colour
   const backgroundStyle = props.sender === "user" ? "#DCF8C6" : "#ECEFF1";
-  const travelItinerary = props.travelItinerary;
-
+  const travelItinerary = useTravelItinerary();
+  const dispatchV = useTravelItineraryDispatch();
   async function convertTextToItinerary() {
     const response = await axios.post(
-      "http://localhost:4000/api/chatMessage/confirm",
+      "http://localhost:4000/api/chatMessage/",
       {
         text: props.message,
         travelItinerary: travelItinerary,
       }
     );
-    console.log(response.body);
+    console.log(response.data);
+    dispatchV({type: "update", payload: response.data});
     //to do
     //check response body and update itinerary
     //send confirm to the chat
