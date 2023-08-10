@@ -4,6 +4,7 @@ import BackgroundImage from "../components/background/BackgroundImage";
 import Grid from "@mui/material/Grid";
 import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
 import { useLocalStorage } from "../components/LocalStorageGeneric";
+import Button from "@mui/material/Button";
 
 export function ChatPage() {
   const [travelItinerary, setItinerary, updateTravelItineraryInLocalStorage] =
@@ -12,6 +13,11 @@ export function ChatPage() {
       endDate: null,
       schedule: [],
     });
+
+  const clearChat = () => {
+      // Remove chat history from local storage
+      localStorage.removeItem("chatHistory");
+  }
 
   return (
     <>
