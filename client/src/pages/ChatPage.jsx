@@ -21,23 +21,24 @@ export function ChatPage() {
 
   return (
     <>
-      <BackgroundImage />
-      <Background>
-        <Grid container>
-          <Grid item xs={6}>
-            <ChatBox
-              travelItinerary={travelItinerary}
-              setItinerary={setItinerary}
-              updateTravelItineraryInLocalStorage={
-                updateTravelItineraryInLocalStorage
-              }
-            ></ChatBox>
-          </Grid>
-          <Grid item xs={6} style={{ height: "93vh", overflowY: "auto" }}>
-            <ItineraryTimeLine travelItinerary={travelItinerary} />
-          </Grid>
-        </Grid>
-      </Background>
+        <BackgroundImage />
+        <Background>
+            <Grid container>
+                <Grid item xs={6}>
+                    <ChatBox
+                        travelItinerary={travelItinerary}
+                        setItinerary={setItinerary}
+                        updateTravelItineraryInLocalStorage={updateTravelItineraryInLocalStorage}
+                    ></ChatBox>
+                    <Button onClick={clearChat} variant="contained" color="primary" style={{ marginTop: "10px" }}>
+                        Clear
+                    </Button>
+                </Grid>
+                <Grid item xs={6} style={{ height: "93vh", overflowY: "auto" }}>
+                    <ItineraryTimeLine travelItinerary={travelItinerary} />
+                </Grid>
+            </Grid>
+        </Background>
     </>
-  );
+);
 }
