@@ -29,15 +29,15 @@ export function ChatPage() {
         <Background>
             <Grid container>
                 <Grid item xs={6}>
+                    <Button onClick={clearChat} variant="contained" color="primary" style={{ marginBottom: "10px" }}>
+                        Clear
+                    </Button>
                     <ChatBox
                         key={chatBoxKey}  // Pass the key prop to ChatBox
                         travelItinerary={travelItinerary}
                         setItinerary={setItinerary}
                         updateTravelItineraryInLocalStorage={updateTravelItineraryInLocalStorage}
                     />
-                    <Button onClick={clearChat} variant="contained" color="primary" style={{ marginTop: "10px" }}>
-                        Clear
-                    </Button>
                 </Grid>
                 <Grid item xs={6} style={{ height: "93vh", overflowY: "auto" }}>
                     <ItineraryTimeLine travelItinerary={travelItinerary} />
