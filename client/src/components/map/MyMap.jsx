@@ -3,11 +3,14 @@ import React, { useRef, useEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Marker } from "react-map-gl";
 
-const ACCESS_TOKEN = "";
+const ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
+console.log("key is " + process.env.REACT_APP_MAPBOX_API_KEY)
 
 /**
  * React component for the map on itinerary page
  * requires a mapbox access token. Can be generated here: https://docs.mapbox.com/help/getting-started/access-tokens/
+ *  create a .env file in the client folder and add your mapbox token there in the form: 
+ *  REACT_APP_MAPBOX_API_KEY="your api key"
  * @returns jsx for the map
  */
 const markerIconUrl = "../assets/marker_blue.png";
