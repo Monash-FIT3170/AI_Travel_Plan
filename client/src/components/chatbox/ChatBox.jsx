@@ -187,9 +187,8 @@ export default function Chatbox({
    */
 
   const handleKeyClick = (event) => {
-    // Check if the key pressed is 'Enter'
     if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault(); // Prevents a newline from being added in the textbox
+      event.preventDefault(); // Prevents a newline from being added
       handleButtonClick(event);
     }
   };
