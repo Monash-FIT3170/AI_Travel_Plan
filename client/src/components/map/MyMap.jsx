@@ -4,7 +4,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Map, { Marker } from "react-map-gl";
 
 const ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
-console.log("key is " + process.env.REACT_APP_MAPBOX_API_KEY)
 
 /**
  * React component for the map on itinerary page
