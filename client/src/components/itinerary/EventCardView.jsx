@@ -4,6 +4,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import PlaceIcon from "@mui/icons-material/Place";
 import TextField from "@mui/material/TextField";
@@ -18,6 +19,7 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import {PlaceSearch} from "./imageAPI";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -33,6 +35,17 @@ export function EventCardView({ event, itinerary, setItinerary }) {
   const [time, setTime] = useState(dayjs(event.startTime).toDate());
   const [errors, setErrors] = useState({ name: "", date: "", time: "" });
   let specificTimezone = "America/New_York";
+
+  const [imageUrl, setImageUrl] = useState(null);
+  const fetchImage = async () => {
+    const data = await PlaceSearch(event.name);
+    setImageUrl(data);
+  };
+
+  // To call the api on load.
+  useEffect(() => {
+    fetchImage();
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -147,6 +160,10 @@ export function EventCardView({ event, itinerary, setItinerary }) {
             ((new Date(event.endTime) - new Date(event.startTime)) / (1000 * 60 * 60)) +
             " HRS"
           }
+        />
+        <CardMedia
+        sx={{ height: 200 }}
+        image={imageUrl}
         />
         <CardContent>{event.description}</CardContent>
         <CardActions>
