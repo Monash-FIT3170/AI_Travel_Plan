@@ -185,6 +185,14 @@ export default function Chatbox({
   /**
    * jsx render
    */
+
+  const handleKeyClick = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault(); // Prevents a newline from being added
+      handleButtonClick(event);
+    }
+  };
+
   return (
     // Flexbox with 73% fixed height so messages don't overlap on the input text field
     <div style={{ display: "flex", height: "73vh" }}>
@@ -252,6 +260,7 @@ export default function Chatbox({
               borderRadius: "8px",
             }}
             variant="outlined"
+            onKeyPress={handleKeyClick}
           />
           <IconButton
             onClick={handleButtonClick}
