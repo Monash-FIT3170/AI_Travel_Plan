@@ -183,10 +183,6 @@ export function EventCardView({ event, itinerary, setItinerary }) {
         sx={{ height: 200 }}
         image={imageUrl}
         />
-        <CardMedia
-        sx={{ height: 200 }}
-        image={imageUrl}
-        />
         <CardContent>{event.description}</CardContent>
         <CardActions>
           <Button size="small" onClick={handleDeleteOpen}>
