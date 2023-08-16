@@ -26,7 +26,8 @@ import { DailyItinerary } from "./dailyitinerary.model"
  */
 
 export interface ChatResponse {
-    dailyItinerary?: DailyItinerary
-    chatResponse: string
+    chatResponse?: string
     travelItinerary?: TravelItinerary
+    needConfirmation?: boolean
 }
+

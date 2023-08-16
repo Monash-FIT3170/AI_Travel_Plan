@@ -1,14 +1,14 @@
 import Background from "../components/background/Background";
 import BackgroundImage from "../components/background/BackgroundImage";
-import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
+import {ItineraryTimeLine} from "../components/itinerary/ItineraryTimeLine";
 import Grid from "@mui/material/Grid";
-import { useLocalStorage } from "../components/LocalStorageGeneric";
+import {useLocalStorage} from "../components/LocalStorageGeneric";
 import ChatBox from "../components/chatbox/ChatBox";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
@@ -17,9 +17,9 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -110,6 +110,7 @@ export function ItineraryRight() {
       startDate: null,
       endDate: null,
       schedule: [],
+      country: null,
     });
 
   // NOTE: Reconstructing because the timezone in the mock data is not the same as the timezone in the browser.
@@ -117,7 +118,7 @@ export function ItineraryRight() {
   const reformItinerary = (itinerary) => {
     // Flatten all events
     const allEvents = itinerary.schedule.flatMap(
-      (dailyItinerary) => dailyItinerary.activities,
+      (dailyItinerary) => dailyItinerary.activities
     );
 
     // Sort all events by startTime
@@ -139,15 +140,15 @@ export function ItineraryRight() {
         day: index + 1,
         date: new Date(date),
         activities,
-      }),
+      })
     );
 
     // Return a new itinerary object
-    return { ...itinerary, schedule: newSchedule };
+    return {...itinerary, schedule: newSchedule};
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{position: "relative"}}>
       <BackgroundImage />
       <Background>
         <Grid container>
@@ -160,12 +161,12 @@ export function ItineraryRight() {
               }
             ></ChatBox>
           </Grid>
-          <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
+          <Grid item xs={6} style={{height: "100vh", overflowY: "auto"}}>
             <ItineraryTimeLine
               travelItinerary={itinerary}
               setItinerary={setItinerary}
             />
-            <div style={{ position: "fixed", bottom: "20px", right: "50px" }}>
+            <div style={{position: "fixed", bottom: "20px", right: "50px"}}>
               <Button
                 variant="contained"
                 endIcon={<AddIcon />}

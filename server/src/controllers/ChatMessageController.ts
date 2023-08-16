@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import { sendOpenAIChat } from '../services/OpenAIChat.service'
+import { sendOpenAIChat, textToJSON } from '../services/OpenAIChat.service'
 import { TravelItinerary } from '../models/travelItinerary.model'
 import { mockTravelItinerary1 } from '../MockItinerary'
 import { ChatResponse } from '../models/chatResponse.model'
 import { parse } from 'path'
 
 //for mock data testing only
-const getMockResponse = (req: Request, res: Response) => (res.status(200).json({ travelItinerary: mockTravelItinerary1, chatResponse: "mock response" }))
+const getMockResponse = (req: Request, res: Response) => (res.status(200).json({ travelItinerary: { startDate: '2023-08-02', endDate: '2023-08-10', country: "hong kong", schedule: [] }, chatResponse: "mock response" }))
 
 
 
@@ -14,7 +14,7 @@ const postMessageRequest = async (req: Request, res: Response) => {
 
 
     try {
-        let travelItinerary = req.body.travelItinerary as TravelItinerary
+        console.log(req.body)
         const response = await sendOpenAIChat(req.body)
         const reply = response[0].message?.content
         console.log(reply)
@@ -22,16 +22,28 @@ const postMessageRequest = async (req: Request, res: Response) => {
         // const res = reply ? JSON.parse(reply) : {}
         //need to parse
         console.log(parsedResponse)
-        if (parsedResponse.dailyItinerary) {
-            travelItinerary.schedule.push(parsedResponse.dailyItinerary)
-        }
 
-        if (parsedResponse.travelItinerary) {
-            travelItinerary = { ...parsedResponse.travelItinerary, schedule: travelItinerary.schedule }
-        }
 
-        res.status(201).json({ ...parsedResponse, travelItinerary: travelItinerary })
+        res.status(201).json(parsedResponse)
 
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({ message: error })
+    }
+
+}
+
+const convertToStructuredResponse = async (req: Request, res: Response) => {
+    const text = req.body.text as string
+    const travelItinerary = req.body.travelItinerary as TravelItinerary
+    try {
+        const response = await textToJSON(text, travelItinerary)
+        const reply = response[0].message?.content
+        console.log(reply)
+        const parsedResponse: ChatResponse = reply ? parseResponse(reply) : { chatResponse: "error" }
+
+        console.log(parsedResponse)
+        res.status(201).json(parsedResponse)
     } catch (error) {
         console.log(error)
         res.status(400).json({ message: error })
@@ -57,13 +69,14 @@ function parseResponse(response: string): ChatResponse {
     const other = response.substring(0, startIndex) + response.substring(endIndex + 1)
     const json = JSON.parse(jsonString) as ChatResponse
 
-    console.log(json)
-    console.log(other)
+    console.log("json converstion" + json)
+    console.log("no structured" + other)
     return json
 }
 
 
 module.exports = {
     postMessageRequest,
-    getMockResponse
+    getMockResponse,
+    convertToStructuredResponse
 }
