@@ -5,18 +5,13 @@ import Box from "@mui/material/Box";
 import MessageCard from "./MessageCard";
 import axios from "axios";
 import {useLocalStorage} from "../LocalStorageGeneric";
-import dayjs from "dayjs";
-import React, {useState} from "react";
-
+import React, {useState, useContext} from "react";
+import {useTravelItinerary} from "../../TravelItineraryContext";
 /**
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
  */
-export default function Chatbox({
-  travelItinerary,
-  setItinerary,
-  updateTravelItineraryInLocalStorage,
-}) {
+export default function Chatbox() {
   /**
    * State - inputValue: the value in the text box
    */
@@ -69,56 +64,8 @@ export default function Chatbox({
     setInputValue(event.target.value);
   };
 
-  const reformItinerary = (itinerary) => {
-    // Flatten all events
-    const allEvents = itinerary.schedule.flatMap(
-      (dailyItinerary) => dailyItinerary.activities
-    );
+  const travelItinerary = useTravelItinerary();
 
-    // Sort all events by startTime
-    allEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
-
-    // Create a map of dates to events
-    const dateToEventsMap = allEvents.reduce((map, event) => {
-      const eventDate = dayjs(event.startTime).format("YYYY-MM-DD");
-      if (!map[eventDate]) {
-        map[eventDate] = [];
-      }
-      map[eventDate].push(event);
-      return map;
-    }, {});
-
-    // Reconstruct the schedule array
-    const newSchedule = Object.entries(dateToEventsMap).map(
-      ([date, activities], index) => ({
-        day: index + 1,
-        date: new Date(date),
-        activities,
-      })
-    );
-
-    // Return a new itinerary object
-    return {...itinerary, schedule: newSchedule};
-  };
-
-  const refactorItinerary = (itinerary) => {
-    const format = "YYYY-MM-DDTHH:mm:ss.SSSZ";
-
-    if (itinerary.schedule.length > 0) {
-      const newItinerary = reformItinerary(itinerary);
-
-      newItinerary.schedule.forEach((dailyItinerary) => {
-        console.log(dailyItinerary);
-        dailyItinerary.date = dayjs(dailyItinerary.date).format(format);
-        dailyItinerary.activities.forEach((event) => {
-          event.startTime = dayjs(event.startTime).format(format);
-          event.endTime = dayjs(event.endTime).format(format);
-        });
-      });
-
-      setItinerary(newItinerary);
-    }
-  };
   /**
    * adds a new message to the list of messages
    * @param {String} newMessage new message to add to the message list
@@ -145,15 +92,6 @@ export default function Chatbox({
         ...prevChatHistory,
         {prompt: newMessage, reply: reply},
       ]);
-
-      if (response.data.travelItinerary) {
-        const jsonVal = JSON.parse(
-          JSON.stringify(response.data.travelItinerary)
-        );
-        console.log(jsonVal);
-        refactorItinerary(jsonVal);
-      }
-
       const updatedMessages = [
         ...messages,
         {text: inputValue, sender: "user"},
@@ -175,14 +113,6 @@ export default function Chatbox({
       setMessages(updatedMessages);
     }
   };
-
-  // useEffect(() => {
-  //   updateChatMessageInLocalStorage(chatHistory);
-  // }, [chatHistory, updateChatMessageInLocalStorage]);
-
-  // useEffect(() => {
-  //   updateTravelItineraryInLocalStorage(travelItinerary);
-  // }, [travelItinerary, updateTravelItineraryInLocalStorage]);
 
   /**
    * jsx render
@@ -208,7 +138,7 @@ export default function Chatbox({
         }}
       >
         {/* Display each Message */}
-        {messages.map((message, index) => (
+        {messages.map((message, index, {length}) => (
           <div key={index} style={{display: "flex"}}>
             <div
               style={{
@@ -221,9 +151,10 @@ export default function Chatbox({
               <MessageCard
                 message={message.text}
                 sender={message.sender}
-                needConfirmation={message.needConfirmation}
-                travelItinerary={
-                  message.needConfirmation ? travelItinerary : null
+                needConfirmation={
+                  message.needConfirmation && index === length - 1
+                    ? true
+                    : false
                 }
               />
             </div>
