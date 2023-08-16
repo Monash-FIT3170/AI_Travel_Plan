@@ -18,6 +18,12 @@ export function ChatPage() {
   const clearChat = () => {
     localStorage.removeItem("chatMessages");
     localStorage.removeItem("chatHistory");
+    localStorage.setItem("chatMessages", JSON.stringify([
+      {
+          text: "Hello, I am your AI Travel Planner. How can I help you today?",
+          sender: "server",
+      }
+  ]));
     setChatBoxKey((prevKey) => prevKey + 1); // Increment the key to force remount
   };
   return (

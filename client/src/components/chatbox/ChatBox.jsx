@@ -15,6 +15,14 @@ import {
  * @returns
  */
 export default function Chatbox() {
+  
+  const DEFAULT_MESSAGE = [
+    {
+      text: "Hello, I am your AI Travel Planner. How can I help you today?",
+      sender: "server",
+    },
+];
+
   /**
    * State - inputValue: the value in the text box
    */
@@ -28,12 +36,7 @@ export default function Chatbox() {
   /**
    * State - messges: list of messages in this chat
    */
-  const [messages, setMessages] = useState([
-    {
-      text: "Hello, I am your AI Travel Planner. How can I help you today?",
-      sender: "server",
-    },
-  ]);
+  const [messages, setMessages] = useState(DEFAULT_MESSAGE);
 
     const [persistedMsgs, setPersistedMsgs] = useLocalStorage('chatMessages', []);
 
