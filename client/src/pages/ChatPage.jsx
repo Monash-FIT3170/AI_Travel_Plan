@@ -16,7 +16,7 @@ export function ChatPage() {
   const [chatBoxKey, setChatBoxKey] = useState(1); // Add a state for key
 
   const clearChat = () => {
-    // Remove chat history from local storage
+    localStorage.removeItem("chatMessages");
     localStorage.removeItem("chatHistory");
     setChatBoxKey((prevKey) => prevKey + 1); // Increment the key to force remount
   };
