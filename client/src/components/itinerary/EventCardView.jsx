@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -12,20 +12,27 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import {TimePicker} from "@mui/x-date-pickers/TimePicker";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { fetchWeatherForLocation, getLocationDetails } from "../api/weatherAPI.js";
+import {
+  fetchWeatherForLocation,
+  getLocationDetails,
+} from "../api/weatherAPI.js";
 import {PlaceSearch} from "./imageAPI";
+import {
+  useTravelItineraryDispatch,
+  useTravelItinerary,
+} from "../../TravelItineraryContext.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export function EventCardView({ event, itinerary, setItinerary }) {
+export function EventCardView({event}) {
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [name, setName] = useState(event.name);
@@ -35,7 +42,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
   const [chatResponse, setResponse] = useState(event.chatResponse);
   const [date, setDate] = useState(dayjs(event.startTime).toDate());
   const [time, setTime] = useState(dayjs(event.startTime).toDate());
-  const [errors, setErrors] = useState({ name: "", date: "", time: "" });
+  const [errors, setErrors] = useState({name: "", date: "", time: ""});
   const [weatherData, setWeatherData] = useState(null);
 
   const [imageUrl, setImageUrl] = useState(null);
@@ -43,7 +50,8 @@ export function EventCardView({ event, itinerary, setItinerary }) {
     const data = await PlaceSearch(event.name);
     setImageUrl(data);
   };
-
+  const itinerary = useTravelItinerary();
+  const itineraryDispatch = useTravelItineraryDispatch();
   // To call the api on load.
   useEffect(() => {
     fetchImage();
@@ -55,7 +63,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
 
   const handleClose = () => {
     setOpen(false);
-    setErrors({ name: "", date: "", time: "" });
+    setErrors({name: "", date: "", time: ""});
   };
 
   const handleDeleteOpen = () => {
@@ -77,7 +85,10 @@ export function EventCardView({ event, itinerary, setItinerary }) {
     };
 
     // Update the itinerary
-    setItinerary(updatedItinerary);
+    itineraryDispatch({
+      type: "updateTravelItinerary",
+      payload: updatedItinerary,
+    });
 
     // Close the delete confirmation dialog
     setDeleteOpen(false);
@@ -98,7 +109,7 @@ export function EventCardView({ event, itinerary, setItinerary }) {
       timeError = "Time is not valid";
     }
 
-    setErrors({ name: nameError, date: dateError, time: timeError });
+    setErrors({name: nameError, date: dateError, time: timeError});
   }, [name, date, time]);
 
   const handleSave = () => {
@@ -120,40 +131,13 @@ export function EventCardView({ event, itinerary, setItinerary }) {
       location,
     };
 
-    // Flatten all events and replace the old event with the new event
-    const allEvents = itinerary.schedule.flatMap((day) => {
-      return day.activities.map((e) => (e.name === event.name ? newEvent : e));
-    });
-
-    // Sort all events by startTime
-    allEvents.sort((a, b) => dayjs(a.startTime).diff(dayjs(b.startTime)));
-
-    // Create a map of dates to events
-    const dateToEventsMap = allEvents.reduce((map, event) => {
-      const eventDate = dayjs(event.startTime).format("YYYY-MM-DD");
-      if (!map[eventDate]) {
-        map[eventDate] = [];
-      }
-      map[eventDate].push(event);
-      return map;
-    }, {});
-
-    // Reconstruct the schedule array
-    const newSchedule = Object.entries(dateToEventsMap).map(
-      ([date, activities], index) => ({
-        day: index + 1,
-        date: dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-        activities,
-      }),
-    );
-
-    setItinerary({ ...itinerary, schedule: newSchedule });
+    itineraryDispatch({type: "insertNewEvent", payload: newEvent});
     setOpen(false);
   };
 
   const fetchWeather = async () => {
-    const placeName = getLocationDetails(location)
-    const weatherData = await fetchWeatherForLocation(placeName)
+    const placeName = getLocationDetails(location);
+    const weatherData = await fetchWeatherForLocation(placeName);
     setWeatherData(weatherData);
   };
 
@@ -164,25 +148,25 @@ export function EventCardView({ event, itinerary, setItinerary }) {
 
   return (
     <Box display="flex" justifyContent="stretch" width="100%">
-      <Card variant="outlined" style={{ width: "100%" }}>
+      <Card variant="outlined" style={{width: "100%"}}>
         <CardHeader
           avatar={<PlaceIcon />}
           title={event.name}
           subheader={
             "DURATION: " +
-            ((new Date(event.endTime) - new Date(event.startTime)) / (1000 * 60 * 60)) +
+            (new Date(event.endTime) - new Date(event.startTime)) /
+              (1000 * 60 * 60) +
             " HRS"
           }
           action={
             <Typography>
-              {weatherData ? `Current temperature: ${weatherData.main.temp}` : 'Fetching weather...'}
+              {weatherData
+                ? `Current temperature: ${weatherData.main.temp}`
+                : "Fetching weather..."}
             </Typography>
           }
         />
-        <CardMedia
-        sx={{ height: 200 }}
-        image={imageUrl}
-        />
+        <CardMedia sx={{height: 200}} image={imageUrl} />
         <CardContent>{event.description}</CardContent>
         <CardActions>
           <Button size="small" onClick={handleDeleteOpen}>

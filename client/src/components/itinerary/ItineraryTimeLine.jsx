@@ -6,28 +6,29 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
-import { EventCardView } from "./EventCardView";
+import {EventCardView} from "./EventCardView";
+import {useTravelItinerary} from "../../TravelItineraryContext";
 import "./ItineraryTimeLine.css";
 
-function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
+function timelineGenerator(dailyItinerary) {
   const formattedMonth = new Date(dailyItinerary.date).toLocaleString(
     "default",
-    { month: "long" },
+    {month: "long"}
   );
   const formattedDate = new Date(dailyItinerary.date).getDate();
   const formattedYear = new Date(dailyItinerary.date).getFullYear();
   console.log(dailyItinerary);
 
   const formattedStartTime = formatTimeToAMPM(
-    new Date(dailyItinerary.activities[0].startTime),
+    new Date(dailyItinerary.activities[0].startTime)
   );
 
   return (
     <TimelineItem>
       <TimelineOppositeContent display="none" />
       <TimelineSeparator>
-        <TimelineDot sx={{ bgcolor: "white" }} />
-        <TimelineConnector sx={{ bgcolor: "white" }} />
+        <TimelineDot sx={{bgcolor: "white"}} />
+        <TimelineConnector sx={{bgcolor: "white"}} />
       </TimelineSeparator>
       <TimelineContent>
         <h5>
@@ -39,8 +40,6 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
             // Using a name identifier for the key so react doesn't re-use the same component
             key={event.name}
             event={event}
-            itinerary={itinerary}
-            setItinerary={setItinerary}
           />
         ))}
       </TimelineContent>
@@ -48,12 +47,16 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
   );
 }
 
-export function ItineraryTimeLine({ travelItinerary, setItinerary }) {
+export function ItineraryTimeLine() {
+  const travelItinerary = useTravelItinerary();
+  console.log(travelItinerary);
   return (
     <Timeline sx={0.2}>
-      {travelItinerary.schedule.map((dailyItinerary) =>
-        timelineGenerator(travelItinerary, dailyItinerary, setItinerary),
-      )}
+      {travelItinerary
+        ? travelItinerary.schedule.map((dailyItinerary) =>
+            timelineGenerator(dailyItinerary)
+          )
+        : ""}
     </Timeline>
   );
 }

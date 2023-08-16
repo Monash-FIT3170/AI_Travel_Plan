@@ -75,7 +75,7 @@ export function AddNewLocationFAB() {
     itinerary.schedule[0].activities.push(newEvent);
 
     // Reform itinerary
-    itineraryDispatch({type: "UPDATE_ITINERARY", payload: itinerary});
+    itineraryDispatch({type: "updateTravelItinerary", payload: itinerary});
     setOpen(false);
   };
 

@@ -6,7 +6,10 @@ import MessageCard from "./MessageCard";
 import axios from "axios";
 import {useLocalStorage} from "../LocalStorageGeneric";
 import React, {useState, useContext} from "react";
-import {useTravelItinerary} from "../../TravelItineraryContext";
+import {
+  useTravelItinerary,
+  useTravelItineraryDispatch,
+} from "../../TravelItineraryContext";
 /**
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
@@ -65,6 +68,7 @@ export default function Chatbox() {
   };
 
   const travelItinerary = useTravelItinerary();
+  const dispatch = useTravelItineraryDispatch();
 
   /**
    * adds a new message to the list of messages
@@ -74,8 +78,13 @@ export default function Chatbox() {
   const addMessage = async (newMessage) => {
     try {
       setOutboxValue("Loading...");
-      // const response = await axios.get('http://localhost:4000/api/chatMessage',
-      // )
+      //HGet Mock data for testing
+      // const response = await axios.get("http://localhost:4000/api/chatMessage");
+      // dispatch({
+      //   type: "updateTravelItinerary",
+      //   payload: response.data,
+      // });
+
       const response = await axios.post(
         "http://localhost:4000/api/chatMessage",
         {
@@ -88,10 +97,12 @@ export default function Chatbox() {
       const reply = response.data.chatResponse
         ? response.data.chatResponse
         : "Sorry, I don't understand that.";
+
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
         {prompt: newMessage, reply: reply},
       ]);
+
       const updatedMessages = [
         ...messages,
         {text: inputValue, sender: "user"},
@@ -101,7 +112,6 @@ export default function Chatbox() {
           sender: "server",
         },
       ];
-
       setMessages(updatedMessages);
     } catch (error) {
       console.error("API call error:", error);
@@ -119,7 +129,7 @@ export default function Chatbox() {
    */
 
   const handleKeyClick = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault(); // Prevents a newline from being added
       handleButtonClick(event);
     }

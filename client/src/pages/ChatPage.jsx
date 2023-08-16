@@ -7,7 +7,10 @@ import React, {useState} from "react";
 import Button from "@mui/material/Button";
 
 import {AddNewLocationFAB} from "../components/itinerary/AddNewLocationFAB";
-import {TravelItineraryProvider} from "../TravelItineraryContext";
+import {
+  TravelItineraryProvider,
+  useTravelItinerary,
+} from "../TravelItineraryContext";
 
 export function ChatPage() {
   const [chatBoxKey, setChatBoxKey] = useState(1); // Add a state for key
@@ -17,7 +20,6 @@ export function ChatPage() {
     localStorage.removeItem("chatHistory");
     setChatBoxKey((prevKey) => prevKey + 1); // Increment the key to force remount
   };
-
   return (
     <div style={{position: "relative"}}>
       <BackgroundImage />
