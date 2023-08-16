@@ -35,7 +35,7 @@ export function ChatPage() {
               >
                 Clear
               </Button>
-              <ChatBox></ChatBox>
+              <ChatBox key={chatBoxKey}></ChatBox>
             </Grid>
             <Grid item xs={6} style={{height: "100vh", overflowY: "auto"}}>
               <ItineraryTimeLine />
