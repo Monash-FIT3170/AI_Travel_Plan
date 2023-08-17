@@ -47,6 +47,7 @@ export default function Chatbox({
    */
   const handleButtonClick = (event) => {
     if (inputValue.length > 0) {
+      console.log(inputValue);
       addMessage(inputValue);
 
       const updatedMessages = [
@@ -98,7 +99,9 @@ export default function Chatbox({
    * @param {*} event => event.target.value contains the input when a new character is added.
    */
   const handleInputEnter = (event) => {
+    console.log("handle input enter run");
     setInputValue(event.target.value);
+    console.log(inputValue);
   };
 
   const reformItinerary = (itinerary) => {
