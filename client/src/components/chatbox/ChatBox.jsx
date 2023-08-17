@@ -40,6 +40,13 @@ export default function Chatbox({
   const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
     useLocalStorage("chatHistory", []);
 
+
+  const keyPressed = (event) => {
+    if (event.key === 'Enter') {
+      handleButtonClick(event);
+    }
+  }
+
   /**
    * Method call when the button is clicked
    * TODO: need to add openai api routing here.
@@ -47,7 +54,6 @@ export default function Chatbox({
    */
   const handleButtonClick = (event) => {
     if (inputValue.length > 0) {
-      console.log(inputValue);
       addMessage(inputValue);
 
       const updatedMessages = [
@@ -65,43 +71,12 @@ export default function Chatbox({
     }
   };
 
-  const enterEventHandler = (event) => {
-    if (event.key === "Enter") {
-        console.log("enter recognised");
-        console.log(inputValue);
-        handleButtonClick(event);
-    }
-  }
-
-  /**
-   * addEnterHandler()
-   * Add a event listener to handle when the enter button is pressed. Used when the
-   * textbox is focused to allow the submission of the user's message without requiring
-   * the user of the submit button.
-   */
-  const addEnterHandler = () => {
-    console.log("enter handler function called");
-    document.addEventListener('keydown', enterEventHandler);
-  }
-  
-  /**
-   * removeEnterHandler()
-   * Removes the event handler that listens for the enter button to be pressed. Called when
-   * the chat textbox goes out of focus.
-   */
-  const removeEnterHandler = () => {
-    console.log("enter handler remover called");
-    document.removeEventListener('keydown', enterEventHandler); 
-  }
-
   /**
    * Allows the TextField to add more characters whenever there's an input
    * @param {*} event => event.target.value contains the input when a new character is added.
    */
   const handleInputEnter = (event) => {
-    console.log("handle input enter run");
     setInputValue(event.target.value);
-    console.log(inputValue);
   };
 
   const reformItinerary = (itinerary) => {
@@ -272,8 +247,7 @@ export default function Chatbox({
             placeholder="Enter message here"
             value={inputValue}
             onChange={handleInputEnter}
-            onFocus={addEnterHandler}
-            onBlur={removeEnterHandler}
+            onKeyDown={keyPressed}
             multiline
             maxRows="1"
             minRows="1"
