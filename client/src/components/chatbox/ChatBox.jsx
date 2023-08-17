@@ -38,6 +38,13 @@ export default function Chatbox() {
   const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
     useLocalStorage("chatHistory", []);
 
+
+  const keyPressed = (event) => {
+    if (event.key === 'Enter') {
+      handleButtonClick(event);
+    }
+  }
+
   /**
    * Method call when the button is clicked
    * TODO: need to add openai api routing here.
@@ -198,8 +205,9 @@ export default function Chatbox() {
             placeholder="Enter message here"
             value={inputValue}
             onChange={handleInputEnter}
+            onKeyDown={keyPressed}
             multiline
-            maxRows="4"
+            maxRows="1"
             minRows="1"
             style={{
               width: "70%",
