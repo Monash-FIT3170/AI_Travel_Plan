@@ -12,6 +12,8 @@ services:
       - "./client/src:/app/src"
     depends_on:
       - backend
+    tags:
+      - ghcr.io/Monash-FIT3170/AI_Travel_Plan/aitravelplannerfrontend:${version}
 
   backend:
     build:
@@ -21,6 +23,8 @@ services:
     volumes:
       - "./server/src:/app/src"
     stdin_open: true
+    tags:
+      - ghcr.io/Monash-FIT3170/AI_Travel_Plan/aitravelplannerbackend:${version}
     
   tests:
     build:

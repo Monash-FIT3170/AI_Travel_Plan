@@ -43,7 +43,7 @@ jobs:
         run: mkdir publish
       - name: Publish Docker Images
         if: github.ref == 'refs/heads/main'
-        run: docker save $(docker images --format '{{.Repository}}:{{.Tag}}' | gzip > publish/docker-images.tar.gz
+        run: docker save $(docker images --format '{{.Repository}}:{{.Tag}}' | grep ghcr.io/Monash-FIT3170/AI_Travel_Plan) | gzip > publish/docker-images.tar.gz
       - name: Publish Artifacts
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-artifact@v3
