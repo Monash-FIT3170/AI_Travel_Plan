@@ -9,10 +9,8 @@ import { List, ListItem } from '@mui/material';
 
 export default function CurrencyExchangeView() {
     const [exchangeRate, setExchangeRate] = useState(1);
-    const [currencyInput, setCurrencyInput] = useState(""); 
-    const [currencyOutput, setCurrencyOutput] = useState("N/A"); 
     const [currencyCode, setCurrencyCode] = useState("USD");
-    const [country, setCountry] = useState("indonesia");
+    const [country] = useState("indonesia");
 
     useEffect(() => {
         fetchExchangeRate();
@@ -53,12 +51,11 @@ export default function CurrencyExchangeView() {
 
     return (
 
-        <Card sx={{ minWidth: 275 }}>
+        <Card sx={{ minWidth: 275, margin: 2 }}>
             <CardHeader title="Currency Exchange" />
 
             <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
-                    {/* <Typography variant="h5">1 AUD = {exchangeRate} {currencyCode}</Typography> */}
                     <Typography variant="body1">
                      <List>
                          <ListItem>1 AUD = {exchangeRate} {currencyCode}</ListItem>
