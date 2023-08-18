@@ -5,6 +5,8 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      tags:
+        - ghcr.io/Monash-FIT3170/AI_Travel_Plan/aitravelplannerfrontend:${version}
     image: app
     ports:
       - "3000:3000"
@@ -12,19 +14,17 @@ services:
       - "./client/src:/app/src"
     depends_on:
       - backend
-    tags:
-      - ghcr.io/Monash-FIT3170/AI_Travel_Plan/aitravelplannerfrontend:${version}
 
   backend:
     build:
       context: ./server
+      tags:
+        - ghcr.io/Monash-FIT3170/AI_Travel_Plan/aitravelplannerbackend:${version}
     ports:
       - "4000:4000"
     volumes:
       - "./server/src:/app/src"
     stdin_open: true
-    tags:
-      - ghcr.io/Monash-FIT3170/AI_Travel_Plan/aitravelplannerbackend:${version}
     
   tests:
     build:
