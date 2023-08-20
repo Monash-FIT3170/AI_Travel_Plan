@@ -3,10 +3,9 @@ import { sendOpenAIChat, textToJSON } from '../services/OpenAIChat.service'
 import { TravelItinerary } from '../models/travelItinerary.model'
 import { mockTravelItinerary1 } from '../MockItinerary'
 import { ChatResponse } from '../models/chatResponse.model'
-import { parse } from 'path'
 
 //for mock data testing only
-const getMockResponse = (req: Request, res: Response) => (res.status(200).json({ travelItinerary: { startDate: '2023-08-02', endDate: '2023-08-10', country: "hong kong", schedule: [] }, chatResponse: "mock response" }))
+const getMockResponse = (req: Request, res: Response) => (res.status(200).json(mockTravelItinerary1))
 
 
 
@@ -34,8 +33,11 @@ const postMessageRequest = async (req: Request, res: Response) => {
 }
 
 const convertToStructuredResponse = async (req: Request, res: Response) => {
+    console.log(req.body)
+
     const text = req.body.text as string
     const travelItinerary = req.body.travelItinerary as TravelItinerary
+    console.log(travelItinerary)
     try {
         const response = await textToJSON(text, travelItinerary)
         const reply = response[0].message?.content

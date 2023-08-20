@@ -20,14 +20,14 @@ export default function MessageCard(props) {
   const dispatchV = useTravelItineraryDispatch();
   async function convertTextToItinerary() {
     const response = await axios.post(
-      "http://localhost:4000/api/chatMessage/",
+      "http://localhost:4000/api/chatMessage/confirm",
       {
         text: props.message,
         travelItinerary: travelItinerary,
       }
     );
     console.log(response.data);
-    dispatchV({type: "update", payload: response.data});
+    dispatchV({type: "updateTravelItinerary", payload: response.data});
     //to do
     //check response body and update itinerary
     //send confirm to the chat

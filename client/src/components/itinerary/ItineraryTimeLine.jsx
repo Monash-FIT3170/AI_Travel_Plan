@@ -51,13 +51,19 @@ export function ItineraryTimeLine() {
   const travelItinerary = useTravelItinerary();
   console.log(travelItinerary);
   return (
-    <Timeline sx={0.2}>
-      {travelItinerary
-        ? travelItinerary.schedule.map((dailyItinerary) =>
-            timelineGenerator(dailyItinerary)
-          )
-        : ""}
-    </Timeline>
+    <div>
+      <h5>
+        Start date{travelItinerary.startDate} End date {travelItinerary.endDate}{" "}
+        country {travelItinerary.country}
+      </h5>
+      <Timeline sx={0.2}>
+        {travelItinerary
+          ? travelItinerary.schedule.map((dailyItinerary) =>
+              timelineGenerator(dailyItinerary)
+            )
+          : ""}
+      </Timeline>
+    </div>
   );
 }
 
