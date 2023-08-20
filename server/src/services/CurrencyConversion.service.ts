@@ -48,28 +48,27 @@ export async function getExchangeRateWithAUD(countryName: string): Promise<numbe
 
 
 
-interface CountryData {
+  interface CountryData {
     name: string;
     official_name: string;
-    alpha2Code: string;
+    cca2: string;
     // Add other relevant properties as needed...
     currencies: {
-      [currencyCode: string]: {
-        name: string;
-        symbol: string;
+      currencyCode: string
+      name: string;
+      symbol: string;
         // Add other relevant properties as needed...
       };
     };
-  }
 
 interface ForexRateData {
   [targetCurrencyCode: string]: number;
   // Forex rate data is expected to have currency codes as keys and numeric rates as values
 }
 
+
 export async function getCountryCodeFromAPI(countryName: string): Promise<string | null> {
-  const apiKey = "XkmVn1d7BXhh607g5JaiIRQCBIMCQqOPs52OZvxI";
-  const apiUrl = `https://countryapi.io/api/name/${encodeURIComponent(countryName)}?apikey=${apiKey}`;
+  const apiUrl = `https://restcountries.com/v3.1/name/${countryName}`;
 
   try {
     const response = await fetch(apiUrl);
@@ -80,12 +79,12 @@ export async function getCountryCodeFromAPI(countryName: string): Promise<string
 
     const responseData = await response.json() as Record<string, CountryData>;
     // Extract the country code from the API response
-    const countryCode = Object.keys(responseData)[0]; // Assuming only one country is returned
-    
+  
+    const countryCode = Object.keys(responseData)[0];
     // Check if the API response contains the country data
     if (countryCode && responseData[countryCode]) {
       const countryData = responseData[countryCode];
-      const alpha2Code = countryData.alpha2Code;
+      const alpha2Code = countryData.cca2;
       return alpha2Code || null;
     } else {
       console.error('Country data not found in the API response.');
@@ -96,7 +95,6 @@ export async function getCountryCodeFromAPI(countryName: string): Promise<string
     return null;
   }
 }
-
 
 
 export async function getCurrencyCodeFromCountryCode(countryCode: string): Promise<string | null> {

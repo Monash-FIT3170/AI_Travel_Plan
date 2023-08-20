@@ -20,6 +20,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import Typography from "@mui/material/Typography"; // Import Typography component
+import axios from 'axios';
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -34,11 +36,14 @@ export function ItineraryRight() {
   const [chatResponse, setResponse] = useState();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [forexRate, setForexRate] = useState(null);
   const [errors, setErrors] = useState({
     name: "",
     startDate: "",
     endDate: "",
   });
+
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -82,6 +87,25 @@ export function ItineraryRight() {
   };
 
   useEffect(() => {
+    async function fetchForexRate() {
+      const countryName = "mexico";
+      try {
+        const response = await axios.post("/http://localhost:4000/api/ForexExchangeRate", {
+          countryName: countryName,
+        });
+        if (response.data.rate !== null) {
+          setForexRate(response.data.rate);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchForexRate();
+
+  
+
+
     let nameError = "";
     let startDateError = "";
     let endDateError = "";
@@ -111,6 +135,16 @@ export function ItineraryRight() {
       endDate: null,
       schedule: [],
     });
+
+    const ForexRateComponent = () => (
+      <div style={{ backgroundColor: "#f0f0f0", padding: "8px", marginBottom: "10px" }}>
+        {forexRate !== null ? (
+          <Typography variant="body1">{`Exchange Rate: 1 AUD = ${forexRate}`}</Typography>
+        ) : (
+          <Typography variant="body1">error fetching rate</Typography>
+        )}
+      </div>
+    );
 
   // NOTE: Reconstructing because the timezone in the mock data is not the same as the timezone in the browser.
   // TODO: When prompting gpt, provide user's timezone such that GPT returns event times in the user's timezone.
@@ -165,6 +199,7 @@ export function ItineraryRight() {
               travelItinerary={itinerary}
               setItinerary={setItinerary}
             />
+            <ForexRateComponent /> {/* Display Forex Rate Component */}
             <div style={{ position: "fixed", bottom: "20px", right: "50px" }}>
               <Button
                 variant="contained"
@@ -179,71 +214,7 @@ export function ItineraryRight() {
       </Background>
 
       <Box display="flex" justifyContent="stretch" width="100%">
-        <Dialog open={open} onClose={handleClose} maxWidth="xs">
-          <DialogTitle>Add New Itinerary Item</DialogTitle>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Name"
-              type="text"
-              fullWidth
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              error={Boolean(errors.name)}
-              helperText={errors.name}
-            />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                label="Start Date"
-                onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
-              />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                label="End Date"
-                onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
-              />
-            </LocalizationProvider>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Location"
-              type="text"
-              fullWidth
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              // error={Boolean(errors.name)}
-              // helperText={errors.name}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Description"
-              type="text"
-              fullWidth
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              // error={Boolean(errors.name)}
-              // helperText={errors.name}
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Cost"
-              type="number"
-              fullWidth
-              value={cost}
-              onChange={(e) => setCost(e.target.value)}
-              // error={Boolean(errors.name)}
-              // helperText={errors.name}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
-          </DialogActions>
-        </Dialog>
+        {/* ... (your existing dialog JSX) */}
       </Box>
     </div>
   );
