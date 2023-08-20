@@ -20,6 +20,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import EmergCardView from "../components/itinerary/EmergCardView";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -152,13 +153,16 @@ export function ItineraryRight() {
       <Background>
         <Grid container>
           <Grid item xs={6}>
-            <ChatBox
+            {/* <ChatBox
               travelItinerary={itinerary}
               setItinerary={setItinerary}
               updateTravelItineraryInLocalStorage={
                 updateTravelItineraryLocalStorage
               }
-            ></ChatBox>
+            ></ChatBox> */}
+            {/* TODO: Add check so that card view will only show up when itinerary has been generated */}
+            <h4 >Key Destination Information</h4>
+            <EmergCardView></EmergCardView>
           </Grid>
           <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
             <ItineraryTimeLine
