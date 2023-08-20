@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import { List, ListItem } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
 
 export default function EmergCardView() {
@@ -36,7 +37,12 @@ export default function EmergCardView() {
 
   const isUniversalEmergencyNumber = emergencyData.universalNumber === "";
 
+  const handlePDF = () => {
+    console.log("test")
+  };
+
   return (
+    <div>
     <Card sx={{ minWidth: 275 }}>
       <CardHeader
         avatar={<ContactEmergencyIcon />}
@@ -62,5 +68,15 @@ export default function EmergCardView() {
         </Typography>
       </CardContent>
     </Card>
+    <div style={{ position: "fixed", bottom: "20px", left: "50px"}}>
+              <Button
+                variant="contained"
+                endIcon={<AddIcon />}
+                onClick={handlePDF}
+              >
+                DOWNLOAD ITINERARY
+              </Button>
+            </div>
+    </div>
   );
 }
