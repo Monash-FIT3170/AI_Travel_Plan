@@ -17,7 +17,7 @@ const PdfDownload = ({rootElementId , downloadFileName}) => {
             const input = document.getElementById(rootElementId);
             input.scrollTo(0, 0);
             html2canvas(input, {
-                allowTaint: true, scale: '1', backgroundColor: '#000000',
+                allowTaint: true, scale: '1', backgroundColor: '#87CEEB',
                 height: input.scrollHeight, windowHeight: input.scrollHeight}).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
                 const imgWidth = 210;
@@ -41,7 +41,7 @@ const PdfDownload = ({rootElementId , downloadFileName}) => {
     };
 
     return <Button variant="contained" endIcon={<AddIcon />} 
-		onClick={downloadPdfDocument}>Download </Button>
+		onClick={downloadPdfDocument}>Download Itinerary</Button>
 }
 
 export default PdfDownload;
