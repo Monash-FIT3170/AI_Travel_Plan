@@ -50,7 +50,7 @@ export default function MyMap() {
         mapStyle="mapbox://styles/mapbox/streets-v9"
         attributionControl={false}
       >
-        <Popup longitude={144.946457} latitude={-37.840935}>
+        <Popup longitude={144.946457} latitude={-37.840935} offset={30}>
           A pretty CSS3 popup. <br /> Easily customizable.
         </Popup>
         {/* Add the marker with label here */}
