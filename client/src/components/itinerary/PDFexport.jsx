@@ -1,53 +1,47 @@
 import React, { useState } from "react";
-import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
-import ReactPDF from "@react-pdf/renderer";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+import AddIcon from "@mui/icons-material/Add";
+import { Button } from "@mui/material";
 
-// Create styles
-const styles = StyleSheet.create({
-	page: {
-		padding: 20,
-	},
-	table: {
-		flexDirection: "row",
-		flexWrap: "wrap",
-	},
-	card: {
-		border: "1pt solid #000",
-		padding: 10,
-		marginBottom: 10,
-	},
-	title: {
-		fontSize: 14,
-		fontWeight: "bold",
-	},
-	description: {
-		fontSize: 12,
-	},
-});
+const PdfDownload = ({rootElementId , downloadFileName}) => {
 
-const data = [
-	{ title: "Card 1", description: "Description for Card 1" },
-	{ title: "Card 2", description: "Description for Card 2" },
-	// TODO: Change to dynamic data
-];
+    const [showLoader, setLoader] = useState(false);
 
-// Create Document Component
-const Itinerarypdf = ({ travelItinerary, setItinerary }) => (
-	// Filling document with cards
-	<Document>
-		<Page size="A4" style={styles.page}>
-			<View style={styles.table}>
-				{data.map((item, index) => (
-					<View key={index} style={styles.card}>
-						<Text style={styles.title}>{item.title}</Text>
-						<Text style={styles.description}>{item.description}</Text>
-					</View>
-				))}
-			</View>
-		</Page>
-	</Document>
-);
+    const downloadPdfDocument = () => {
+        
+        setTimeout(() => {
+            setTimeout(() => {
+                setLoader(true);
+            }, 100);
+            const input = document.getElementById(rootElementId);
+            input.scrollTo(0, 0);
+            html2canvas(input, {
+                allowTaint: true, scale: '1', backgroundColor: '#000000',
+                height: input.scrollHeight, windowHeight: input.scrollHeight}).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const imgWidth = 210;
+                const pageHeight = 290;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let heightLeft = imgHeight;
+                const doc = new jsPDF('pt', 'mm');
+                let position = 0;
+                doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight + 25);
+                heightLeft -= pageHeight;
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    doc.addPage();
+                    doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight + 25);
+                    heightLeft -= pageHeight;
+                }
+                doc.save('download.pdf');
+                setLoader(false);
+            });
+        }, 1000);
+    };
 
-export function exportPDF() {
-	ReactPDF.render(<Itinerarypdf />, `${__dirname}/itinerary.pdf`);
+    return <Button variant="contained" endIcon={<AddIcon />} 
+		onClick={downloadPdfDocument}>Download </Button>
 }
+
+export default PdfDownload;
