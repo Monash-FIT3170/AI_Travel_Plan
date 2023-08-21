@@ -19,7 +19,7 @@ app.use(express.json())
 app.use('/api/healthCheck', require('./routes/healthCheckRoutes'));
 app.use('/api/exampleRoute', require('./routes/ExampleRoute'));
 app.use('/api/chatMessage', require('./routes/chatMessageRoute'));
-app.use('/api/exchangeRate', require('/routes/ForexExchangeRoute'));
+app.use('/api/exchangeRate', require('./routes/ForexExchangeRoute'));
 
 
 /**

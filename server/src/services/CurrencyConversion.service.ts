@@ -1,4 +1,3 @@
-import fetch from 'node-fetch';
 
 // Functoion to get the currency exchange rate against AUD.
 
@@ -98,29 +97,30 @@ export async function getCountryCodeFromAPI(countryName: string): Promise<string
 
 
 export async function getCurrencyCodeFromCountryCode(countryCode: string): Promise<string | null> {
-    const apiUrl = `https://restcountries.com/v2/alpha/${countryCode}`;
-  
-    try {
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        console.error('Error fetching country data from the API.');
-        return null;
-      }
-  
-      const responseData = await response.json() as CountryData;
-      const currencyCodes = Object.keys(responseData.currencies);
-      if (currencyCodes.length > 0) {
-        const currencyCode = currencyCodes[0];
-        return currencyCode;
-      } else {
-        console.error('Currency code not found in the API response.');
-        return null;
-      }
-    } catch (error) {
-      console.error('Error fetching data from the API:', error);
+  const apiUrl = `https://restcountries.com/v2/alpha/${countryCode}`;
+
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      console.error('Error fetching country data from the API.');
       return null;
     }
+
+    const responseData = await response.json();
+    const currencyData = responseData.currencies[0];
+    if (currencyData && currencyData.code) {
+      const currencyCode = currencyData.code;
+      return currencyCode;
+    } else {
+      console.error('Currency code not found in the API response.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching data from the API:', error);
+    return null;
   }
+}
+
 
 export async function getForexRateFromAPI(targetCurrencyCode: string): Promise<number | null> {
     const apiUrl = `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/aud/${encodeURIComponent(targetCurrencyCode)}.json`;
