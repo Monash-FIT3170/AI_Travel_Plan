@@ -1,9 +1,8 @@
 import { Typography } from "@mui/material";
 import React, { useRef, useEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
-import Map, { Marker, Popup } from "react-map-gl";
-import markerIconPng from "leaflet/dist/images/marker-icon.png";
-import { Icon } from "leaflet";
+import Map from "react-map-gl";
+import Marker from "./MyMarker";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -50,23 +49,10 @@ export default function MyMap() {
         mapStyle="mapbox://styles/mapbox/streets-v9"
         attributionControl={false}
       >
-        <Popup longitude={144.946457} latitude={-37.840935} offset={30}>
+        {/* usage of a marker component */}
+        <Marker long={144.946457} lat={-37.840935}>
           A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-        {/* Add the marker with label here */}
-        <Marker
-          icon={
-            new Icon({
-              iconUrl: markerIconPng,
-              iconSize: [25, 41],
-              iconAnchor: [12, 41],
-            })
-          }
-          longitude={144.946457}
-          latitude={-37.840935}
-          offsetLeft={-20}
-          offsetTop={-10}
-        ></Marker>
+        </Marker>
       </Map>
     </div>
   );
