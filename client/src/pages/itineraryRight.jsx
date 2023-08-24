@@ -37,6 +37,7 @@ export function ItineraryRight() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [forexRate, setForexRate] = useState(null);
+  const [currencyCode, setCurrencyCode] = useState(null);
   const [errors, setErrors] = useState({
     name: "",
     startDate: "",
@@ -88,22 +89,33 @@ export function ItineraryRight() {
 
   useEffect(() => {
     async function fetchForexRate() {
-      const countryName = "mexico";
+      const countryName = "america";
       try {
-        const response = await axios.post("/http://localhost:4000/api/ForexExchangeRate", {
+        const response = await axios.post("http://localhost:4000/api/exchangeRate", {
           countryName: countryName,
         });
+        console.log("Response data:", response.data);
+
         if (response.data.rate !== null) {
-          setForexRate(response.data.rate);
+          console.log("Setting forex rate:", response.data.forexRate);
+          setForexRate(response.data.forexRate);
         }
+        
+        // Also set the countryCode if available in the response
+        if (response.data.currencyCode !== null) {
+          console.log("Setting country code:", response.data.currencyCode);
+          setCurrencyCode(response.data.currencyCode);
+        }
+
       } catch (error) {
-        console.error(error);
+        console.error("Fetch error:", error);
       }
     }
 
     fetchForexRate();
 
   
+
 
 
     let nameError = "";
@@ -127,7 +139,7 @@ export function ItineraryRight() {
       startDate: startDateError,
       endDate: endDateError,
     });
-  }, [name, startDate, endDate]);
+  }, []);
 
   const [itinerary, setItinerary, updateTravelItineraryLocalStorage] =
     useLocalStorage("travelItinerary", {
@@ -139,9 +151,9 @@ export function ItineraryRight() {
     const ForexRateComponent = () => (
       <div style={{ backgroundColor: "#f0f0f0", padding: "8px", marginBottom: "10px" }}>
         {forexRate !== null ? (
-          <Typography variant="body1">{`Exchange Rate: 1 AUD = ${forexRate}`}</Typography>
+          <Typography variant="body1">{`Exchange Rate: 1 AUD = ${forexRate} ${currencyCode}`}</Typography>
         ) : (
-          <Typography variant="body1">error fetching rate</Typography>
+          <Typography variant="body1">Fetching exchange rate...</Typography>
         )}
       </div>
     );

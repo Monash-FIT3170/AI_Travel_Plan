@@ -1,7 +1,7 @@
 
 // Functoion to get the currency exchange rate against AUD.
 
-export async function getExchangeRateWithAUD(countryName: string): Promise<number | null> {
+export async function getExchangeRateWithAUD(countryName: string): Promise<{ forexRate: number, currencyCode: string } | null> {
     // Get the country code from the country name
     const countryCode = await getCountryCodeFromAPI(countryName);
     if (countryCode === null) {
@@ -22,17 +22,21 @@ export async function getExchangeRateWithAUD(countryName: string): Promise<numbe
   
     console.log(`Currency code for ${countryCode}: ${currencyCode}`);
   
-  
+    
   
     // Get the forex rate for the obtained currency code against AUD
     const forexRate = await getForexRateFromAPI(currencyCode); 
-    if (forexRate === null) {
-      console.log(`Forex rate for ${currencyCode} to AUD not found or error occurred.`);
+
+    currencyCode = currencyCode.toUpperCase();
+    if (forexRate !== null) {
+      return {
+        forexRate: forexRate,
+        currencyCode: currencyCode,
+      };
+    } else {
+      console.log(`Forex rate or country code not found for ${countryName}.`);
       return null;
     }
-  
-    console.log(`Forex rate for ${currencyCode} to AUD: ${forexRate}`);
-    return forexRate;
   }
 
 

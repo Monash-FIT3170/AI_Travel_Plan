@@ -9,14 +9,23 @@ import { getExchangeRateWithAUD } from '../services/CurrencyConversion.service'
  * handle errors
  */
 
-
-
-
-const currencyRequest = async (req: Request, res: Response)  => {
-    const countryName = req.body.countryName as string
-    await getExchangeRateWithAUD(countryName) ? res.status(201).json({ message: req.body }) : res.status(400).json({ message: 'failure' })
-}
-
-module.exports = {
+const currencyRequest = async (req: Request, res: Response) => {
+    const countryName = req.body.countryName as string;
+    try {
+      const exchangeData = await getExchangeRateWithAUD(countryName);
+      
+      if (exchangeData !== null) {
+        const { forexRate, currencyCode } = exchangeData;
+        res.status(201).json({ forexRate, currencyCode }); 
+      } else {
+        res.status(400).json({ message: 'failure' });
+      }
+    } catch (error) {
+      console.error('Eror processing currency request:', error);
+      res.status(500).json({ message: 'error' });
+    }
+  };
+  
+  module.exports = {
     currencyRequest
-}
+  };
