@@ -47,11 +47,7 @@ export function EventCardView({ event }) {
   const [imageUrl, setImageUrl] = useState(null);
 
   const fetchImage = async () => {
-    console.log(
-      "HRTWH$TY$%#^$#%Y#$Y^H&U$&$&$&&^%&$#Y%^H&%J%$J$%&J&$J&$^J$&J$%"
-    );
     const data = await PlaceSearch(event.name);
-    console.log(data);
     setImageUrl(data);
   };
   const itinerary = useTravelItinerary();
