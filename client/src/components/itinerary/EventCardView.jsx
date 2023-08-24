@@ -184,7 +184,6 @@ export function EventCardView({ event }) {
           <Button size="small" onClick={handleClickOpen}>
             Edit
           </Button>
-          <Button onClick={fetchWeather}>Fetch Weather</Button>
         </CardActions>
       </Card>
 
