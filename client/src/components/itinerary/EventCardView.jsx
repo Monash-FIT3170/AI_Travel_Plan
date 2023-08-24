@@ -24,7 +24,7 @@ import {
   fetchWeatherForLocation,
   getWeatherIconUrl,
 } from "../api/weatherAPI.js";
-import { PlaceSearch } from "./imageAPI";
+import { PlaceSearch } from "../api/imageAPI.jsx";
 import {
   useTravelItineraryDispatch,
   useTravelItinerary,
@@ -44,18 +44,14 @@ export function EventCardView({ event }) {
   const [time, setTime] = useState(dayjs(event.startTime).toDate());
   const [errors, setErrors] = useState({ name: "", date: "", time: "" });
   const [weatherData, setWeatherData] = useState(null);
-
   const [imageUrl, setImageUrl] = useState(null);
+
   const fetchImage = async () => {
     const data = await PlaceSearch(event.name);
     setImageUrl(data);
   };
   const itinerary = useTravelItinerary();
   const itineraryDispatch = useTravelItineraryDispatch();
-  // To call the api on load.
-  useEffect(() => {
-    fetchImage();
-  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -137,12 +133,12 @@ export function EventCardView({ event }) {
 
   const fetchWeather = async () => {
     const weatherData = await fetchWeatherForLocation(location);
-
     setWeatherData(weatherData);
   };
 
   // Do not delete, this is to call the api on load.
   useEffect(() => {
+    fetchImage();
     fetchWeather();
   }, []);
 
