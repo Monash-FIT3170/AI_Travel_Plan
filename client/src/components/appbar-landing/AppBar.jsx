@@ -21,10 +21,20 @@ const MyAppBar = () => {
     >
       <Toolbar>
         <Box display="flex" alignItems="center" flexGrow={1}>
-          <HomeIcon style={{ marginRight: "10px", color: "white" }} />
-          <Typography variant="h6" style={{ color: "white" }}>
-            Get Packing Traveller
-          </Typography>
+          <Link
+            to="/"
+            style={{
+              color: "inherit",
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <HomeIcon style={{ marginRight: "10px", color: "white" }} />
+            <Typography variant="h6" style={{ color: "white" }}>
+              Get Packing Traveller
+            </Typography>
+          </Link>
         </Box>
         <Button
           color="inherit"
@@ -33,7 +43,8 @@ const MyAppBar = () => {
           style={{
             color: "white",
             marginRight: "88px",
-            backgroundColor: activeButton === "travel" ? "brown" : "transparent",
+            backgroundColor:
+              activeButton === "travel" ? "brown" : "transparent",
           }}
           onClick={() => handleClick("travel")}
         >
@@ -46,7 +57,8 @@ const MyAppBar = () => {
           style={{
             color: "white",
             marginRight: "88px",
-            backgroundColor: activeButton === "itinerary" ? "brown" : "transparent",
+            backgroundColor:
+              activeButton === "itinerary" ? "brown" : "transparent",
           }}
           onClick={() => handleClick("itinerary")}
         >
@@ -71,4 +83,3 @@ const MyAppBar = () => {
 };
 
 export default MyAppBar;
- 
