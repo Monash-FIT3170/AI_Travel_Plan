@@ -27,7 +27,13 @@ export default function MessageCard(props) {
       }
     );
     console.log(response.data);
-    dispatchV({type: "updateTravelItinerary", payload: response.data});
+    if (response.data.day) {
+      dispatchV({type: "insertNewEvent", payload: response.data});
+    } else {
+      dispatchV({type: "updateTravelItinerary", payload: response.data});
+    }
+    props.sendMessageFunction("Confirmed! lets move on");
+
     //to do
     //check response body and update itinerary
     //send confirm to the chat
@@ -65,7 +71,7 @@ export default function MessageCard(props) {
       <Box padding={1} borderRadius={4} bgcolor={backgroundStyle}>
         <Typography variant="body1">{props.message}</Typography>
         {props.needConfirmation ? (
-          <button onClick={convertTextToItinerary}> click me</button>
+          <button onClick={convertTextToItinerary}> Confirm</button>
         ) : null}
       </Box>
     </Box>

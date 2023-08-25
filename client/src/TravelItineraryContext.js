@@ -34,9 +34,12 @@ function reducer(state, action) {
   console.log(action);
   switch (action.type) {
     case "updateTravelItinerary":
-      return sortEvents(action.payload);
+      return action.payload.schedule
+        ? sortEvents(action.payload)
+        : action.payload;
     case "insertNewEvent":
-      return insertEvent(action.payload, state);
+      console.log(action.payload.activities[0]);
+      return insertEvent(action.payload.activities[0], state);
     default:
       throw new Error(`Unknown action: ${action.type}`);
   }

@@ -53,11 +53,14 @@ export function ItineraryTimeLine() {
   return (
     <div>
       <h5>
-        Start date{travelItinerary.startDate} End date {travelItinerary.endDate}{" "}
-        country {travelItinerary.country}
+        {travelItinerary.startDate
+          ? "Start date" + travelItinerary.startDate
+          : ""}{" "}
+        {travelItinerary.endDate ? "End Date" + travelItinerary.endDate : ""}{" "}
+        {travelItinerary.country ? "country" + travelItinerary.country : ""}
       </h5>
       <Timeline sx={0.2}>
-        {travelItinerary
+        {travelItinerary.schedule
           ? travelItinerary.schedule.map((dailyItinerary) =>
               timelineGenerator(dailyItinerary)
             )

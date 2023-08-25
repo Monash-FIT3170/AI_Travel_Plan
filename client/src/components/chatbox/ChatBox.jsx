@@ -38,12 +38,11 @@ export default function Chatbox() {
   const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
     useLocalStorage("chatHistory", []);
 
-
   const keyPressed = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleButtonClick(event);
     }
-  }
+  };
 
   /**
    * Method call when the button is clicked
@@ -173,6 +172,7 @@ export default function Chatbox() {
                     ? true
                     : false
                 }
+                sendMessageFunction={addMessage}
               />
             </div>
           </div>
