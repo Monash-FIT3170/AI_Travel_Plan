@@ -17,8 +17,8 @@ const DragUp = () => {
   };
 
   const handleMouseMove = (e) => {
-    if (isDragging && dragStart - e.clientY > 100) {
-      navigate("/chat");
+    if (isDragging && dragStart - e.clientY > 20) {
+      navigate("/chat", { state: { fromHomePage: true } });
     }
   };
 

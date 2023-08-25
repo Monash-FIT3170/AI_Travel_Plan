@@ -6,18 +6,17 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
-import {EventCardView} from "./EventCardView";
-import {useTravelItinerary} from "../../TravelItineraryContext";
+import { EventCardView } from "./EventCardView";
+import { useTravelItinerary } from "../../TravelItineraryContext";
 import "./ItineraryTimeLine.css";
 
 function timelineGenerator(dailyItinerary) {
   const formattedMonth = new Date(dailyItinerary.date).toLocaleString(
     "default",
-    {month: "long"}
+    { month: "long" }
   );
   const formattedDate = new Date(dailyItinerary.date).getDate();
   const formattedYear = new Date(dailyItinerary.date).getFullYear();
-  console.log(dailyItinerary);
 
   const formattedStartTime = formatTimeToAMPM(
     new Date(dailyItinerary.activities[0].startTime)
@@ -27,8 +26,8 @@ function timelineGenerator(dailyItinerary) {
     <TimelineItem>
       <TimelineOppositeContent display="none" />
       <TimelineSeparator>
-        <TimelineDot sx={{bgcolor: "white"}} />
-        <TimelineConnector sx={{bgcolor: "white"}} />
+        <TimelineDot sx={{ bgcolor: "white" }} />
+        <TimelineConnector sx={{ bgcolor: "white" }} />
       </TimelineSeparator>
       <TimelineContent>
         <h5>

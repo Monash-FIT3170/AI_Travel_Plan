@@ -5,7 +5,8 @@ import { mockTravelItinerary1 } from '../MockItinerary'
 import { ChatResponse } from '../models/chatResponse.model'
 
 //for mock data testing only
-const getMockResponse = (req: Request, res: Response) => (res.status(200).json(mockTravelItinerary1))
+const getMockResponse = (req: Request, res: Response) =>
+  res.status(200).json(mockTravelItinerary1);
 
 
 
@@ -54,31 +55,29 @@ const convertToStructuredResponse = async (req: Request, res: Response) => {
 }
 
 function parseResponse(response: string): ChatResponse {
-    //parse response to json
+  //parse response to json
 
-    const startIndex = response.indexOf('{')
-    const endIndex = response.lastIndexOf('}')
-    if (startIndex === -1 || endIndex === -1) {
-        return { chatResponse: response }
-    }
+  const startIndex = response.indexOf("{");
+  const endIndex = response.lastIndexOf("}");
+  if (startIndex === -1 || endIndex === -1) {
+    return { chatResponse: response };
+  }
 
+  const jsonString = response.substring(startIndex, endIndex + 1);
 
+  // const findString = response.indexOf('```')
+  // const endString = response.lastIndexOf('`')
+  const other =
+    response.substring(0, startIndex) + response.substring(endIndex + 1);
+  const json = JSON.parse(jsonString) as ChatResponse;
 
-    const jsonString = response.substring(startIndex, endIndex + 1);
-
-    // const findString = response.indexOf('```')
-    // const endString = response.lastIndexOf('`')
-    const other = response.substring(0, startIndex) + response.substring(endIndex + 1)
-    const json = JSON.parse(jsonString) as ChatResponse
-
-    console.log("json converstion" + json)
-    console.log("no structured" + other)
-    return json
+  console.log("json converstion" + json);
+  console.log("no structured" + other);
+  return json;
 }
-
 
 module.exports = {
-    postMessageRequest,
-    getMockResponse,
-    convertToStructuredResponse
-}
+  postMessageRequest,
+  getMockResponse,
+  convertToStructuredResponse,
+};

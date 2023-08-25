@@ -1,7 +1,7 @@
 import React from "react";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import {ChatPage} from "./pages/ChatPage";
-import {ItineraryPage} from "./pages/ItineraryPage";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ChatPage } from "./pages/ChatPage";
+import { ItineraryPage } from "./pages/ItineraryPage";
 import HelpPage from "./pages/HelpPage";
 import HomePage from "./pages/HomePage";
 import MyAppBar from "./components/appbar-landing/AppBar";
@@ -14,7 +14,6 @@ function App() {
   return (
     <Router>
       <MyAppBar />
-
       <Routes>
         {" "}
         {/* <- used to switch between pages of the application. Uses react-router-dom*/}
