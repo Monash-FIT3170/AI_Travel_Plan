@@ -28,9 +28,8 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
         Follow these steps to help the user plan their trip:
         Step1- Make you have these important information country travelling, start date, end date, budget, number of people going, and their preferences for activities, number of people going and preferences for activities are optioinal
         Step2- Once you have all the listed information in step 1, recap the information along with the country to the user and ask them if the information is correct and make sure to set the <<needConfirmation>> field in the response schema to true
-        Step3- Start building the itinerary itiratively starting from day 1. Suggest an activity at a time, making sure to provide the name, location, city, description, start time, end time and the cost. 
-        Please also include lunch and dinner in the activities suggestions as well. Return the response to user before continuing to the next day
-        Step4- Once you suggest the activity, ask the user if the activities are ok and make sure to set the <<needConfirmation>> field in the response schema to true
+        Step3- Start building the itinerary itiratively starting from day 1. Suggest an activity at a time, making sure to provide the name, location, city, description, starting time, ending time and the cost. Please also include lunch and dinner as part of the suggested activties.
+        Step4- Once you suggest the activity, ask the user if the activity suggested are ok and make sure to set the <<needConfirmation>> field in the response schema to true
         Step5- Once you think the daily activities are enough,  repeat step 3 and 4 until you cover all the days in the trip
 
         Strict following these response schemas when responding to the user:
@@ -38,7 +37,8 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
             chatResponse: "string",
             needConfirmation: boolean,
         }>> 
-        The chatResponse field should contain your response and the needConfirmation is used when asking user for confirmation of their detials and the activities.
+        
+        The chatResponse field should contain your  keep it one single line of string and the needConfirmation is used when asking user for confirmation of their detials and the activities.
         heres a sample response for step2:
         """
       {
@@ -46,9 +46,9 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
         "needConfirmation": true
         }
         """
-        heres a sample response for step4, do not add addition new line in the chat response:
+        heres a sample response for step3 and 4:
         {
-        "chatResponse": "Here is a suggestion for the first activity on Day 1: Activity:activity, Location:location,City: city, description: description, cost: cost. Please confirm if this activity is okay. If you are okay, we can move on with the next activity for Day 1."
+        "chatResponse": "Here is a suggestion for the first activity on Day 1 (9am to 10 am):Location:<location>,City:<city>, description: <description>, cost: <cost>. Please confirm if this activity is okay. If you are okay, we can move on with the next activity for Day 1."
         "needConfirmation": true
         }
         `

@@ -39,7 +39,12 @@ function reducer(state, action) {
         : action.payload;
     case "insertNewEvent":
       console.log(action.payload.activities[0]);
-      return insertEvent(action.payload.activities[0], state);
+      console.log(state);
+      if (state.schedule) {
+        return insertEvent(action.payload.activities[0], state);
+      } else {
+        return {...state, schedule: [action.payload]};
+      }
     default:
       throw new Error(`Unknown action: ${action.type}`);
   }
@@ -81,26 +86,10 @@ const sortEvents = (itinerary) => {
 
 function insertEvent(newEvent, itinerary) {
   //insert into schedule if there is same event
+
   const allEvents = itinerary.schedule.flatMap((day) => {
     return day.activities.map((e) => (e.name === newEvent.name ? newEvent : e));
   });
-
-  return sortEvents(allEvents);
+  console.log(allEvents);
+  return sortEvents({...itinerary, schedule: allEvents});
 }
-
-// const refactorItinerary = (itinerary) => {
-//   const format = "YYYY-MM-DDTHH:mm:ss.SSSZ";
-
-//   if (itinerary.schedule.length > 0) {
-//     const newItinerary = reformItinerary(itinerary);
-
-//     newItinerary.schedule.forEach((dailyItinerary) => {
-//       console.log(dailyItinerary);
-//       dailyItinerary.date = dayjs(dailyItinerary.date).format(format);
-//       dailyItinerary.activities.forEach((event) => {
-//         event.startTime = dayjs(event.startTime).format(format);
-//         event.endTime = dayjs(event.endTime).format(format);
-//       });
-//     });
-//   }
-// };
