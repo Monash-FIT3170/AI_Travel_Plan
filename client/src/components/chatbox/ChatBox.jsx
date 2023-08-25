@@ -175,6 +175,7 @@ export default function Chatbox() {
                     ? true
                     : false
                 }
+                sendMessageFunction={addMessage}
               />
             </div>
           </div>
