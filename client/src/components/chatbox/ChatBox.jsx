@@ -4,6 +4,16 @@ import { TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import MessageCard from "./MessageCard";
 import axios from "axios";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from "@mui/material/DialogTitle";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
+import dayjs from "dayjs";
 import { useLocalStorage } from "../LocalStorageGeneric";
 import React, { useState, useContext } from "react";
 import {
@@ -34,6 +44,29 @@ export default function Chatbox() {
       sender: "server",
     },
   ]);
+
+  /**
+   * States - initial information about the travel itinerary
+   */
+  const [destination, setDestination] = useState();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [budget, setBudget] = useState();
+
+  const [chatStarted, setChatStarted] = useState(false);
+  const [showForm, setShowForm] = useState(false); // to track if form should be shown
+
+  const handleDateChange = (event) => {
+    setEnteredDate(event.target.value);
+  };
+
+  const handleConfirm = () => {
+    setShowForm(false); // Hide the form after confirmation
+    setChatStarted(true);  // Start the chat
+    setDestination(destination);
+    setStartDate(startDate);
+    setEndDate(endDate);
+  };
 
   const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
     useLocalStorage("chatHistory", []);
@@ -180,7 +213,6 @@ export default function Chatbox() {
           </div>
         ))}
       </div>
-      {/* Input message text field */}
       <div
         style={{
           position: "fixed",
@@ -188,7 +220,71 @@ export default function Chatbox() {
           left: "0",
           width: "100%",
           padding: "15px",
-        }}
+      }} 
+      >
+      {/* Start the chat */}
+      <Button
+        variant="contained"
+        onClick={() => setShowForm(true)} // on click, show the form
+      >
+        Chat now
+      </Button>
+      {/* Show the form and confirm button*/}
+      {showForm && ( 
+          <Box display="flex" justifyContent="stretch" width="100%">
+          <Dialog open={open} maxWidth="xs">
+            <DialogTitle>Get Started</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Welcome to our Travel Planner! Please fill in the form below before starting the chat.
+              </DialogContentText>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Destination"
+                type="text"
+                fullWidth
+                onChange={(e) => setDestination(e.target.value)}
+              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                label="Start Date"
+                onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
+              />
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                label="End Date"
+                onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
+              />
+            </LocalizationProvider>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Budget"
+              type="number"
+              fullWidth
+              value={budget}
+              onChange={(e) => setBudget(e.target.value)}
+            />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleConfirm}>Start the chat</Button>
+            </DialogActions>
+          </Dialog>
+        </Box>
+        )}
+      </div>
+      {/* Input message text field */}
+      {chatStarted && (
+      <div
+          style={{
+              position: "fixed",
+              bottom: "0",
+              left: "0",
+              width: "100%",
+              padding: "15px",
+          }}
       >
         <Box
           display="flex"
@@ -234,7 +330,7 @@ export default function Chatbox() {
             <SendIcon />
           </IconButton>
         </Box>
-      </div>
-    </div>
+      </div>)
+}</div>
   );
 }
