@@ -5,7 +5,6 @@ import { ItineraryPage } from "./pages/ItineraryPage";
 import HelpPage from "./pages/HelpPage";
 import HomePage from "./pages/HomePage";
 import MyAppBar from "./components/appbar-landing/AppBar";
-import GoogleMapsLoader from "./components/api/GoogleMapsLoader";
 /**
  * The high level component that contains all pages and components of the application
  * @returns The application's view
@@ -14,7 +13,6 @@ import GoogleMapsLoader from "./components/api/GoogleMapsLoader";
 function App() {
   return (
     <Router>
-      <GoogleMapsLoader />
       <MyAppBar />
       <Routes>
         {" "}

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
@@ -7,9 +7,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
-import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
@@ -30,6 +30,7 @@ export function AddNewLocationFAB() {
   const [description, setDescription] = useState();
   const [cost, setCost] = useState();
   const [location, setLocation] = useState();
+  const [city, setCity] = useState();
   const [chatResponse, setResponse] = useState();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -60,6 +61,7 @@ export function AddNewLocationFAB() {
   const itineraryDispatch = useTravelItineraryDispatch();
 
   const handleSave = () => {
+    validateFields();
     if (errors.name || errors.startDateError || errors.endDateError) {
       alert("Please enter valid inputs before saving.");
       return;
@@ -74,13 +76,14 @@ export function AddNewLocationFAB() {
       startTime: dayjs(startDate).format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
       name,
       location,
+      city,
     };
 
     // Add the new event to the itinerary without sorting
     itinerary.schedule[0].activities.push(newEvent);
 
     // Reform itinerary
-    itineraryDispatch({type: "updateTravelItinerary", payload: itinerary});
+    itineraryDispatch({ type: "updateTravelItinerary", payload: itinerary });
     setOpen(false);
   };
 
@@ -112,7 +115,9 @@ export function AddNewLocationFAB() {
     }
 
     fetchForexRate();
+  }, []);
 
+  const validateFields = () => {
     let nameError = "";
     let startDateError = "";
     let endDateError = "";
@@ -121,7 +126,6 @@ export function AddNewLocationFAB() {
       nameError = "Name is required";
     }
 
-    // TODO: Check null Date
     if (startDate === null) {
       startDateError = "Start Date is required";
     }
@@ -134,11 +138,15 @@ export function AddNewLocationFAB() {
       startDate: startDateError,
       endDate: endDateError,
     });
-  }, []);
+  };
 
   const ForexRateComponent = () => (
     <div
-      style={{backgroundColor: "#f0f0f0", padding: "8px", marginBottom: "10px"}}
+      style={{
+        backgroundColor: "#f0f0f0",
+        padding: "8px",
+        marginBottom: "10px",
+      }}
     >
       {forexRate !== null ? (
         <Typography variant="body1">{`Exchange Rate: 1 AUD = ${forexRate} ${currencyCode}`}</Typography>
@@ -185,6 +193,17 @@ export function AddNewLocationFAB() {
                 onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
               />
             </LocalizationProvider>
+            <TextField
+              autoFocus
+              margin="dense"
+              label="City"
+              type="text"
+              fullWidth
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              // error={Boolean(errors.name)}
+              // helperText={errors.name}
+            />
             <TextField
               autoFocus
               margin="dense"
