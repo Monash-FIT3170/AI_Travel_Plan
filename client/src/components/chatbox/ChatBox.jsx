@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import MessageCard from "./MessageCard";
 import axios from "axios";
 import {useLocalStorage} from "../LocalStorageGeneric";
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import {
   useTravelItinerary,
   useTravelItineraryDispatch,
@@ -15,6 +15,14 @@ import {
  * @returns
  */
 export default function Chatbox() {
+  
+  const DEFAULT_MESSAGE = [
+    {
+      text: "Hello, I am your AI Travel Planner. How can I help you today?",
+      sender: "server",
+    },
+];
+
   /**
    * State - inputValue: the value in the text box
    */
@@ -28,12 +36,17 @@ export default function Chatbox() {
   /**
    * State - messges: list of messages in this chat
    */
-  const [messages, setMessages] = useState([
-    {
-      text: "Hello, I am your AI Travel Planner. How can I help you today?",
-      sender: "server",
-    },
-  ]);
+  const [messages, setMessages] = useState(DEFAULT_MESSAGE);
+
+    const [persistedMsgs, setPersistedMsgs] = useLocalStorage('chatMessages', []);
+
+    useEffect(() => {
+      setMessages(persistedMsgs);
+    }, []);
+
+    useEffect(() => {
+      setPersistedMsgs(messages);
+    }, [messages]);
 
   const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
     useLocalStorage("chatHistory", []);
@@ -53,8 +66,8 @@ export default function Chatbox() {
     if (inputValue.length > 0) {
       addMessage(inputValue);
 
-      const updatedMessages = [...messages, {text: inputValue, sender: "user"}];
-      setMessages(updatedMessages);
+      const Messages =  {text: inputValue, sender: "user"};
+      setMessages(prevMessages => [...prevMessages, Messages]);
 
       // Clear the input field
       setInputValue("");
@@ -109,16 +122,14 @@ export default function Chatbox() {
         {prompt: newMessage, reply: reply},
       ]);
 
-      const updatedMessages = [
-        ...messages,
-        {text: inputValue, sender: "user"},
-        {
-          text: response.data.chatResponse,
-          needConfirmation: response.data.needConfirmation,
-          sender: "server",
-        },
-      ];
-      setMessages(updatedMessages);
+      const serverMessages = {
+        text: response.data.chatResponse,
+        needConfirmation: response.data.needConfirmation,
+        sender: "server",
+      };
+
+      setMessages(prevMessages => [...prevMessages, serverMessages]);
+
     } catch (error) {
       console.error("API call error:", error);
       const updatedMessages = [
