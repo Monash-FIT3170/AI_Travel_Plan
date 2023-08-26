@@ -20,6 +20,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import MyMap from "../components/map/MyMap"
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -152,13 +153,14 @@ export function ItineraryRight() {
       <Background>
         <Grid container>
           <Grid item xs={6}>
-            <ChatBox
+            <MyMap/>
+            {/* <ChatBox
               travelItinerary={itinerary}
               setItinerary={setItinerary}
               updateTravelItineraryInLocalStorage={
                 updateTravelItineraryLocalStorage
               }
-            ></ChatBox>
+            ></ChatBox> */}
           </Grid>
           <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
             <ItineraryTimeLine
