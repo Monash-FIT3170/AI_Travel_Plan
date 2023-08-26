@@ -175,10 +175,10 @@ export function EventCardView({ event }) {
         <CardMedia sx={{ height: 200 }} image={imageUrl} />
         <CardContent>{event.description}</CardContent>
         <CardActions>
-          <Button size="small" onClick={handleDeleteOpen}>
+          <Button size="small" onClick={handleDeleteOpen} data-html2canvas-ignore="true">
             Delete
           </Button>
-          <Button size="small" onClick={handleClickOpen}>
+          <Button size="small" onClick={handleClickOpen} data-html2canvas-ignore="true">
             Edit
           </Button>
         </CardActions>

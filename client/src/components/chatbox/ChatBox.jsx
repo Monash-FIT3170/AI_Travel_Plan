@@ -132,6 +132,7 @@ export default function Chatbox() {
   const addMessage = async (newMessage) => {
     try {
       setOutboxValue("Loading...");
+<<<<<<< HEAD
       //HGet Mock data for testing
       // const response = await axios.get("http://localhost:4000/api/chatMessage");
       // dispatch({
@@ -140,6 +141,13 @@ export default function Chatbox() {
       // });
 
       const response = await axios.post(
+=======
+      // const response = await axios.get('http://localhost:4000/api/chatMessage',
+      // )
+
+      // GET for mock data, POST for working data
+      const response = await axios.get(
+>>>>>>> dev
         "http://localhost:4000/api/chatMessage",
         {
           prompt: newMessage,
