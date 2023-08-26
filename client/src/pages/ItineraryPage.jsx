@@ -1,13 +1,16 @@
 import Background from "../components/background/Background";
 import BackgroundImage from "../components/background/BackgroundImage";
 import Typography from "@mui/material/Typography"; // Import Typography component
-import Grid from "@mui/material/Grid"
-import { AddNewLocationFAB } from "../components/itinerary/AddNewLocationFAB";
-import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
+import Grid from "@mui/material/Grid";
+import {AddNewLocationFAB} from "../components/itinerary/AddNewLocationFAB";
+import {ItineraryTimeLine} from "../components/itinerary/ItineraryTimeLine";
 import MyMap from "./../components/map/MyMap";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
+import {useTravelItinerary} from "../TravelItineraryContext";
 export function ItineraryPage() {
+  const travelItinerary = useTravelItinerary();
+  console.log(travelItinerary);
   const [forexRate, setForexRate] = useState(null);
   const [currencyCode, setCurrencyCode] = useState(null);
 
@@ -65,13 +68,11 @@ export function ItineraryPage() {
             <MyMap />
             <ForexRateComponent />
           </Grid>
-          <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
-          <ItineraryTimeLine />
-                <div
-                  style={{ position: "fixed", bottom: "20px", right: "50px" }}
-                >
-                  <AddNewLocationFAB></AddNewLocationFAB>
-                </div>
+          <Grid item xs={6} style={{height: "100vh", overflowY: "auto"}}>
+            <ItineraryTimeLine />
+            <div style={{position: "fixed", bottom: "20px", right: "50px"}}>
+              <AddNewLocationFAB></AddNewLocationFAB>
+            </div>
           </Grid>
         </Grid>
       </Background>
