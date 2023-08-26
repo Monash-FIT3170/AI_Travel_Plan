@@ -1,9 +1,10 @@
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import Box from "@mui/material/Box";
 import MessageCard from "./MessageCard";
 import axios from "axios";
+
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -16,6 +17,7 @@ import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
 import { useLocalStorage } from "../LocalStorageGeneric";
 import React, { useState, useContext } from "react";
+
 import {
   useTravelItinerary,
   useTravelItineraryDispatch,
@@ -25,6 +27,14 @@ import {
  * @returns
  */
 export default function Chatbox() {
+  
+  const DEFAULT_MESSAGE = [
+    {
+      text: "Hello, I am your AI Travel Planner. How can I help you today?",
+      sender: "server",
+    },
+];
+
   /**
    * State - inputValue: the value in the text box
    */
@@ -38,12 +48,17 @@ export default function Chatbox() {
   /**
    * State - messges: list of messages in this chat
    */
-  const [messages, setMessages] = useState([
-    {
-      text: "Hello, I am your AI Travel Planner. How can I help you today?",
-      sender: "server",
-    },
-  ]);
+  const [messages, setMessages] = useState(DEFAULT_MESSAGE);
+
+    const [persistedMsgs, setPersistedMsgs] = useLocalStorage('chatMessages', []);
+
+    useEffect(() => {
+      setMessages(persistedMsgs);
+    }, []);
+
+    useEffect(() => {
+      setPersistedMsgs(messages);
+    }, [messages]);
 
   /**
    * States - initial information about the travel itinerary
@@ -86,11 +101,8 @@ export default function Chatbox() {
     if (inputValue.length > 0) {
       addMessage(inputValue);
 
-      const updatedMessages = [
-        ...messages,
-        { text: inputValue, sender: "user" },
-      ];
-      setMessages(updatedMessages);
+      const Messages =  {text: inputValue, sender: "user"};
+      setMessages(prevMessages => [...prevMessages, Messages]);
 
       // Clear the input field
       setInputValue("");
@@ -121,20 +133,20 @@ export default function Chatbox() {
     try {
       setOutboxValue("Loading...");
       //HGet Mock data for testing
-      const response = await axios.get("http://localhost:4000/api/chatMessage");
-      dispatch({
-        type: "updateTravelItinerary",
-        payload: response.data,
-      });
+      // const response = await axios.get("http://localhost:4000/api/chatMessage");
+      // dispatch({
+      //   type: "updateTravelItinerary",
+      //   payload: response.data,
+      // });
 
-      // const response = await axios.post(
-      //   "http://localhost:4000/api/chatMessage",
-      //   {
-      //     prompt: newMessage,
-      //     travelItinerary: travelItinerary,
-      //     chatHistory: chatHistory,
-      //   }
-      // );
+      const response = await axios.post(
+        "http://localhost:4000/api/chatMessage",
+        {
+          prompt: newMessage,
+          travelItinerary: travelItinerary,
+          chatHistory: chatHistory,
+        }
+      );
       console.log(response.data);
       const reply = response.data.chatResponse
         ? response.data.chatResponse
@@ -142,25 +154,23 @@ export default function Chatbox() {
 
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
-        { prompt: newMessage, reply: reply },
+        {prompt: newMessage, reply: reply},
       ]);
 
-      const updatedMessages = [
-        ...messages,
-        { text: inputValue, sender: "user" },
-        {
-          text: response.data.chatResponse,
-          needConfirmation: response.data.needConfirmation,
-          sender: "server",
-        },
-      ];
-      setMessages(updatedMessages);
+      const serverMessages = {
+        text: response.data.chatResponse,
+        needConfirmation: response.data.needConfirmation,
+        sender: "server",
+      };
+
+      setMessages(prevMessages => [...prevMessages, serverMessages]);
+
     } catch (error) {
       console.error("API call error:", error);
       const updatedMessages = [
         ...messages,
-        { text: inputValue, sender: "user" },
-        { text: "please try again", sender: "server" },
+        {text: inputValue, sender: "user"},
+        {text: "please try again", sender: "server"},
       ];
       setMessages(updatedMessages);
     }
@@ -179,7 +189,7 @@ export default function Chatbox() {
 
   return (
     // Flexbox with 73% fixed height so messages don't overlap on the input text field
-    <div style={{ display: "flex", height: "73vh" }}>
+    <div style={{display: "flex", height: "73vh"}}>
       {/* Scrolling div for messages*/}
       <div
         style={{
@@ -190,8 +200,8 @@ export default function Chatbox() {
         }}
       >
         {/* Display each Message */}
-        {messages.map((message, index, { length }) => (
-          <div key={index} style={{ display: "flex" }}>
+        {messages.map((message, index, {length}) => (
+          <div key={index} style={{display: "flex"}}>
             <div
               style={{
                 marginBottom: "10px",
@@ -208,6 +218,7 @@ export default function Chatbox() {
                     ? true
                     : false
                 }
+                sendMessageFunction={addMessage}
               />
             </div>
           </div>

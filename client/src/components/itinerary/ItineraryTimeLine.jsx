@@ -50,13 +50,22 @@ export function ItineraryTimeLine() {
   const travelItinerary = useTravelItinerary();
   console.log(travelItinerary);
   return (
-    <Timeline sx={0.2}>
-      {travelItinerary
-        ? travelItinerary.schedule.map((dailyItinerary) =>
-            timelineGenerator(dailyItinerary)
-          )
-        : ""}
-    </Timeline>
+    <div>
+      <h5>
+        {travelItinerary.startDate
+          ? "Start date" + travelItinerary.startDate
+          : ""}{" "}
+        {travelItinerary.endDate ? "End Date" + travelItinerary.endDate : ""}{" "}
+        {travelItinerary.country ? "country" + travelItinerary.country : ""}
+      </h5>
+      <Timeline sx={0.2}>
+        {travelItinerary.schedule
+          ? travelItinerary.schedule.map((dailyItinerary) =>
+              timelineGenerator(dailyItinerary)
+            )
+          : ""}
+      </Timeline>
+    </div>
   );
 }
 

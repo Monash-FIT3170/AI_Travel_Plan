@@ -34,9 +34,17 @@ function reducer(state, action) {
   console.log(action);
   switch (action.type) {
     case "updateTravelItinerary":
-      return sortEvents(action.payload);
+      return action.payload.schedule
+        ? sortEvents(action.payload)
+        : action.payload;
     case "insertNewEvent":
-      return insertEvent(action.payload, state);
+      console.log(action.payload.activities[0]);
+      console.log(state);
+      if (state.schedule) {
+        return insertEvent(action.payload.activities[0], state);
+      } else {
+        return {...state, schedule: [action.payload]};
+      }
     default:
       throw new Error(`Unknown action: ${action.type}`);
   }
@@ -45,10 +53,11 @@ function reducer(state, action) {
 // NOTE: Reconstructing because the timezone in the mock data is not the same as the timezone in the browser.
 // TODO: When prompting gpt, provide user's timezone such that GPT returns event times in the user's timezone.
 const sortEvents = (itinerary) => {
+  console.log(itinerary);
   // Flatten all events
-  const allEvents = itinerary.schedule.flatMap(
-    (dailyItinerary) => dailyItinerary.activities
-  );
+  const allEvents = itinerary.schedule;
+
+  console.log(allEvents);
 
   // Sort all events by startTime
   allEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
@@ -78,26 +87,10 @@ const sortEvents = (itinerary) => {
 
 function insertEvent(newEvent, itinerary) {
   //insert into schedule if there is same event
+  itinerary.schedule[0].activities.push(newEvent);
   const allEvents = itinerary.schedule.flatMap((day) => {
     return day.activities.map((e) => (e.name === newEvent.name ? newEvent : e));
   });
-
-  return sortEvents(allEvents);
+  console.log(allEvents);
+  return sortEvents({...itinerary, schedule: allEvents});
 }
-
-// const refactorItinerary = (itinerary) => {
-//   const format = "YYYY-MM-DDTHH:mm:ss.SSSZ";
-
-//   if (itinerary.schedule.length > 0) {
-//     const newItinerary = reformItinerary(itinerary);
-
-//     newItinerary.schedule.forEach((dailyItinerary) => {
-//       console.log(dailyItinerary);
-//       dailyItinerary.date = dayjs(dailyItinerary.date).format(format);
-//       dailyItinerary.activities.forEach((event) => {
-//         event.startTime = dayjs(event.startTime).format(format);
-//         event.endTime = dayjs(event.endTime).format(format);
-//       });
-//     });
-//   }
-// };
