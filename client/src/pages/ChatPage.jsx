@@ -7,20 +7,23 @@ import React, {useState} from "react";
 import Button from "@mui/material/Button";
 import {motion} from "framer-motion";
 import {useLocation} from "react-router-dom";
+import {useLocalStorage} from "../components/LocalStorageGeneric";
 
 import {AddNewLocationFAB} from "../components/itinerary/AddNewLocationFAB";
 import {useTravelItinerary} from "../TravelItineraryContext";
 
 export function ChatPage() {
   const travelItinerary = useTravelItinerary;
-  console.log(travelItinerary);
   const [chatBoxKey, setChatBoxKey] = useState(1); // Add a state for key
   const locationHistory = useLocation();
   const fromHomePage = locationHistory.state?.fromHomePage;
-
+  const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
+    useLocalStorage("chatHistory", []);
+  console.log(chatHistory);
   const clearChat = () => {
     localStorage.removeItem("chatMessages");
     localStorage.removeItem("chatHistory");
+    setChatHistory([]);
     localStorage.setItem(
       "chatMessages",
       JSON.stringify([
@@ -52,7 +55,11 @@ export function ChatPage() {
               >
                 Clear
               </Button>
-              <ChatBox key={chatBoxKey}></ChatBox>
+              <ChatBox
+                key={chatBoxKey}
+                chatHistory={chatHistory}
+                setChatHistory={setChatHistory}
+              ></ChatBox>
             </Grid>
             <Grid item xs={6} style={{height: "100vh", overflowY: "auto"}}>
               <ItineraryTimeLine />

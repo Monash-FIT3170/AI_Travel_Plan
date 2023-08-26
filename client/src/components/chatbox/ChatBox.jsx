@@ -1,7 +1,7 @@
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
 import {TextField} from "@mui/material";
-import Box from "@mui/material/Box";
+import {Box, Typography} from "@mui/material";
 import MessageCard from "./MessageCard";
 import axios from "axios";
 import Button from "@mui/material/Button";
@@ -14,7 +14,6 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import {useLocalStorage} from "../LocalStorageGeneric";
 import React, {useState, useContext} from "react";
 import {
   useTravelItinerary,
@@ -24,7 +23,7 @@ import {
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
  */
-export default function Chatbox() {
+export default function Chatbox({chatHistory, setChatHistory}) {
   const travelItinerary = useTravelItinerary();
   const dispatch = useTravelItineraryDispatch();
   /**
@@ -35,17 +34,24 @@ export default function Chatbox() {
   /**
    * State - outboxValue: the output value from the server
    */
-  const [outboxValue, setOutboxValue] = useState("");
+  const [loading, setLoading] = useState(false);
 
   /**
    * State - messges: list of messages in this chat
    */
-  const [messages, setMessages] = useState([
-    {
-      text: "Hello, I am your AI Travel Planner. How can I help you today?",
-      sender: "server",
-    },
-  ]);
+  const [messages, setMessages] = useState(
+    chatHistory.length > 0
+      ? chatHistory.flatMap(({prompt, reply}) => [
+          {text: prompt, sender: "user"},
+          {text: reply, sender: "server"},
+        ])
+      : [
+          {
+            text: "Hello, I am your AI Travel Planner. How can I help you today?",
+            sender: "server",
+          },
+        ]
+  );
 
   /**
    * States - initial information about the travel itinerary
@@ -68,6 +74,7 @@ export default function Chatbox() {
     ).format("YYYY-MM-DD")} to ${dayjs(endDate).format(
       "YYYY-MM-DD"
     )} with a budget of ${budget}`;
+    setMessages([...messages, {text: message, sender: "user"}]);
     addMessage(message);
     dispatch({
       type: "updateTravelItinerary",
@@ -79,9 +86,6 @@ export default function Chatbox() {
       },
     });
   };
-
-  const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
-    useLocalStorage("chatHistory", []);
 
   const keyPressed = (event) => {
     if (event.key === "Enter") {
@@ -125,7 +129,7 @@ export default function Chatbox() {
 
   const addMessage = async (newMessage) => {
     try {
-      setOutboxValue("Loading...");
+      setLoading(true);
       //HGet Mock data for testing
       // const response = await axios.get(
       //   "http://localhost:4000/api/chatMessage/confirmEvent"
@@ -145,6 +149,7 @@ export default function Chatbox() {
       );
 
       console.log(response.data);
+      setLoading(false);
       const reply = response.data.chatResponse
         ? response.data.chatResponse
         : "Sorry, I don't understand that.";
@@ -185,6 +190,14 @@ export default function Chatbox() {
       handleButtonClick(event);
     }
   };
+  const loadingMessageStyle = {
+    width: "max-content", // the size is automatically set to the size of the message inside
+    minWidth: "0px", // minimum size is 0
+    maxWidth: "60%", // maximum size is set based on box size
+    marginRight: "auto",
+    marginBottom: "1",
+    overflowWrap: "break-word",
+  };
 
   return (
     // Flexbox with 73% fixed height so messages don't overlap on the input text field
@@ -222,6 +235,17 @@ export default function Chatbox() {
             </div>
           </div>
         ))}
+        {loading ? (
+          <Box style={loadingMessageStyle}>
+            <Box padding={1} borderRadius={4} bgcolor="#ECEFF1">
+              <Typography variant="body1">
+                Waiting for response from travel planer
+              </Typography>
+            </Box>
+          </Box>
+        ) : (
+          ""
+        )}
       </div>
       <div
         style={{
