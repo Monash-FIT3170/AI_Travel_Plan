@@ -1,6 +1,7 @@
 // Importing module
 import express from 'express';
 import dotenv from 'dotenv';
+import { mockTravelItinerary1 } from './MockItinerary';
 dotenv.config()
 
 let cors = require("cors");

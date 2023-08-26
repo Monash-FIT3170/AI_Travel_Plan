@@ -1,5 +1,5 @@
 import express from 'express';
-import { postMessageRequest, getMockResponse, convertToStructuredResponse } from '../controllers/ChatMessageController'
+import { postMessageRequest, getMockResponse, convertToStructuredResponse, getMockResponseConfirmItinerary, getMockResponseConfirmEvent } from '../controllers/ChatMessageController'
 const router = express.Router()
 
 /**
@@ -56,5 +56,10 @@ router.post('/confirm', convertToStructuredResponse)
  *          description: Route is working
  */
 router.get('/', getMockResponse)
+
+router.get('/confirmItineray', getMockResponseConfirmItinerary)
+router.get('/confirmEvent', getMockResponseConfirmEvent)
+
+
 
 module.exports = router

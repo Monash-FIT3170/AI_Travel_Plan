@@ -8,7 +8,30 @@ import { ChatResponse } from '../models/chatResponse.model'
 export const getMockResponse = (req: Request, res: Response) =>
   res.status(200).json(mockTravelItinerary1);
 
+export const getMockResponseConfirmEvent = (req: Request, res: Response) => {
+  res.status(200).json({
+    "day": 1,
+    "date": "2023-08-25",
+    "activities": [
+      {
+        "name": "Meiji Shrine",
+        "location": "Meiji Shrine",
+        "city": "Tokyo",
+        "coordinates": "",
+        "description": "Experience the tranquility of Meiji Shrine and learn more about Japan's cultural heritage.",
+        "startTime": "2023-08-25T10:00:00Z",
+        "endTime": "2023-08-25T12:00:00Z",
+        "cost": 0
+      }
+    ]
+  })
+}
 
+export const getMockResponseConfirmItinerary = (req: Request, res: Response) => res.status(200).json({
+  "startDate": "2023-08-25",
+  "endDate": "2023-08-30",
+  "country": "Japan"
+})
 
 export const postMessageRequest = async (req: Request, res: Response) => {
 
