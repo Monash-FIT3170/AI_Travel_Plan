@@ -150,10 +150,10 @@ export function EventCardView({ event, itinerary, setItinerary }) {
         />
         <CardContent>{event.description}</CardContent>
         <CardActions>
-          <Button size="small" onClick={handleDeleteOpen}>
+          <Button size="small" onClick={handleDeleteOpen} data-html2canvas-ignore="true">
             Delete
           </Button>
-          <Button size="small" onClick={handleClickOpen}>
+          <Button size="small" onClick={handleClickOpen} data-html2canvas-ignore="true">
             Edit
           </Button>
         </CardActions>

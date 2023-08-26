@@ -20,9 +20,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import EmergCardView from "../components/itinerary/EmergCardView";
+import PdfDownload from "../components/itinerary/PDFexport";
 import ExchangeRateView from "../components/itinerary/ExchangeRateView";
 import CurrencyExchangeView from "../components/itinerary/ExchangeRateView";
-import MyMap from "../components/map/MyMap"
+import MyMap from "../components/map/MyMap";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -156,12 +158,28 @@ export function ItineraryRight() {
       <Background>
         <Grid container>
           <Grid item xs={6}>
+            {/* <ChatBox
+              travelItinerary={itinerary}
+              setItinerary={setItinerary}
+              updateTravelItineraryInLocalStorage={
+                updateTravelItineraryLocalStorage
+              }
+            ></ChatBox> */}
+            {/* TODO: Add check so that card view will only show up when itinerary has been generated */}
+            <h4 >Key Destination Information</h4>
+            <EmergCardView></EmergCardView>
+            <div style={{ position: "fixed", bottom: "20px", left: "30px"}}>
+              <PdfDownload
+                downloadFileName="Itinerary" 
+                rootElementId="timeline" 
+              />
+            </div>
             <MyMap/>
 
             <CurrencyExchangeView></CurrencyExchangeView>
 
           </Grid>
-          <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
+          <Grid id = "timeline" item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
             <ItineraryTimeLine
               travelItinerary={itinerary}
               setItinerary={setItinerary}
@@ -171,6 +189,7 @@ export function ItineraryRight() {
                 variant="contained"
                 endIcon={<AddIcon />}
                 onClick={handleClickOpen}
+                data-html2canvas-ignore="true"
               >
                 ADD NEW LOCATION
               </Button>
