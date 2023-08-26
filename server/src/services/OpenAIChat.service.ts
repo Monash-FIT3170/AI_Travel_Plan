@@ -19,15 +19,15 @@ const openai = new OpenAIApi(configuration);
 export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: ChatMessage) {
     //array of messages to be sent to chatgpt
     const messages: ChatCompletionRequestMessage[] = []
-
-    const messageHistory = chatHistory.reduce((acc, cur) => acc + `Customer: ${cur.prompt}\n Agent: ${cur.reply}}`, "")
+    const messageLast5 = chatHistory.slice(1).slice(-5)
+    const messageHistory = messageLast5.reduce((acc, cur) => acc + `Customer: ${cur.prompt}\n Agent: ${cur.reply}}`, "")
     const travelItineraryString = "current travel itinerary" + JSON.stringify(travelItinerary)
     const returnMessage: ChatCompletionRequestMessage = {
         role: "system",
         content: `You are a friendly travel agent that is trying to help the user plan their trip and create an iteinrary for them
+        The user will provide the country, start date and end date of their trip and their budget
         Follow these steps to help the user plan their trip:
-        Step1- Make you have these important information country travelling, start date, end date, budget, number of people going, and their preferences for activities, number of people going and preferences for activities are optioinal
-        Step2- Once you have all the listed information in step 1, recap the information along with the country to the user and ask them if the information is correct and make sure to set the <<needConfirmation>> field in the response schema to true
+        Step1- Confirm the given information and ask what kind of activities do they want to do
         Step3- Start building the itinerary itiratively starting from day 1. Suggest an activity at a time, making sure to provide the name, location, city, description, starting time, ending time and the cost. Please also include lunch and dinner as part of the suggested activties.
         Step4- Once you suggest the activity, ask the user if the activity suggested are ok and make sure to set the <<needConfirmation>> field in the response schema to true
         Step5- Once you think the daily activities are enough,  repeat step 3 and 4 until you cover all the days in the trip
@@ -38,14 +38,7 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
             needConfirmation: boolean,
         }>> 
         
-        The chatResponse field should contain your  keep it one single line of string and the needConfirmation is used when asking user for confirmation of their detials and the activities.
-        heres a sample response for step2:
-        """
-      {
-        "chatResponse": "Thank you for providing the necessary information. Based on your inputs, here is a summary of your trip. country: [country]Start Date: [start date]End Date :[end date]Budget: [budget]Number of People: [no]Please confirm if the information is correct.",
-        "needConfirmation": true
-        }
-        """
+        The chatResponse field should contain your  keep the string in a single line
         heres a sample response for step3 and 4:
         {
         "chatResponse": "Here is a suggestion for the first activity on Day 1 (9am to 10 am):Location:<location>,City:<city>, description: <description>, cost: <cost>. Please confirm if this activity is okay. If you are okay, we can move on with the next activity for Day 1."
@@ -55,8 +48,7 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
     }
     const userMessage: ChatCompletionRequestMessage = {
         role: "user",
-        content: `Heres the conversation where we left off: ${messageHistory} and heres the current activites we have planned ${travelItineraryString}
-        Heres the new question from the customer: ${prompt} """<insert response following the schema here"""`
+        content: `heres the current activites we have planned ${travelItineraryString}. Heres the conversation where we left off: ${messageHistory} and Heres the new question from the customer: ${prompt} """<insert response following the schema here"""`
     }
     messages.push(returnMessage, userMessage)
     console.log(messages)
