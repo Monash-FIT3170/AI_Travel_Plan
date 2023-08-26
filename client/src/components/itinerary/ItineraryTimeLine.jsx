@@ -7,19 +7,19 @@ import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
 import { EventCardView } from "./EventCardView";
+import { useTravelItinerary } from "../../TravelItineraryContext";
 import "./ItineraryTimeLine.css";
 
-function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
+function timelineGenerator(dailyItinerary) {
   const formattedMonth = new Date(dailyItinerary.date).toLocaleString(
     "default",
-    { month: "long" },
+    { month: "long" }
   );
   const formattedDate = new Date(dailyItinerary.date).getDate();
   const formattedYear = new Date(dailyItinerary.date).getFullYear();
-  console.log(dailyItinerary);
 
   const formattedStartTime = formatTimeToAMPM(
-    new Date(dailyItinerary.activities[0].startTime),
+    new Date(dailyItinerary.activities[0].startTime)
   );
 
   return (
@@ -39,8 +39,6 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
             // Using a name identifier for the key so react doesn't re-use the same component
             key={event.name}
             event={event}
-            itinerary={itinerary}
-            setItinerary={setItinerary}
           />
         ))}
       </TimelineContent>
@@ -48,13 +46,26 @@ function timelineGenerator(itinerary, dailyItinerary, setItinerary) {
   );
 }
 
-export function ItineraryTimeLine({ travelItinerary, setItinerary }) {
+export function ItineraryTimeLine() {
+  const travelItinerary = useTravelItinerary();
+  console.log(travelItinerary);
   return (
-    <Timeline sx={0.2}>
-      {travelItinerary.schedule.map((dailyItinerary) =>
-        timelineGenerator(travelItinerary, dailyItinerary, setItinerary),
-      )}
-    </Timeline>
+    <div>
+      <h5>
+        {travelItinerary.startDate
+          ? "Start date" + travelItinerary.startDate
+          : ""}{" "}
+        {travelItinerary.endDate ? "End Date" + travelItinerary.endDate : ""}{" "}
+        {travelItinerary.country ? "country" + travelItinerary.country : ""}
+      </h5>
+      <Timeline sx={0.2}>
+        {travelItinerary.schedule
+          ? travelItinerary.schedule.map((dailyItinerary) =>
+              timelineGenerator(dailyItinerary)
+            )
+          : ""}
+      </Timeline>
+    </div>
   );
 }
 

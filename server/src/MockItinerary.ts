@@ -5,7 +5,6 @@ import { Activity } from "./models/activity.model";
 import { DailyItinerary } from "./models/dailyitinerary.model";
 import { TravelItinerary } from "./models/travelItinerary.model";
 
-
 // mock events
 const mockEvent1: Activity = {
   name: "Ueno Park, Tokyo",
@@ -15,6 +14,7 @@ const mockEvent1: Activity = {
   startTime: new Date("2023-05-26T13:00:00.000Z"),
   endTime: new Date("2023-05-26T16:00:00.000Z"),
   cost: 0,
+  city: "Ueno",
 };
 
 const mockEvent2: Activity = {
@@ -25,6 +25,7 @@ const mockEvent2: Activity = {
   startTime: new Date("2023-05-26T17:00:00.000Z"),
   endTime: new Date("2023-05-26T18:30:00.000Z"),
   cost: 0,
+  city: "Akihabara",
 };
 
 const mockEvent3: Activity = {
@@ -35,6 +36,7 @@ const mockEvent3: Activity = {
   startTime: new Date("2023-05-27T11:00:00.000Z"),
   endTime: new Date("2023-05-27T14:30:00.000Z"),
   cost: 0,
+  city: "Shibuya",
 };
 
 const mockEvent4: Activity = {
@@ -45,6 +47,7 @@ const mockEvent4: Activity = {
   startTime: new Date("2023-05-27T15:15:00.000Z"),
   endTime: new Date("2023-05-27T20:00:00.000Z"),
   cost: 0,
+  city: "Harajuku",
 };
 
 const mockEvent5: Activity = {
@@ -55,6 +58,7 @@ const mockEvent5: Activity = {
   startTime: new Date("2023-05-28T10:00:00.000Z"),
   endTime: new Date("2023-05-28T20:00:00.000Z"),
   cost: 0,
+  city: "Urayasu",
 };
 
 const mockEvent6: Activity = {
@@ -66,7 +70,7 @@ const mockEvent6: Activity = {
   startTime: new Date("2023-05-29T13:00:00.000Z"),
   endTime: new Date("2023-05-29T15:00:00.000Z"),
   cost: 0,
-
+  city: "Kyoto",
 };
 
 const mockEvent7: Activity = {
@@ -77,6 +81,7 @@ const mockEvent7: Activity = {
   startTime: new Date("2023-05-29T15:30:00.000Z"),
   endTime: new Date("2023-05-29T19:00:00.000Z"),
   cost: 0,
+  city: "Kyoto",
 };
 
 const mockEvent8: Activity = {
@@ -87,17 +92,19 @@ const mockEvent8: Activity = {
   startTime: new Date("2023-05-30T10:30:00.000Z"),
   endTime: new Date("2023-05-30T13:00:00.000Z"),
   cost: 0,
+  city: "Kyoto",
 };
 
 const mockEvent9: Activity = {
   name: "Kinkaku-Ji, Kyoto",
-  location: "1 Kinkakujicho, Kita Ward, Kyoto, Kyoto Prefecture 603-8361, Japan",
+  location:
+    "1 Kinkakujicho, Kita Ward, Kyoto, Kyoto Prefecture 603-8361, Japan",
   description:
     "A Zen temple situated in the northern part of Kyoto. The top two floors of the temple are completely covered in gold leaf.",
   startTime: new Date("2023-05-30T14:30:00.000Z"),
   endTime: new Date("2023-05-30T16:00:00.000Z"),
   cost: 0,
-
+  city: "Kyoto",
 };
 
 const mockEvent10: Activity = {
@@ -108,7 +115,7 @@ const mockEvent10: Activity = {
   startTime: new Date("2023-05-30T17:30:00.000Z"),
   endTime: new Date("2023-05-30T20:00:00.000Z"),
   cost: 0,
-
+  city: "Kyoto",
 };
 
 const mockEvent11: Activity = {
@@ -120,7 +127,7 @@ const mockEvent11: Activity = {
   startTime: new Date("2023-05-31T10:30:00.000Z"),
   endTime: new Date("2023-05-31T13:00:00.000Z"),
   cost: 0,
-
+  city: "Osaka",
 };
 
 const mockEvent12: Activity = {
@@ -131,6 +138,7 @@ const mockEvent12: Activity = {
   startTime: new Date("2023-05-31T13:30:00.000Z"),
   endTime: new Date("2023-05-31T19:00:00.000Z"),
   cost: 0,
+  city: "Osaka",
 };
 
 // mock daily itinerary
@@ -182,4 +190,5 @@ export const mockTravelItinerary1: TravelItinerary = {
     mockDaily_Itinerary5,
     mockDaily_Itinerary6,
   ],
+  country: "Japan",
 };

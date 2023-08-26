@@ -1,6 +1,10 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
-
+import {Box, Typography} from "@mui/material";
+import axios from "axios";
+import {
+  useTravelItinerary,
+  useTravelItineraryDispatch,
+} from "../../TravelItineraryContext";
 /**
  * Component for a chat message
  * @param {JSON} props the properties passed to the component
@@ -12,6 +16,29 @@ export default function MessageCard(props) {
 
   //determine the background colour
   const backgroundStyle = props.sender === "user" ? "#DCF8C6" : "#ECEFF1";
+  const travelItinerary = useTravelItinerary();
+  const dispatchV = useTravelItineraryDispatch();
+  async function convertTextToItinerary() {
+    const response = await axios.post(
+      "http://localhost:4000/api/chatMessage/confirm",
+      {
+        text: props.message,
+        travelItinerary: travelItinerary,
+      }
+    );
+    console.log(response.data);
+    if (response.data.day) {
+      dispatchV({type: "insertNewEvent", payload: response.data});
+    } else {
+      dispatchV({type: "updateTravelItinerary", payload: response.data});
+    }
+    props.sendMessageFunction("Confirmed! lets move on");
+
+    //to do
+    //check response body and update itinerary
+    //send confirm to the chat
+    //update the chat history and chat interface
+  }
 
   let messageStyle = null;
   if (props.sender === "user") {
@@ -43,6 +70,9 @@ export default function MessageCard(props) {
     <Box style={messageStyle}>
       <Box padding={1} borderRadius={4} bgcolor={backgroundStyle}>
         <Typography variant="body1">{props.message}</Typography>
+        {props.needConfirmation ? (
+          <button onClick={convertTextToItinerary}> Confirm</button>
+        ) : null}
       </Box>
     </Box>
   );

@@ -1,37 +1,70 @@
-import ChatBox from "../components/chatbox/ChatBox";
 import Background from "../components/background/Background";
 import BackgroundImage from "../components/background/BackgroundImage";
-import Grid from "@mui/material/Grid";
 import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
-import { useLocalStorage } from "../components/LocalStorageGeneric";
+import Grid from "@mui/material/Grid";
+import ChatBox from "../components/chatbox/ChatBox";
+import React, { useState } from "react";
+import Button from "@mui/material/Button";
+import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
+
+import { AddNewLocationFAB } from "../components/itinerary/AddNewLocationFAB";
+import {
+  TravelItineraryProvider,
+  useTravelItinerary,
+} from "../TravelItineraryContext";
 
 export function ChatPage() {
-  const [travelItinerary, setItinerary, updateTravelItineraryInLocalStorage] =
-    useLocalStorage("travelItinerary", {
-      startDate: null,
-      endDate: null,
-      schedule: [],
-    });
+  const [chatBoxKey, setChatBoxKey] = useState(1); // Add a state for key
+  const locationHistory = useLocation();
+  const fromHomePage = locationHistory.state?.fromHomePage;
 
+  const clearChat = () => {
+    localStorage.removeItem("chatMessages");
+    localStorage.removeItem("chatHistory");
+    localStorage.setItem("chatMessages", JSON.stringify([
+      {
+          text: "Hello, I am your AI Travel Planner. How can I help you today?",
+          sender: "server",
+      }
+  ]));
+    setChatBoxKey((prevKey) => prevKey + 1); // Increment the key to force remount
+  };
   return (
-    <>
-      <BackgroundImage />
-      <Background>
-        <Grid container>
-          <Grid item xs={6}>
-            <ChatBox
-              travelItinerary={travelItinerary}
-              setItinerary={setItinerary}
-              updateTravelItineraryInLocalStorage={
-                updateTravelItineraryInLocalStorage
-              }
-            ></ChatBox>
-          </Grid>
-          <Grid item xs={6} style={{ height: "93vh", overflowY: "auto" }}>
-            <ItineraryTimeLine travelItinerary={travelItinerary} />
-          </Grid>
-        </Grid>
-      </Background>
-    </>
+    <motion.div
+      initial={{ y: fromHomePage ? "100vh" : 0 }}
+      animate={{ y: 0 }}
+      exit={{ y: "100vh" }}
+      transition={{ duration: 0.5 }}
+    >
+      <div style={{ position: "relative" }}>
+        <BackgroundImage />
+        <Background>
+          <TravelItineraryProvider>
+            <Grid container>
+              <Grid item xs={6}>
+                <Button
+                  onClick={clearChat}
+                  variant="contained"
+                  color="primary"
+                  style={{ marginBottom: "10px" }}
+                >
+                  Clear
+                </Button>
+                <ChatBox key={chatBoxKey}></ChatBox>
+              </Grid>
+              <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
+                <ItineraryTimeLine />
+                <div
+                  style={{ position: "fixed", bottom: "20px", right: "50px" }}
+                >
+                  <AddNewLocationFAB></AddNewLocationFAB>
+                </div>
+              </Grid>
+            </Grid>
+          </TravelItineraryProvider>
+        </Background>
+      </div>
+    </motion.div>
   );
 }
