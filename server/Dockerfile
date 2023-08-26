@@ -1,4 +1,4 @@
-FROM node:17-alpine
+FROM node:17-alpine as build
 
 ENV NODE_ENV dev
 
@@ -15,3 +15,7 @@ RUN npm install
 EXPOSE 4000
 RUN npm run build
 CMD ["npm", "run", "start"]
+
+FROM build as tests
+RUN npm run test
+CMD ["npm", "run", "test"]
