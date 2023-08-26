@@ -5,6 +5,9 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      tags:
+        - ghcr.io/monash-fit3170/ai_travel_plan/aitravelplannerfrontend:${version}
+    image: app
     ports:
       - "3000:3000"
     volumes:
@@ -15,8 +18,17 @@ services:
   backend:
     build:
       context: ./server
+      tags:
+        - ghcr.io/monash-fit3170/ai_travel_plan/aitravelplannerbackend:${version}
     ports:
       - "4000:4000"
     volumes:
       - "./server/src:/app/src"
     stdin_open: true
+    
+  tests:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: tests
+    image: tests

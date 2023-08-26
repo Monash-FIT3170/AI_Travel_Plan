@@ -22,6 +22,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import EmergCardView from "../components/itinerary/EmergCardView";
 import PdfDownload from "../components/itinerary/PDFexport";
+import ExchangeRateView from "../components/itinerary/ExchangeRateView";
+import CurrencyExchangeView from "../components/itinerary/ExchangeRateView";
+import MyMap from "../components/map/MyMap";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -37,6 +40,7 @@ export function ItineraryRight() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [errors, setErrors] = useState({
+  
     name: "",
     startDate: "",
     endDate: "",
@@ -170,6 +174,10 @@ export function ItineraryRight() {
                 rootElementId="timeline" 
               />
             </div>
+            <MyMap/>
+
+            <CurrencyExchangeView></CurrencyExchangeView>
+
           </Grid>
           <Grid id = "timeline" item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
             <ItineraryTimeLine

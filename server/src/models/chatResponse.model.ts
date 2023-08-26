@@ -1,4 +1,5 @@
 import { TravelItinerary } from "./travelItinerary.model"
+import { DailyItinerary } from "./dailyitinerary.model"
 /**
  * @openapi
  * components:
@@ -25,6 +26,8 @@ import { TravelItinerary } from "./travelItinerary.model"
  */
 
 export interface ChatResponse {
+    chatResponse?: string
     travelItinerary?: TravelItinerary
-    chatResponse: string
+    needConfirmation?: boolean
 }
+
