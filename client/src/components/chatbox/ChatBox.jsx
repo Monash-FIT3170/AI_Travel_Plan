@@ -12,7 +12,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
-import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import {useLocalStorage} from "../LocalStorageGeneric";
 import React, {useState, useContext} from "react";
@@ -25,6 +25,8 @@ import {
  * @returns
  */
 export default function Chatbox() {
+  const travelItinerary = useTravelItinerary();
+  const dispatch = useTravelItineraryDispatch();
   /**
    * State - inputValue: the value in the text box
    */
@@ -54,13 +56,28 @@ export default function Chatbox() {
   const [budget, setBudget] = useState();
   const [chatStarted, setChatStarted] = useState(false);
   const [showForm, setShowForm] = useState(false); // to track if form should be shown
-
   const handleConfirm = () => {
     setShowForm(false); // Hide the form after confirmation
     setChatStarted(true); // Start the chat
     setDestination(destination);
     setStartDate(startDate);
     setEndDate(endDate);
+    setBudget(budget);
+    const message = `I want to go to ${destination} from ${dayjs(
+      startDate
+    ).format("YYYY-MM-DD")} to ${dayjs(endDate).format(
+      "YYYY-MM-DD"
+    )} with a budget of ${budget}`;
+    addMessage(message);
+    dispatch({
+      type: "updateTravelItinerary",
+      payload: {
+        country: destination,
+        startDate: startDate,
+        endDate: endDate,
+        budget: budget,
+      },
+    });
   };
 
   const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
@@ -101,8 +118,6 @@ export default function Chatbox() {
     setInputValue(event.target.value);
   };
 
-  const dispatch = useTravelItineraryDispatch();
-
   /**
    * adds a new message to the list of messages
    * @param {String} newMessage new message to add to the message list
@@ -112,20 +127,23 @@ export default function Chatbox() {
     try {
       setOutboxValue("Loading...");
       //HGet Mock data for testing
-      const response = await axios.get("http://localhost:4000/api/chatMessage");
-      dispatch({
-        type: "updateTravelItinerary",
-        payload: response.data,
-      });
-
-      // const response = await axios.post(
-      //   "http://localhost:4000/api/chatMessage",
-      //   {
-      //     prompt: newMessage,
-      //     travelItinerary: travelItinerary,
-      //     chatHistory: chatHistory,
-      //   }
+      // const response = await axios.get(
+      //   "http://localhost:4000/api/chatMessage/confirmEvent"
       // );
+      // dispatch({
+      //   type: "insertNewEvent",
+      //   payload: response.data,
+      // });
+
+      const response = await axios.post(
+        "http://localhost:4000/api/chatMessage",
+        {
+          prompt: newMessage,
+          travelItinerary: travelItinerary,
+          chatHistory: chatHistory,
+        }
+      );
+
       console.log(response.data);
       const reply = response.data.chatResponse
         ? response.data.chatResponse
@@ -199,6 +217,7 @@ export default function Chatbox() {
                     ? true
                     : false
                 }
+                sendMessageFunction={addMessage}
               />
             </div>
           </div>
@@ -239,13 +258,13 @@ export default function Chatbox() {
                   onChange={(e) => setDestination(e.target.value)}
                 />
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
+                  <DatePicker
                     label="Start Date"
                     onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
                   />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
+                  <DatePicker
                     label="End Date"
                     onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
                   />
