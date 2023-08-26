@@ -7,7 +7,7 @@ import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import { List, ListItem } from "@mui/material";
 import axios from "axios";
 
-export default function EmergCardView() {
+export function EmergCardView() {
   const [emergencyData, setEmergencyData] = useState({
     country: {},
     ambulanceNumber: "",

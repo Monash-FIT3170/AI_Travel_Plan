@@ -114,6 +114,7 @@ export function AddNewLocationFAB() {
         variant="contained"
         endIcon={<AddIcon />}
         onClick={handleClickOpen}
+        data-html2canvas-ignore="true"
       >
         ADD NEW LOCATION
       </Button>

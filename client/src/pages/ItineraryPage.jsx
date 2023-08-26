@@ -7,6 +7,10 @@ import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
 import MyMap from "./../components/map/MyMap";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { EmergCardView } from "../components/itinerary/EmergCardView";
+import { PdfDownload } from "../components/itinerary/PDFexport";
+
+
 export function ItineraryPage() {
   const [forexRate, setForexRate] = useState(null);
   const [currencyCode, setCurrencyCode] = useState(null);
@@ -64,8 +68,15 @@ export function ItineraryPage() {
           <Grid item xs={6}>
             <MyMap />
             <ForexRateComponent />
+            <EmergCardView />
           </Grid>
-          <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
+          <div style={{ position: "fixed", bottom: "20px", left: "30px"}}>
+              <PdfDownload
+                downloadFileName="Itinerary" 
+                rootElementId="timeline" 
+              />
+            </div>
+          <Grid id="timeline" item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
           <ItineraryTimeLine />
                 <div
                   style={{ position: "fixed", bottom: "20px", right: "50px" }}
