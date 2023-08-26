@@ -1,11 +1,11 @@
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
-import { TextField } from "@mui/material";
+import {TextField} from "@mui/material";
 import Box from "@mui/material/Box";
 import MessageCard from "./MessageCard";
 import axios from "axios";
-import { useLocalStorage } from "../LocalStorageGeneric";
-import React, { useState, useContext } from "react";
+import {useLocalStorage} from "../LocalStorageGeneric";
+import React, {useState, useContext} from "react";
 import {
   useTravelItinerary,
   useTravelItineraryDispatch,
@@ -53,10 +53,7 @@ export default function Chatbox() {
     if (inputValue.length > 0) {
       addMessage(inputValue);
 
-      const updatedMessages = [
-        ...messages,
-        { text: inputValue, sender: "user" },
-      ];
+      const updatedMessages = [...messages, {text: inputValue, sender: "user"}];
       setMessages(updatedMessages);
 
       // Clear the input field
@@ -88,20 +85,20 @@ export default function Chatbox() {
     try {
       setOutboxValue("Loading...");
       //HGet Mock data for testing
-      const response = await axios.get("http://localhost:4000/api/chatMessage");
-      dispatch({
-        type: "updateTravelItinerary",
-        payload: response.data,
-      });
+      // const response = await axios.get("http://localhost:4000/api/chatMessage");
+      // dispatch({
+      //   type: "updateTravelItinerary",
+      //   payload: response.data,
+      // });
 
-      // const response = await axios.post(
-      //   "http://localhost:4000/api/chatMessage",
-      //   {
-      //     prompt: newMessage,
-      //     travelItinerary: travelItinerary,
-      //     chatHistory: chatHistory,
-      //   }
-      // );
+      const response = await axios.post(
+        "http://localhost:4000/api/chatMessage",
+        {
+          prompt: newMessage,
+          travelItinerary: travelItinerary,
+          chatHistory: chatHistory,
+        }
+      );
       console.log(response.data);
       const reply = response.data.chatResponse
         ? response.data.chatResponse
@@ -109,12 +106,12 @@ export default function Chatbox() {
 
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
-        { prompt: newMessage, reply: reply },
+        {prompt: newMessage, reply: reply},
       ]);
 
       const updatedMessages = [
         ...messages,
-        { text: inputValue, sender: "user" },
+        {text: inputValue, sender: "user"},
         {
           text: response.data.chatResponse,
           needConfirmation: response.data.needConfirmation,
@@ -126,8 +123,8 @@ export default function Chatbox() {
       console.error("API call error:", error);
       const updatedMessages = [
         ...messages,
-        { text: inputValue, sender: "user" },
-        { text: "please try again", sender: "server" },
+        {text: inputValue, sender: "user"},
+        {text: "please try again", sender: "server"},
       ];
       setMessages(updatedMessages);
     }
@@ -146,7 +143,7 @@ export default function Chatbox() {
 
   return (
     // Flexbox with 73% fixed height so messages don't overlap on the input text field
-    <div style={{ display: "flex", height: "73vh" }}>
+    <div style={{display: "flex", height: "73vh"}}>
       {/* Scrolling div for messages*/}
       <div
         style={{
@@ -157,8 +154,8 @@ export default function Chatbox() {
         }}
       >
         {/* Display each Message */}
-        {messages.map((message, index, { length }) => (
-          <div key={index} style={{ display: "flex" }}>
+        {messages.map((message, index, {length}) => (
+          <div key={index} style={{display: "flex"}}>
             <div
               style={{
                 marginBottom: "10px",

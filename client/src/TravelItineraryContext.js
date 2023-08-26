@@ -53,10 +53,11 @@ function reducer(state, action) {
 // NOTE: Reconstructing because the timezone in the mock data is not the same as the timezone in the browser.
 // TODO: When prompting gpt, provide user's timezone such that GPT returns event times in the user's timezone.
 const sortEvents = (itinerary) => {
+  console.log(itinerary);
   // Flatten all events
-  const allEvents = itinerary.schedule.flatMap(
-    (dailyItinerary) => dailyItinerary.activities
-  );
+  const allEvents = itinerary.schedule;
+
+  console.log(allEvents);
 
   // Sort all events by startTime
   allEvents.sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
@@ -86,7 +87,7 @@ const sortEvents = (itinerary) => {
 
 function insertEvent(newEvent, itinerary) {
   //insert into schedule if there is same event
-
+  itinerary.schedule[0].activities.push(newEvent);
   const allEvents = itinerary.schedule.flatMap((day) => {
     return day.activities.map((e) => (e.name === newEvent.name ? newEvent : e));
   });

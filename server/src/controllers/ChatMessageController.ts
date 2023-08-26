@@ -5,52 +5,52 @@ import { mockTravelItinerary1 } from '../MockItinerary'
 import { ChatResponse } from '../models/chatResponse.model'
 
 //for mock data testing only
-const getMockResponse = (req: Request, res: Response) =>
+export const getMockResponse = (req: Request, res: Response) =>
   res.status(200).json(mockTravelItinerary1);
 
 
 
-const postMessageRequest = async (req: Request, res: Response) => {
+export const postMessageRequest = async (req: Request, res: Response) => {
 
 
-    try {
-        console.log(req.body)
-        const response = await sendOpenAIChat(req.body)
-        const reply = response[0].message?.content
-        console.log(reply)
-        const parsedResponse: ChatResponse = reply ? parseResponse(reply) : { chatResponse: "error" }
-        // const res = reply ? JSON.parse(reply) : {}
-        //need to parse
-        console.log(parsedResponse)
+  try {
+    console.log(req.body)
+    const response = await sendOpenAIChat(req.body)
+    const reply = response[0].message?.content
+    console.log(reply)
+    const parsedResponse: ChatResponse = reply ? parseResponse(reply) : { chatResponse: "error" }
+    // const res = reply ? JSON.parse(reply) : {}
+    //need to parse
+    console.log(parsedResponse)
 
 
-        res.status(201).json(parsedResponse)
+    res.status(201).json(parsedResponse)
 
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ message: error })
-    }
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ message: error })
+  }
 
 }
 
-const convertToStructuredResponse = async (req: Request, res: Response) => {
-    console.log(req.body)
+export const convertToStructuredResponse = async (req: Request, res: Response) => {
+  console.log(req.body)
 
-    const text = req.body.text as string
-    const travelItinerary = req.body.travelItinerary as TravelItinerary
-    console.log(travelItinerary)
-    try {
-        const response = await textToJSON(text, travelItinerary)
-        const reply = response[0].message?.content
-        console.log(reply)
-        const parsedResponse: ChatResponse = reply ? parseResponse(reply) : { chatResponse: "error" }
+  const text = req.body.text as string
+  const travelItinerary = req.body.travelItinerary as TravelItinerary
+  console.log(travelItinerary)
+  try {
+    const response = await textToJSON(text, travelItinerary)
+    const reply = response[0].message?.content
+    console.log(reply)
+    const parsedResponse: ChatResponse = reply ? parseResponse(reply) : { chatResponse: "error" }
 
-        console.log(parsedResponse)
-        res.status(201).json(parsedResponse)
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({ message: error })
-    }
+    console.log(parsedResponse)
+    res.status(201).json(parsedResponse)
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ message: error })
+  }
 
 }
 
@@ -75,9 +75,3 @@ function parseResponse(response: string): ChatResponse {
   console.log("no structured" + other);
   return json;
 }
-
-module.exports = {
-  postMessageRequest,
-  getMockResponse,
-  convertToStructuredResponse,
-};
