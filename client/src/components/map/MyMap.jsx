@@ -37,7 +37,7 @@ export default function MyMap() {
     );
   }
   return (
-    <div>
+    <div style={{ paddingLeft: "20px" }}>
       <Map
         mapboxAccessToken={ACCESS_TOKEN}
         initialViewState={{
