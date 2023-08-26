@@ -4,20 +4,18 @@ import {TextField} from "@mui/material";
 import Box from "@mui/material/Box";
 import MessageCard from "./MessageCard";
 import axios from "axios";
-
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from '@mui/material/DialogContentText';
+import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {DateTimePicker} from "@mui/x-date-pickers/DateTimePicker";
 import dayjs from "dayjs";
-import { useLocalStorage } from "../LocalStorageGeneric";
-import React, { useState, useContext } from "react";
-
+import {useLocalStorage} from "../LocalStorageGeneric";
+import React, {useState, useContext} from "react";
 import {
   useTravelItinerary,
   useTravelItineraryDispatch,
@@ -27,14 +25,6 @@ import {
  * @returns
  */
 export default function Chatbox() {
-  
-  const DEFAULT_MESSAGE = [
-    {
-      text: "Hello, I am your AI Travel Planner. How can I help you today?",
-      sender: "server",
-    },
-];
-
   /**
    * State - inputValue: the value in the text box
    */
@@ -48,17 +38,12 @@ export default function Chatbox() {
   /**
    * State - messges: list of messages in this chat
    */
-  const [messages, setMessages] = useState(DEFAULT_MESSAGE);
-
-    const [persistedMsgs, setPersistedMsgs] = useLocalStorage('chatMessages', []);
-
-    useEffect(() => {
-      setMessages(persistedMsgs);
-    }, []);
-
-    useEffect(() => {
-      setPersistedMsgs(messages);
-    }, [messages]);
+  const [messages, setMessages] = useState([
+    {
+      text: "Hello, I am your AI Travel Planner. How can I help you today?",
+      sender: "server",
+    },
+  ]);
 
   /**
    * States - initial information about the travel itinerary
@@ -67,17 +52,12 @@ export default function Chatbox() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [budget, setBudget] = useState();
-
   const [chatStarted, setChatStarted] = useState(false);
   const [showForm, setShowForm] = useState(false); // to track if form should be shown
 
-  const handleDateChange = (event) => {
-    setEnteredDate(event.target.value);
-  };
-
   const handleConfirm = () => {
     setShowForm(false); // Hide the form after confirmation
-    setChatStarted(true);  // Start the chat
+    setChatStarted(true); // Start the chat
     setDestination(destination);
     setStartDate(startDate);
     setEndDate(endDate);
@@ -101,8 +81,8 @@ export default function Chatbox() {
     if (inputValue.length > 0) {
       addMessage(inputValue);
 
-      const Messages =  {text: inputValue, sender: "user"};
-      setMessages(prevMessages => [...prevMessages, Messages]);
+      const updatedMessages = [...messages, {text: inputValue, sender: "user"}];
+      setMessages(updatedMessages);
 
       // Clear the input field
       setInputValue("");
@@ -121,7 +101,6 @@ export default function Chatbox() {
     setInputValue(event.target.value);
   };
 
-  const travelItinerary = useTravelItinerary();
   const dispatch = useTravelItineraryDispatch();
 
   /**
@@ -132,29 +111,21 @@ export default function Chatbox() {
   const addMessage = async (newMessage) => {
     try {
       setOutboxValue("Loading...");
-<<<<<<< HEAD
       //HGet Mock data for testing
-      // const response = await axios.get("http://localhost:4000/api/chatMessage");
-      // dispatch({
-      //   type: "updateTravelItinerary",
-      //   payload: response.data,
-      // });
+      const response = await axios.get("http://localhost:4000/api/chatMessage");
+      dispatch({
+        type: "updateTravelItinerary",
+        payload: response.data,
+      });
 
-      const response = await axios.post(
-=======
-      // const response = await axios.get('http://localhost:4000/api/chatMessage',
-      // )
-
-      // GET for mock data, POST for working data
-      const response = await axios.get(
->>>>>>> dev
-        "http://localhost:4000/api/chatMessage",
-        {
-          prompt: newMessage,
-          travelItinerary: travelItinerary,
-          chatHistory: chatHistory,
-        }
-      );
+      // const response = await axios.post(
+      //   "http://localhost:4000/api/chatMessage",
+      //   {
+      //     prompt: newMessage,
+      //     travelItinerary: travelItinerary,
+      //     chatHistory: chatHistory,
+      //   }
+      // );
       console.log(response.data);
       const reply = response.data.chatResponse
         ? response.data.chatResponse
@@ -165,14 +136,16 @@ export default function Chatbox() {
         {prompt: newMessage, reply: reply},
       ]);
 
-      const serverMessages = {
-        text: response.data.chatResponse,
-        needConfirmation: response.data.needConfirmation,
-        sender: "server",
-      };
-
-      setMessages(prevMessages => [...prevMessages, serverMessages]);
-
+      const updatedMessages = [
+        ...messages,
+        {text: inputValue, sender: "user"},
+        {
+          text: response.data.chatResponse,
+          needConfirmation: response.data.needConfirmation,
+          sender: "server",
+        },
+      ];
+      setMessages(updatedMessages);
     } catch (error) {
       console.error("API call error:", error);
       const updatedMessages = [
@@ -226,7 +199,6 @@ export default function Chatbox() {
                     ? true
                     : false
                 }
-                sendMessageFunction={addMessage}
               />
             </div>
           </div>
@@ -239,117 +211,119 @@ export default function Chatbox() {
           left: "0",
           width: "100%",
           padding: "15px",
-      }} 
+        }}
       >
-      {/* Start the chat */}
-      <Button
-        variant="contained"
-        onClick={() => setShowForm(true)} // on click, show the form
-      >
-        Chat now
-      </Button>
-      {/* Show the form and confirm button*/}
-      {showForm && ( 
+        {/* Start the chat */}
+        <Button
+          variant="contained"
+          onClick={() => setShowForm(true)} // on click, show the form
+        >
+          Chat now
+        </Button>
+        {/* Show the form and confirm button*/}
+        {showForm && (
           <Box display="flex" justifyContent="stretch" width="100%">
-          <Dialog open={open} maxWidth="xs">
-            <DialogTitle>Get Started</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Welcome to our Travel Planner! Please fill in the form below before starting the chat.
-              </DialogContentText>
-              <TextField
-                autoFocus
-                margin="dense"
-                label="Destination"
-                type="text"
-                fullWidth
-                onChange={(e) => setDestination(e.target.value)}
-              />
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                label="Start Date"
-                onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
-              />
-            </LocalizationProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                label="End Date"
-                onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
-              />
-            </LocalizationProvider>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="Budget"
-              type="number"
-              fullWidth
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}
-            />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleConfirm}>Start the chat</Button>
-            </DialogActions>
-          </Dialog>
-        </Box>
+            <Dialog open={setShowForm} maxWidth="xs">
+              <DialogTitle>Get Started</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Welcome to our Travel Planner! Please fill in the form below
+                  before starting the chat.
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="Destination"
+                  type="text"
+                  fullWidth
+                  onChange={(e) => setDestination(e.target.value)}
+                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateTimePicker
+                    label="Start Date"
+                    onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
+                  />
+                </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateTimePicker
+                    label="End Date"
+                    onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
+                  />
+                </LocalizationProvider>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="Budget"
+                  type="number"
+                  fullWidth
+                  value={budget}
+                  onChange={(e) => setBudget(e.target.value)}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleConfirm}>Start the chat</Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
         )}
       </div>
       {/* Input message text field */}
       {chatStarted && (
-      <div
+        <div
           style={{
-              position: "fixed",
-              bottom: "0",
-              left: "0",
-              width: "100%",
-              padding: "15px",
-          }}
-      >
-        <Box
-          display="flex"
-          alignItems="center"
-          style={{
-            backgroundColor: "rgb(23, 17, 50)",
-            width: "51%",
-            height: "100%",
-            padding: "20px",
-            marginLeft: "-20px",
-            marginBottom: "-20px",
-            borderTopRightRadius: "20px",
+            position: "fixed",
+            bottom: "0",
+            left: "0",
+            width: "100%",
+            padding: "15px",
           }}
         >
-          <TextField
-            placeholder="Enter message here"
-            value={inputValue}
-            onChange={handleInputEnter}
-            onKeyDown={keyPressed}
-            multiline
-            maxRows="1"
-            minRows="1"
+          <Box
+            display="flex"
+            alignItems="center"
             style={{
-              width: "70%",
-              resize: "none",
-              backgroundColor: "white",
-              color: "black",
-              marginLeft: "20px",
-              borderRadius: "8px",
-            }}
-            variant="outlined"
-            onKeyPress={handleKeyClick}
-          />
-          <IconButton
-            onClick={handleButtonClick}
-            edge="end"
-            style={{
-              color: "black",
-              backgroundColor: "white",
-              marginLeft: "30px",
+              backgroundColor: "rgb(23, 17, 50)",
+              width: "51%",
+              height: "100%",
+              padding: "20px",
+              marginLeft: "-20px",
+              marginBottom: "-20px",
+              borderTopRightRadius: "20px",
             }}
           >
-            <SendIcon />
-          </IconButton>
-        </Box>
-      </div>)
-}</div>
+            <TextField
+              placeholder="Enter message here"
+              value={inputValue}
+              onChange={handleInputEnter}
+              onKeyDown={keyPressed}
+              multiline
+              maxRows="1"
+              minRows="1"
+              style={{
+                width: "70%",
+                resize: "none",
+                backgroundColor: "white",
+                color: "black",
+                marginLeft: "20px",
+                borderRadius: "8px",
+              }}
+              variant="outlined"
+              onKeyPress={handleKeyClick}
+            />
+            <IconButton
+              onClick={handleButtonClick}
+              edge="end"
+              style={{
+                color: "black",
+                backgroundColor: "white",
+                marginLeft: "30px",
+              }}
+            >
+              <SendIcon />
+            </IconButton>
+          </Box>
+        </div>
+      )}
+    </div>
   );
 }

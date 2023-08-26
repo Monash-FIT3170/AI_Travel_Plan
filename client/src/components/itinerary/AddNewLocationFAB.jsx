@@ -6,7 +6,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-<<<<<<< HEAD:client/src/components/itinerary/AddNewLocationFAB.jsx
+
 import Button from "@mui/material/Button";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
@@ -19,16 +19,6 @@ import {
   useTravelItinerary,
   useTravelItineraryDispatch,
 } from "../../TravelItineraryContext";
-=======
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import EmergCardView from "../components/itinerary/EmergCardView";
-import PdfDownload from "../components/itinerary/PDFexport";
-import ExchangeRateView from "../components/itinerary/ExchangeRateView";
-import CurrencyExchangeView from "../components/itinerary/ExchangeRateView";
-import MyMap from "../components/map/MyMap";
->>>>>>> dev:client/src/pages/itineraryRight.jsx
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -45,7 +35,6 @@ export function AddNewLocationFAB() {
   const [endDate, setEndDate] = useState(null);
 
   const [errors, setErrors] = useState({
-  
     name: "",
     startDate: "",
     endDate: "",
@@ -120,7 +109,6 @@ export function AddNewLocationFAB() {
   };
 
   return (
-<<<<<<< HEAD:client/src/components/itinerary/AddNewLocationFAB.jsx
     <div>
       <Button
         variant="contained"
@@ -129,52 +117,6 @@ export function AddNewLocationFAB() {
       >
         ADD NEW LOCATION
       </Button>
-=======
-    <div style={{ position: "relative" }}>
-      <BackgroundImage />
-      <Background>
-        <Grid container>
-          <Grid item xs={6}>
-            {/* <ChatBox
-              travelItinerary={itinerary}
-              setItinerary={setItinerary}
-              updateTravelItineraryInLocalStorage={
-                updateTravelItineraryLocalStorage
-              }
-            ></ChatBox> */}
-            {/* TODO: Add check so that card view will only show up when itinerary has been generated */}
-            <h4 >Key Destination Information</h4>
-            <EmergCardView></EmergCardView>
-            <div style={{ position: "fixed", bottom: "20px", left: "30px"}}>
-              <PdfDownload
-                downloadFileName="Itinerary" 
-                rootElementId="timeline" 
-              />
-            </div>
-            <MyMap/>
-
-            <CurrencyExchangeView></CurrencyExchangeView>
-
-          </Grid>
-          <Grid id = "timeline" item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
-            <ItineraryTimeLine
-              travelItinerary={itinerary}
-              setItinerary={setItinerary}
-            />
-            <div style={{ position: "fixed", bottom: "20px", right: "50px" }}>
-              <Button
-                variant="contained"
-                endIcon={<AddIcon />}
-                onClick={handleClickOpen}
-                data-html2canvas-ignore="true"
-              >
-                ADD NEW LOCATION
-              </Button>
-            </div>
-          </Grid>
-        </Grid>
-      </Background>
->>>>>>> dev:client/src/pages/itineraryRight.jsx
 
       <Box display="flex" justifyContent="stretch" width="100%">
         <Dialog open={open} onClose={handleClose} maxWidth="xs">
