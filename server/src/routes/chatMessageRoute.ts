@@ -1,5 +1,5 @@
 import express from 'express';
-
+import { postMessageRequest, getMockResponse, convertToStructuredResponse } from '../controllers/ChatMessageController'
 const router = express.Router()
 
 /**
@@ -20,7 +20,29 @@ const router = express.Router()
  *      201:
  *          description: Route is working
  */
-router.post('/', require('../controllers/ChatMessageController').postMessageRequest)
+router.post('/', postMessageRequest)
+
+
+/**
+ * @openapi
+ * /api/chatMessage/confirm:
+ *  post:
+ *    tags:
+ *    - ChatMessage
+ *    description: Chat message from front end
+ *    requestBody:
+ *     description: 
+ *     required: true
+ *     content:
+ *      application/json:
+ *          schema:
+ *              {
+ *                 "chatResponse": "string",}
+ *    responses:
+ *      201:
+ *          description: Route is working
+ */
+router.post('/confirm', convertToStructuredResponse)
 
 /**
  * @openapi
@@ -33,6 +55,6 @@ router.post('/', require('../controllers/ChatMessageController').postMessageRequ
  *      201:
  *          description: Route is working
  */
-router.get('/', require('../controllers/ChatMessageController').getMockResponse)
+router.get('/', getMockResponse)
 
 module.exports = router
