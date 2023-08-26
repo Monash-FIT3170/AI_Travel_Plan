@@ -18,6 +18,10 @@
  *          type: string
  *          default: '110-0007 Tokyo Ueno Park, Taito-ku, 5-20'
  *          description: Address of the place to visit
+ *         city:
+ *          type: string
+ *          default: 'tokyo'
+ *          description: City of the place to visit
  *         description:
  *          type: string
  *          default: 'The Ueno park is officially called the “Ueno Imperial Gift Park “ because it was a gift from Emperor Taisho to Tokyo city as a place of public recreation. The park is rich with greenery and birds during winter. This park also includes many other attractions in it.'
@@ -35,6 +39,7 @@
 export interface Activity {
     name: string
     location: string
+    city: string
     description?: string
     startTime: Date
     endTime: Date

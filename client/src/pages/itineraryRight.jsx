@@ -20,6 +20,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import ExchangeRateView from "../components/itinerary/ExchangeRateView";
+import CurrencyExchangeView from "../components/itinerary/ExchangeRateView";
+import MyMap from "../components/map/MyMap"
 
 dayjs.extend(localizedFormat);
 dayjs.extend(utc);
@@ -35,6 +38,7 @@ export function ItineraryRight() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [errors, setErrors] = useState({
+  
     name: "",
     startDate: "",
     endDate: "",
@@ -152,13 +156,10 @@ export function ItineraryRight() {
       <Background>
         <Grid container>
           <Grid item xs={6}>
-            <ChatBox
-              travelItinerary={itinerary}
-              setItinerary={setItinerary}
-              updateTravelItineraryInLocalStorage={
-                updateTravelItineraryLocalStorage
-              }
-            ></ChatBox>
+            <MyMap/>
+
+            <CurrencyExchangeView></CurrencyExchangeView>
+
           </Grid>
           <Grid item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
             <ItineraryTimeLine
