@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "html2pdf.js": "^0.10.1",
-    "install": "^0.13.0",
-    "jspdf": "^2.5.1",
-    "npm": "^9.8.1"
-  }
-}
