@@ -20,6 +20,34 @@ const ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
  */
 
 export default function MyMap() {
+  const [markers, setMarkers] = useState([
+    {
+      longitude: 144.946457,
+      latitude: -37.840935,
+      popupText: "Marker 1",
+    },
+    {
+      longitude: 144.956457,
+      latitude: -37.85095,
+      popupText: "Marker 2 ",
+    },
+    // Add more markers
+  ]);
+
+  //Helps add marker
+  const addMarker = (longitude, latitude, popupText) => {
+    const newMarker = {
+      longitude: longitude,
+      latitude: latitude,
+      popupText: popupText,
+    };
+
+    setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
+  };
+  const handleAddMarker = () => {
+    // could call addMarker in here
+    // what if handleAddMarker took in the coordinates to addmarker or could AddMarker do that directly
+  };
   // safeguard in case there is no mapbox api token
   if (!ACCESS_TOKEN) {
     return (
@@ -49,10 +77,11 @@ export default function MyMap() {
         mapStyle="mapbox://styles/mapbox/streets-v9"
         attributionControl={false}
       >
-        {/* usage of a marker component */}
-        <Marker long={144.946457} lat={-37.840935}>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Marker>
+        {markers.map((marker, index) => (
+          <Marker key={index} long={marker.longitude} lat={marker.latitude}>
+            {marker.popupText}
+          </Marker>
+        ))}
       </Map>
     </div>
   );
