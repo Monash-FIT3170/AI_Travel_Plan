@@ -41,7 +41,7 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
         The chatResponse field should contain your  keep the string in a single line
         heres a sample response for step3 and 4:
         {
-        "chatResponse": "Here is a suggestion for the first activity on Day 1 (9am to 10 am):Location:<location>,City:<city>, description: <description>, cost: <cost>. Please confirm if this activity is okay. If you are okay, we can move on with the next activity for Day 1."
+        "chatResponse": "Here is a suggestion for the first activity on Day 1 (9am to 10 am):Location:<location>,Address:<address>,City:<city>, description: <description>, cost: <cost>. Please confirm if this activity is okay. If you are okay, we can move on with the next activity for Day 1."
         "needConfirmation": true
         }
         `
@@ -69,9 +69,9 @@ export async function textToJSON(text: string, { startDate, endDate, country }: 
     const endDateStr = endDate ? "ending date is " + endDate : ""
     const countryStr = country ? "country is " + country : ""
     const returnMessage: ChatCompletionRequestMessage = {
-        role: "system", content: `
-        Convert the given text to the following
-        schemas:
+        role: "system", content: `firstly, find the approximate longitude and latitude of the location by geocoding the address.
+        then, convert the given text to the following schemas, while also including the longitude and latitude in the longitude and latitude placeholders in the follwing format
+        also ensure the longitude is between -180 and +180, and latitude is between -90 and 90:
     interface DailyItinerary {
     day: number
     date: Date
@@ -82,7 +82,9 @@ export async function textToJSON(text: string, { startDate, endDate, country }: 
     name: string
     location: string
     city: string
-    coordinates: string
+    address: string
+    longitude: string
+    latitude: string
     description?: string
     startTime: Date
     endTime: Date
@@ -115,6 +117,8 @@ export async function textToJSON(text: string, { startDate, endDate, country }: 
     "activities": Activity[]
     }"""
 
+    Also ensure the coordinates are given to the best of your ability. If there are no coordinates for that place, 
+    leave it blank. same goes for the address. if there is no address, leave that blank. But i expect coordinates if there is an address.
     `}
     const textMessage: ChatCompletionRequestMessage = {
         role: "user",
