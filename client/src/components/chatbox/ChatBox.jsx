@@ -60,7 +60,9 @@ export default function Chatbox({chatHistory, setChatHistory}) {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [budget, setBudget] = useState();
-  const [chatStarted, setChatStarted] = useState(false);
+  const [chatStarted, setChatStarted] = useState(
+    chatHistory.length > 0 ? true : false
+  );
   const [showForm, setShowForm] = useState(false); // to track if form should be shown
   const handleConfirm = () => {
     setShowForm(false); // Hide the form after confirmation
