@@ -241,7 +241,7 @@ export default function Chatbox({chatHistory, setChatHistory}) {
           <Box style={loadingMessageStyle}>
             <Box padding={1} borderRadius={4} bgcolor="#ECEFF1">
               <Typography variant="body1">
-                Waiting for response from travel planer
+                Waiting for response from travel planner
               </Typography>
             </Box>
           </Box>
