@@ -18,7 +18,6 @@ export default function MyMarker(props) {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  console.log(isPopupOpen); // check if component re-renders
   return (
     <div>
       {/* Add the marker with label here */}

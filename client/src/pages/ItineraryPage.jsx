@@ -10,7 +10,6 @@ import {useState, useEffect} from "react";
 import {useTravelItinerary} from "../TravelItineraryContext";
 export function ItineraryPage() {
   const travelItinerary = useTravelItinerary();
-  console.log(travelItinerary);
   const [forexRate, setForexRate] = useState(null);
   const [currencyCode, setCurrencyCode] = useState(null);
 
