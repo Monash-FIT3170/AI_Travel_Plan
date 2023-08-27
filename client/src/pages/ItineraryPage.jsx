@@ -67,17 +67,15 @@ export function ItineraryPage() {
         <Grid container>
           <Grid item xs={6}>
             <MyMap />
-            <ForexRateComponent />
             <h4>Key Destination Information</h4>
+            <ForexRateComponent />
             <EmergCardView></EmergCardView>
-            <div style={{position: "fixed", bottom: "20px", left: "30px"}}>
-              <PdfDownload
-                downloadFileName="Itinerary"
-                rootElementId="timeline"
-              />
-            </div>
+            <PdfDownload
+              downloadFileName="Itinerary"
+              rootElementId="timeline"
+            />
           </Grid>
-          <Grid item xs={6} style={{height: "100vh", overflowY: "auto"}}>
+          <Grid id="timeline" item xs={6} style={{height: "100vh", overflowY: "auto"}}>
             <ItineraryTimeLine />
             <div style={{position: "fixed", bottom: "20px", right: "50px"}}>
               <AddNewLocationFAB></AddNewLocationFAB>
