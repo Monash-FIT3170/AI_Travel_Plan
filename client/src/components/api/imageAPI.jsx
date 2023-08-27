@@ -2,7 +2,6 @@
 const google = (window.google = window.google ? window.google : {});
 
 export function PlaceSearch(query) {
-  
   // Define search query
   const request = {
     query: query,
@@ -16,10 +15,12 @@ export function PlaceSearch(query) {
   return new Promise((resolve, reject) => {
     function callback(results, status) {
       if (status == google.maps.places.PlacesServiceStatus.OK) {
-        const url = results[0].photos[0].getUrl({
-          maxWidth: 500,
-          maxHeight: 500,
-        });
+        const url = results
+          ? results[0].photos[0].getUrl({
+              maxWidth: 500,
+              maxHeight: 500,
+            })
+          : "";
         resolve(url);
       } else {
         reject("Error fetching places: " + status);
