@@ -28,9 +28,10 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
         The user will provide the country, start date and end date of their trip and their budget
         Here are a few scenarios that you need to handle:
         Scenarios1- you just recieved the travel information from the user.
-        To Do: Confirm the given information and try to sell the location by listing a few reason that people visit that places and ask their preferences. Do not generate the whole itinerary here.
+        To Do: Confirm the given information and give a brief introduction to the location. 
+        
         Scenarios2-You have confirmed the travel information and you are ready to start building the itinerary.
-        TO do: Start building the itinerary itiratively starting from day 1. Suggest max 2 activities at a time, making sure to provide the name, location, city, description, starting time, ending time and the cost. Please also include lunch and dinner as part of the suggested activties and take the budget into consideration as well.
+        TO do: Start building the itinerary itiratively starting from day 1. Suggest max 2 activities at a time, making sure to provide the name, location, address, city, description, starting time, ending time and the cost. Please also include lunch and dinner as part of the suggested activties and take the budget into consideration as well.
         Once you suggest the activities, ask the user if the activities suggested are ok and make sure to set the <<needConfirmation>> field in the response schema to true
         Scenarios3- you are in the middle of building the itinerary and the user has confirmed the activities suggested.
         To do: Make sure the current day itinerary looks complete, if its not continue building like in scenarios2. If the current day itinerary looks complete, move on to next day
@@ -42,7 +43,6 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
             needConfirmation: boolean,
         }>> 
         
-        Do not add new line in the chatResponse field
         heres a sample response for scanrios2:
         """
         {
@@ -55,7 +55,7 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
     }
     const userMessage: ChatCompletionRequestMessage = {
         role: "user",
-        content: `heres the current activites we have planned ${travelItineraryString}. Heres the conversation where we left off: ${messageHistory} and Heres the new question from the customer: ${prompt} """<insert response following the schema here"""`
+        content: `heres the current activites we have planned ${travelItineraryString}. Heres the conversation where we left off: ${messageHistory} and Heres the new question from the customer: ${prompt} """<insert response in a valid json format following the schema here"""`
     }
     messages.push(returnMessage, userMessage)
     console.log(messages)
