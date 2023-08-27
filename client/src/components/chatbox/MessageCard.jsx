@@ -32,7 +32,7 @@ export default function MessageCard(props) {
     } else {
       dispatchV({type: "updateTravelItinerary", payload: response.data});
     }
-    if (response.status === 200) {
+    if (response.status === 201) {
       props.sendMessageFunction("Confirmed! lets continue");
     }
 
