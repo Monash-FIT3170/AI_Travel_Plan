@@ -70,7 +70,8 @@ export async function textToJSON(text: string, { startDate, endDate, country }: 
     const countryStr = country ? "country is " + country : ""
     const returnMessage: ChatCompletionRequestMessage = {
         role: "system", content: `firstly, find the approximate longitude and latitude of the location by geocoding the address.
-        then, convert the given text to the following schemas, while also including the longitude and latitude in the long and lat placeholders in the follwing format:
+        then, convert the given text to the following schemas, while also including the longitude and latitude in the longitude and latitude placeholders in the follwing format
+        also ensure the longitude is between -180 and +180, and latitude is between -90 and 90:
     interface DailyItinerary {
     day: number
     date: Date
@@ -82,8 +83,8 @@ export async function textToJSON(text: string, { startDate, endDate, country }: 
     location: string
     city: string
     address: string
-    long: string
-    lat: string
+    longitude: string
+    latitude: string
     description?: string
     startTime: Date
     endTime: Date

@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Map from "react-map-gl";
 import Marker from "./MyMarker";
-
+import { useTravelItinerary } from "../../TravelItineraryContext";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -20,34 +20,29 @@ const ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
  */
 
 export default function MyMap() {
-  const [markers, setMarkers] = useState([
-    {
-      longitude: 144.946457,
-      latitude: -37.840935,
-      popupText: "Marker 1",
-    },
-    {
-      longitude: 144.956457,
-      latitude: -37.85095,
-      popupText: "Marker 2 ",
-    },
-    // Add more markers
-  ]);
+  const travelItinerary = useTravelItinerary();
+  console.log(travelItinerary);
 
-  //Helps add marker
-  const addMarker = (longitude, latitude, popupText) => {
-    const newMarker = {
-      longitude: longitude,
-      latitude: latitude,
-      popupText: popupText,
-    };
+  //trying to centre to a location
+  let centerCoordinates = { longitude: 144.946457, latitude: -37.840935 };
+  if (travelItinerary && travelItinerary.schedule) {
+    for (const schedule of travelItinerary.schedule) {
+      if (schedule.activities && schedule.activities.length > 0) {
+        for (const activity of schedule.activities) {
+          console.log(activity.longitude);
+          const parsedLong = parseFloat(activity.longitude);
+          const parsedLat = parseFloat(activity.latitude);
 
-    setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
-  };
-  const handleAddMarker = () => {
-    // could call addMarker in here
-    // what if handleAddMarker took in the coordinates to addmarker or could AddMarker do that directly
-  };
+          if (!isNaN(parsedLong) && !isNaN(parsedLat)) {
+            centerCoordinates = { longitude: parsedLong, latitude: parsedLat };
+            console.log("found new location");
+            break; // Exit loop if valid coordinates are found
+          }
+        }
+      }
+    }
+  }
+
   // safeguard in case there is no mapbox api token
   if (!ACCESS_TOKEN) {
     return (
@@ -64,24 +59,43 @@ export default function MyMap() {
       </React.Fragment>
     );
   }
+
   return (
     <div style={{ paddingLeft: "20px" }}>
       <Map
         mapboxAccessToken={ACCESS_TOKEN}
         initialViewState={{
-          longitude: 144.946457,
-          latitude: -37.840935,
+          longitude: centerCoordinates.longitude,
+          latitude: centerCoordinates.latitude,
           zoom: 10,
         }}
         style={{ width: "100%", height: "calc(100vh - 200px)" }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
         attributionControl={false}
       >
-        {markers.map((marker, index) => (
-          <Marker key={index} long={marker.longitude} lat={marker.latitude}>
-            {marker.popupText}
-          </Marker>
-        ))}
+        {travelItinerary.schedule &&
+          travelItinerary.schedule.map((schedule, scheduleIndex) =>
+            schedule.activities.map((activity, index) => {
+              const parsedLong = parseFloat(activity.longitude);
+              const parsedLat = parseFloat(activity.latitude);
+
+              // Check if parsedLong and parsedLat are valid numbers
+              if (!isNaN(parsedLong) && !isNaN(parsedLat)) {
+                return (
+                  <Marker
+                    key={`${scheduleIndex}-${index}`}
+                    long={parsedLong}
+                    lat={parsedLat}
+                  >
+                    {activity.name}
+                  </Marker>
+                );
+              }
+
+              // Return null if long and lat are invalid
+              return null;
+            })
+          )}
       </Map>
     </div>
   );
