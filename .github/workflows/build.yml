@@ -100,7 +100,7 @@ jobs:
 #        - name: Empty step
 #          if: 0 == 1
 #          run: echo Empty step
-#    deploy-production-australia:
+#    deploy-production:
 #      name: Deploy Production
 #      needs:
 #        - calculate-version
