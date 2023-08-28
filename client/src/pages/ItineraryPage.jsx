@@ -10,6 +10,7 @@ import {useState, useEffect} from "react";
 import {useTravelItinerary} from "../TravelItineraryContext";
 import PdfDownload from "../components/itinerary/PDFexport";
 import EmergCardView from "../components/itinerary/EmergCardView";
+
 export function ItineraryPage() {
   const travelItinerary = useTravelItinerary();
   const [forexRate, setForexRate] = useState(null);

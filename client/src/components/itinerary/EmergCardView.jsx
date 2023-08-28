@@ -8,7 +8,7 @@ import {List, ListItem} from "@mui/material";
 import axios from "axios";
 import {useTravelItinerary} from "../../TravelItineraryContext";
 
-export default function EmergCardView() {
+export function EmergCardView() {
   const [emergencyData, setEmergencyData] = useState({
     country: {},
     ambulanceNumber: "",

@@ -4,7 +4,7 @@ import jsPDF from "jspdf";
 import DownloadIcon from '@mui/icons-material/Download';
 import { Button } from "@mui/material";
 
-const PdfDownload = ({rootElementId , downloadFileName}) => {
+export const PdfDownload = ({rootElementId , downloadFileName}) => {
 
     const [showLoader, setLoader] = useState(false);
 
