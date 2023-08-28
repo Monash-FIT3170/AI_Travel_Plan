@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "framer-motion": "^10.16.1",
     "leaflet": "^1.9.4"
   }
 }

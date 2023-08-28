@@ -6,28 +6,28 @@ import TimelineConnector from "@mui/lab/TimelineConnector";
 import TimelineContent from "@mui/lab/TimelineContent";
 import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent from "@mui/lab/TimelineOppositeContent";
-import { EventCardView } from "./EventCardView";
-import { useTravelItinerary } from "../../TravelItineraryContext";
+import {EventCardView} from "./EventCardView";
+import {useTravelItinerary} from "../../TravelItineraryContext";
+import dayjs from "dayjs";
 import "./ItineraryTimeLine.css";
 
 function timelineGenerator(dailyItinerary) {
   const formattedMonth = new Date(dailyItinerary.date).toLocaleString(
     "default",
-    { month: "long" }
+    {month: "long"}
   );
   const formattedDate = new Date(dailyItinerary.date).getDate();
   const formattedYear = new Date(dailyItinerary.date).getFullYear();
-
+  console.log(dailyItinerary.activities[0].startTime);
   const formattedStartTime = formatTimeToAMPM(
     new Date(dailyItinerary.activities[0].startTime)
   );
-
   return (
     <TimelineItem>
       <TimelineOppositeContent display="none" />
       <TimelineSeparator>
-        <TimelineDot sx={{ bgcolor: "white" }} />
-        <TimelineConnector sx={{ bgcolor: "white" }} />
+        <TimelineDot sx={{bgcolor: "white"}} />
+        <TimelineConnector sx={{bgcolor: "white"}} />
       </TimelineSeparator>
       <TimelineContent>
         <h5>
@@ -48,15 +48,17 @@ function timelineGenerator(dailyItinerary) {
 
 export function ItineraryTimeLine() {
   const travelItinerary = useTravelItinerary();
-  console.log(travelItinerary);
   return (
     <div>
       <h5>
         {travelItinerary.startDate
-          ? "Start date" + travelItinerary.startDate
+          ? "Start date :" +
+            dayjs(travelItinerary.startDate).format("YYYY-MM-DD")
           : ""}{" "}
-        {travelItinerary.endDate ? "End Date" + travelItinerary.endDate : ""}{" "}
-        {travelItinerary.country ? "country" + travelItinerary.country : ""}
+        {travelItinerary.endDate
+          ? "End Date: " + dayjs(travelItinerary.endDate).format("YYYY-MM-DD")
+          : ""}{" "}
+        {travelItinerary.country ? "Country: " + travelItinerary.country : ""}
       </h5>
       <Timeline sx={0.2}>
         {travelItinerary.schedule
@@ -71,7 +73,7 @@ export function ItineraryTimeLine() {
 
 // Function to format time into AM or PM based on Given DateTime object
 function formatTimeToAMPM(time) {
-  const hours = time.getHours();
+  const hours = time.getUTCHours();
   const minutes = time.getMinutes();
   const ampm = hours >= 12 ? "pm" : "am";
   const formattedHours = hours % 12 === 0 ? 12 : hours % 12;

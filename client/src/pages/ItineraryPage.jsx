@@ -1,17 +1,18 @@
 import Background from "../components/background/Background";
 import BackgroundImage from "../components/background/BackgroundImage";
 import Typography from "@mui/material/Typography"; // Import Typography component
-import Grid from "@mui/material/Grid"
-import { AddNewLocationFAB } from "../components/itinerary/AddNewLocationFAB";
-import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
+import Grid from "@mui/material/Grid";
+import {AddNewLocationFAB} from "../components/itinerary/AddNewLocationFAB";
+import {ItineraryTimeLine} from "../components/itinerary/ItineraryTimeLine";
 import MyMap from "./../components/map/MyMap";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { EmergCardView } from "../components/itinerary/EmergCardView";
-import { PdfDownload } from "../components/itinerary/PDFexport";
-
+import {useState, useEffect} from "react";
+import {useTravelItinerary} from "../TravelItineraryContext";
+import PdfDownload from "../components/itinerary/PDFexport";
+import EmergCardView from "../components/itinerary/EmergCardView";
 
 export function ItineraryPage() {
+  const travelItinerary = useTravelItinerary();
   const [forexRate, setForexRate] = useState(null);
   const [currencyCode, setCurrencyCode] = useState(null);
 
@@ -67,22 +68,19 @@ export function ItineraryPage() {
         <Grid container>
           <Grid item xs={6}>
             <MyMap />
+            <h4>Key Destination Information</h4>
             <ForexRateComponent />
-            <EmergCardView />
+            <EmergCardView></EmergCardView>
+            <PdfDownload
+              downloadFileName="Itinerary"
+              rootElementId="timeline"
+            />
           </Grid>
-          <div style={{ position: "fixed", bottom: "20px", left: "30px"}}>
-              <PdfDownload
-                downloadFileName="Itinerary" 
-                rootElementId="timeline" 
-              />
+          <Grid id="timeline" item xs={6} style={{height: "100vh", overflowY: "auto"}}>
+            <ItineraryTimeLine />
+            <div style={{position: "fixed", bottom: "20px", right: "50px"}}>
+              <AddNewLocationFAB></AddNewLocationFAB>
             </div>
-          <Grid id="timeline" item xs={6} style={{ height: "100vh", overflowY: "auto" }}>
-          <ItineraryTimeLine />
-                <div
-                  style={{ position: "fixed", bottom: "20px", right: "50px" }}
-                >
-                  <AddNewLocationFAB></AddNewLocationFAB>
-                </div>
           </Grid>
         </Grid>
       </Background>

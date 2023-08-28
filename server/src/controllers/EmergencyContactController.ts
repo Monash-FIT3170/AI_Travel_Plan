@@ -1,15 +1,16 @@
 import { Request, Response } from 'express'
 
 import { getEmergencyContact } from "../services/EmergencyContact.service"
+import { getCountryCodeFromAPI } from '../services/CurrencyConversion.service';
 
 const getEmergencyContactRequest = async (req: Request, res: Response) => {
-    console.log("Hello")
 
     try {
         const country = req.query.country;
         console.log(country)
-        const response = await getEmergencyContact(country as string)
-        res.status(200).json({detail: response})
+        const countryCode = await getCountryCodeFromAPI(country as string)
+        const response = await getEmergencyContact(countryCode as string)
+        res.status(200).json({ detail: response })
 
     } catch (error) {
         res.status(400).json({ error: error })

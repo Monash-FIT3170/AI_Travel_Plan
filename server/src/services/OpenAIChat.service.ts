@@ -19,18 +19,23 @@ const openai = new OpenAIApi(configuration);
 export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: ChatMessage) {
     //array of messages to be sent to chatgpt
     const messages: ChatCompletionRequestMessage[] = []
-
-    const messageHistory = chatHistory.reduce((acc, cur) => acc + `Customer: ${cur.prompt}\n Agent: ${cur.reply}}`, "")
+    const messageLast5 = chatHistory.slice(1).slice(-5)
+    const messageHistory = messageLast5.reduce((acc, cur) => acc + `Customer: ${cur.prompt}\n Agent: ${cur.reply}}`, "")
     const travelItineraryString = "current travel itinerary" + JSON.stringify(travelItinerary)
     const returnMessage: ChatCompletionRequestMessage = {
         role: "system",
-        content: `You are a friendly travel agent that is trying to help the user plan their trip and create an iteinrary for them
-        Follow these steps to help the user plan their trip:
-        Step1- Make you have these important information country travelling, start date, end date, budget, number of people going, and their preferences for activities, number of people going and preferences for activities are optioinal
-        Step2- Once you have all the listed information in step 1, recap the information along with the country to the user and ask them if the information is correct and make sure to set the <<needConfirmation>> field in the response schema to true
-        Step3- Start building the itinerary itiratively starting from day 1. Suggest an activity at a time, making sure to provide the name, location, city, description, starting time, ending time and the cost. Please also include lunch and dinner as part of the suggested activties.
-        Step4- Once you suggest the activity, ask the user if the activity suggested are ok and make sure to set the <<needConfirmation>> field in the response schema to true
-        Step5- Once you think the daily activities are enough,  repeat step 3 and 4 until you cover all the days in the trip
+        content: `You are a friendly travel agent that is trying to help the user plan their trip and create an itinerary for them.
+        The user will provide the country, start date and end date of their trip and their budget
+        Here are a few scenarios that you need to handle:
+        Scenarios1- recieved the travel information from the user.
+        To Do: if the travel information provided is different from what you have, provide a summary of the given information and give a brief introduction to the location and ask if customers are ready to start building the itinerary. If you already have the information skip this case and go to scenarios2
+        
+        Scenarios2-Customer has confirmed the travel information and you are ready to start building the itinerary.
+        TO do: Start building the itinerary itiratively starting from day 1. Suggest max 2 activities for a given response including the lunch and dinner, making sure to provide the name, location, address, city, description, starting time, ending time and the cost. Please also include lunch and dinner as part of the suggested activties and take the budget into consideration as well.
+        Once you suggest the activities, ask the user if the activities suggested are ok and make sure to set the <<needConfirmation>> field in the response schema to true
+        Scenarios3- you are in the middle of building the itinerary and the user has confirmed the activities suggested.
+        To do: Make sure the current day itinerary looks complete, if its not continue building like in scenarios2. If the current day itinerary looks complete, move on to next day
+
 
         Strict following these response schemas when responding to the user:
         <<interface Response{
@@ -38,25 +43,19 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
             needConfirmation: boolean,
         }>> 
         
-        The chatResponse field should contain your  keep it one single line of string and the needConfirmation is used when asking user for confirmation of their detials and the activities.
-        heres a sample response for step2:
+        heres a sample response for scanrios2 make sure the chatResponse is in valid json format and do not follow follow the ormat provided by the customer:
         """
-      {
-        "chatResponse": "Thank you for providing the necessary information. Based on your inputs, here is a summary of your trip. country: [country]Start Date: [start date]End Date :[end date]Budget: [budget]Number of People: [no]Please confirm if the information is correct.",
-        "needConfirmation": true
-        }
-        """
-        heres a sample response for step3 and 4:
         {
-        "chatResponse": "Here is a suggestion for the first activity on Day 1 (9am to 10 am):Location:<location>,City:<city>, description: <description>, cost: <cost>. Please confirm if this activity is okay. If you are okay, we can move on with the next activity for Day 1."
+        "chatResponse": "Here are a few suggestion for for activities on Day 1. First activites(9am to 10 am) is Location is <location>,Address is <address>,City is <city>, description is <description>, cost is <cost> other activites. . Please confirm if day schedule is okay. If you are okay, we can move on with your schedule.",
         "needConfirmation": true
         }
+        """
+        Only return one response of a given scenario at a time. Do not return multiple responses for a given scenario.
         `
     }
     const userMessage: ChatCompletionRequestMessage = {
         role: "user",
-        content: `Heres the conversation where we left off: ${messageHistory} and heres the current activites we have planned ${travelItineraryString}
-        Heres the new question from the customer: ${prompt} """<insert response following the schema here"""`
+        content: `heres the current activites we have planned ${travelItineraryString}. Heres the conversation where we left off: ${messageHistory} and Heres the new question from the customer: ${prompt} """<insert response in a valid json format following the schema here"""`
     }
     messages.push(returnMessage, userMessage)
     console.log(messages)
@@ -77,9 +76,9 @@ export async function textToJSON(text: string, { startDate, endDate, country }: 
     const endDateStr = endDate ? "ending date is " + endDate : ""
     const countryStr = country ? "country is " + country : ""
     const returnMessage: ChatCompletionRequestMessage = {
-        role: "system", content: `
-        Convert the given text to the following
-        schemas:
+        role: "system", content: `firstly, find the approximate longitude and latitude of the location by geocoding the address.
+        then, convert the given text to the following schemas, while also including the longitude and latitude in the longitude and latitude placeholders in the follwing format
+        also ensure the longitude is between -180 and +180, and latitude is between -90 and 90:
     interface DailyItinerary {
     day: number
     date: Date
@@ -90,7 +89,9 @@ export async function textToJSON(text: string, { startDate, endDate, country }: 
     name: string
     location: string
     city: string
-    coordinates: string
+    address: string
+    longitude: string
+    latitude: string
     description?: string
     startTime: Date
     endTime: Date
@@ -123,6 +124,8 @@ export async function textToJSON(text: string, { startDate, endDate, country }: 
     "activities": Activity[]
     }"""
 
+    Also ensure the coordinates are given to the best of your ability. If there are no coordinates for that place, 
+    leave it blank. same goes for the address. if there is no address, leave that blank. But i expect coordinates if there is an address.
     `}
     const textMessage: ChatCompletionRequestMessage = {
         role: "user",
