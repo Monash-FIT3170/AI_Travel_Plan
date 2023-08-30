@@ -1,41 +1,94 @@
-If you pulled for the first time and try to run the app, it will not work.
-This is because you need to install some dependencies.
-When you install them, they will be installed into a folder called "node_modules" in both the client and server directories.
+# Welcome
+This repository contains the source code for the AI powered travel planner, **Get Packing Traveller**
+# Required Tech
+- A computer (Windows or Mac is fine)
+- node.js installed on your machine
+- an IDE or text editor (ideally vs code)
+- **anything else needed here?**
+# How to Run the App
+This section will outline how to run the application. 
+It contains the steps for installing dependencies, adding environment variables, <**Other stuff?**> and running the application.
+## Installing Dependencies
+First, clone the repository onto your machine.
+Basic understanding of the terminal would be helpful, but not required. 
+Ensure your terminal window is open in the root of the project. 
+```console
+PS <file_path_to_project>\AI_Travel_Plan>
+``` 
+Now, install dependencies in both the `AI_Travel_Plan/client` and `AI_Travel_Plan/server` directories
+For example, to install dependencies in **client**:
+```console
+PS <file_path_to_project>\AI_Travel_Plan> cd client
+PS <file_path_to_project>\AI_Travel_Plan\client> npm install
+```
+you can navigate out of the client directory by entering the `cd ..` command: 
 
-To install the required modules, do the following:
+```console
+PS <file_path_to_project>\AI_Travel_Plan\client> cd .. 
+PS <file_path_to_project>\AI_Travel_Plan>
+```
+repeat the install process in the **server** directory.
 
-- Open a terminal window with ctrl + "`" key (backtick key is under your escape key)
-- Enter "cd client" in the terminal. This will change the terminal directory to spike/client
-- Enter "npm install" in the terminal. This will look at your dependencies in client/package.json and install everything required.
-- Wait a while. After the /client/node_modules folder appears, you are ready to run your react app :)
-- In the same terminal window, enter "cd ..". This will nagivate your directory out of client and return to the root directory, spike.
-- Enter "cd server". This will navigate to spike/server directory.
-- Enter "npm install". This will install all dependencies to run your server. Server is ready to run now :)
+**do we need to do an install in the root folder??**
+## Adding Environment Variables
+within **both** the **client** and **server** folder, a `.env` file should be created
 
-To add api keys to the aplication do the follwing:
+In the `client/.env` file, the following API credentials should be added: 
+```
+REACT_APP_MAPBOX_API_KEY=<Your mapbox api key>
+REACT_APP_WEATHER_API_KEY =<Your open weather map api key>
+```
 
-- create a '.env' file in the server directory
-- add the key e.g OPENAIKEY='insert key here'
+In the `server/.env` file, the following should be added: 
+```
+PORT = 4000; 
+OPENAI_API_KEY =<your openai api key>
+```
 
-Great! you've installed everything
-To run the application, you must:
-open 2 separate terminal windows. (ctrl + `)
+## Any other setup? 
+Not sure if there is any other setup required
 
-- In one terminal, run the following commands
+## Running the Application
+After all the necessary setup has been completed, you should be ready to run the application in the development environment.
+Open two terminal windows. 
+- One terminal will run the react app in port 3000.
+- the other will run the server in port 4000.
 
-  - "cd server"
-  - "npm run dev"
-    This will run the server.
+In the first terminal: 
+```console
+PS <file_path_to_project>\AI_Travel_Plan> cd client
+PS <file_path_to_project>\AI_Travel_Plan\client> npm start
+```
 
-- In the other terminal, run the following commands
-  - "cd client"
-  - "npm start"
-    This will open your react program in the browser. If it doesn't automatically open in the browser, head to your browser and type this link in the search bar: localhost:3000
+in the second terminal: 
+```console
+PS <file_path_to_project>\AI_Travel_Plan> cd server
+PS <file_path_to_project>\AI_Travel_Plan\server> npm run dev
+```
 
-I have added the react-bootstrap and bootstrap libraries for our UI. Refer to their documentation to get a feel on how to use their library: https://react-bootstrap.github.io/components/alerts
+The react app should open in your browser. After running both steps above, you should be ready to use the application in the development environment. 
 
-Recommended but not required:
+# Additional Notes 
+This section will outline our tech stack, APIs used, and some common troubleshooting. 
+## Tech Stack 
+- Front end components are created in the `src/components` folder and use [React jsx](https://legacy.reactjs.org/docs/introducing-jsx.html) syntax. 
+	> Currently, we make use of [React Material UI](https://mui.com/material-ui/getting-started/) library for our components
+- back end code is written in the `server` directory in the [TypeScript](https://www.typescriptlang.org/) language.
+- Front and back end communication is handled by [Express.js](https://expressjs.com/)
+- **add more**
+## APIs Used
+In the front end: 
+- [React Map GL](https://visgl.github.io/react-map-gl/)
+	> Since this UI library is built on [Mapbox](https://www.mapbox.com/), you should obtain an API key from their site. The [free tier](https://www.mapbox.com/pricing) should be more than enough
+- [Open Weather](https://openweathermap.org/api)
 
-- Install ES7+ React/Redux/React-Native snippets
-  This makes react development a little easier by providing some auto complete snippets.
-  For example, rfce + tab will create a react functional component with export statement. Pretty cool!
+In the back end: 
+- [OpenAI](https://openai.com/blog/openai-api)
+
+**Did we miss any APIs??**
+## Common Issues
+When running code someone else has written, ensure you perform `npm install` commands to install any new dependencies they may have added.
+
+If there are issues where old itinerary information is being displayed, or the app crashes with an index error, open local storage and clear all itinerary and chat data.
+
+Ensure you are adding all API keys to the relevant `.env` files.
