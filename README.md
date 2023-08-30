@@ -3,14 +3,14 @@ This repository contains the source code for the AI powered travel planner, **Ge
 # Contents
 - [Required Tech](#Required-Tech)
 - [How to Run the App](#how-to-run-the-app)
-	- [Installing Dependencies](#InstallingDependencies)
-	- [Adding Environment Variables](Adding-Environment-Variables)
-	- [Any other setup?](Any-other-setup?)
-	- [Running the Application](Running-the-Application)
-- [Additional Notes](Additional-Notes)
-	- [Tech Stack](Tech-Stack)
-	- [APIs Used](APIs-Used)
-	- [Common Issues](Common-Issues)
+	- [Installing Dependencies](#installing-dependencies)
+	- [Adding Environment Variables](#adding-environment-variables)
+	- [Any other setup?](#any-other-setup?)
+	- [Running the Application](#running-the-application)
+- [Additional Notes](#additional-notes)
+	- [Tech Stack](#tech-stack)
+	- [APIs Used](#apis-used)
+	- [Common Issues](#common-issues)
 # Required Tech
 - A computer (Windows or Mac is fine)
 - node.js installed on your machine
