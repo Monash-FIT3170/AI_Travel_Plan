@@ -1,5 +1,16 @@
 # Welcome
 This repository contains the source code for the AI powered travel planner, **Get Packing Traveller**
+# Contents
+- [Required Tech](#Required-Tech)
+- [How to Run the App](#how-to-run-the-app)
+	- [Installing Dependencies](#InstallingDependencies)
+	- [Adding Environment Variables](Adding-Environment-Variables)
+	- [Any other setup?](Any-other-setup?)
+	- [Running the Application](Running-the-Application)
+- [Additional Notes](Additional-Notes)
+	- [Tech Stack](Tech-Stack)
+	- [APIs Used](APIs-Used)
+	- [Common Issues](Common-Issues)
 # Required Tech
 - A computer (Windows or Mac is fine)
 - node.js installed on your machine
