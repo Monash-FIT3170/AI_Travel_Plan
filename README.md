@@ -5,7 +5,7 @@ This repository contains the source code for the AI powered travel planner, **Ge
 - [How to Run the App](#how-to-run-the-app)
 	- [Installing Dependencies](#installing-dependencies)
 	- [Adding Environment Variables](#adding-environment-variables)
-	- [Any other setup?](#any-other-setup?)
+	- [Optional Docker]
 	- [Running the Application](#running-the-application)
 - [Additional Notes](#additional-notes)
 	- [Tech Stack](#tech-stack)
@@ -16,7 +16,6 @@ This repository contains the source code for the AI powered travel planner, **Ge
 - node.js installed on your machine
 - an IDE or text editor (ideally vs code)
 - [OPTIONAL] Docker
-- **anything else needed here?**
 # How to Run the App in Dev Environment (Method 1)
 This section will outline how to run the application. 
 It contains the steps for installing dependencies, adding environment variables, <**Other stuff?**> and running the application.
@@ -57,8 +56,6 @@ PORT = 4000;
 OPENAI_API_KEY =<your openai api key>
 ```
 
-## Any other setup? 
-Not sure if there is any other setup required
 
 ## Running the Application (Dev Environment)
 After all the necessary setup has been completed, you should be ready to run the application in the development environment.
@@ -113,9 +110,38 @@ This section will outline our tech stack, APIs used, and some common troubleshoo
 ## Tech Stack 
 - Front end components are created in the `src/components` folder and use [React jsx](https://legacy.reactjs.org/docs/introducing-jsx.html) syntax. 
 	> Currently, we make use of [React Material UI](https://mui.com/material-ui/getting-started/) library for our components
-- back end code is written in the `server` directory in the [TypeScript](https://www.typescriptlang.org/) language.
-- Front and back end communication is handled by [Express.js](https://expressjs.com/)
-- **add more**
+ - Front End pages are stored in `src/pages` folder.
+- Back end code is written in the `server` directory in the [TypeScript](https://www.typescriptlang.org/) language.
+- Swagger documentation for backend routes uses OpenAPI syntax. See example below:
+```  
+  openapi: 3.0.0
+info:
+  title: Sample API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.1.9
+servers:
+  - url: http://api.example.com/v1
+    description: Optional server description, e.g. Main (production) server
+  - url: http://staging-api.example.com
+    description: Optional server description, e.g. Internal staging server for testing
+paths:
+  /users:
+    get:
+      summary: Returns a list of users.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+```
+- Front and back-end communication is handled by [Express.js](https://expressjs.com/)
+  	>To add more routes, create router function on the routes folder. From the server.ts file create a link to the route functions
+  
 ## APIs Used
 In the front end: 
 - [React Map GL](https://visgl.github.io/react-map-gl/)
@@ -123,10 +149,11 @@ In the front end:
 - [Open Weather](https://openweathermap.org/api)
 
 In the back end: 
-- [OpenAI](https://openai.com/blog/openai-api)
-- [Emergency Contact](https://emergencynumberapi.com/api/country/)
+- [OpenAI API Doc](https://openai.com/blog/openai-api)
+- [Emergency Contact Doc](https://emergencynumberapi.com/)
+- [Currency Exchange API Doc](https://github.com/fawazahmed0/currency-api)
+- [country code coversion API Doc](https://restcountries.com/)
 
-**Did we miss any APIs??**
 ## Common Issues
 When running code someone else has written, ensure you perform `npm install` commands to install any new dependencies they may have added.
 
