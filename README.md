@@ -2,7 +2,7 @@
 This repository contains the source code for the AI powered travel planner, **Get Packing Traveller**
 # Contents
 - [Required Tech](#Required-Tech)
-- [How to Run the App](#how-to-run-the-app)
+- [How to Run the App](#How-to-Run-the-App-in-Dev-Environment-(Method-1))
 	- [Installing Dependencies](#installing-dependencies)
 	- [Adding Environment Variables](#adding-environment-variables)
 	- [Optional Docker]
@@ -147,6 +147,7 @@ In the front end:
 - [React Map GL](https://visgl.github.io/react-map-gl/)
 	> Since this UI library is built on [Mapbox](https://www.mapbox.com/), you should obtain an API key from their site. The [free tier](https://www.mapbox.com/pricing) should be more than enough
 - [Open Weather](https://openweathermap.org/api)
+- [Google Places API](https://developers.google.com/maps/documentation/places/web-service/overview)
 
 In the back end: 
 - [OpenAI API Doc](https://openai.com/blog/openai-api)
