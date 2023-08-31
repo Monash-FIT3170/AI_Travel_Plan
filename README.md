@@ -1,16 +1,17 @@
 # Welcome
 This repository contains the source code for the AI powered travel planner, **Get Packing Traveller**
 # Contents
-- [Required Tech](#Required-Tech)
-- [How to Run the App](#How-to-Run-the-App-in-Dev-Environment-(Method-1))
-	- [Installing Dependencies](#installing-dependencies)
-	- [Adding Environment Variables](#adding-environment-variables)
-	- [Optional Docker]
-	- [Running the Application](#running-the-application)
+- [Required Tech](#required-tech)
+- [How to Run the App in Dev Environment (Method 1)](#how-to-run-the-app-in-dev-environment-method-1)
+  - [Installing Dependencies](#installing-dependencies)
+  - [Adding Environment Variables](#adding-environment-variables)
+  - [Running the Application (Dev Environment)](#running-the-application-dev-environment)
+- [How to run the App in Dev Environment (Method 2)](#how-to-run-the-app-in-dev-environment-method-2)
+- [Running the Application (Prod Environment)](#running-the-application-prod-environment)
 - [Additional Notes](#additional-notes)
-	- [Tech Stack](#tech-stack)
-	- [APIs Used](#apis-used)
-	- [Common Issues](#common-issues)
+  - [Tech Stack](#tech-stack)
+  - [APIs Used](#apis-used)
+  - [Common Issues](#common-issues)
 # Required Tech
 - A computer (Windows or Mac is fine)
 - node.js installed on your machine
@@ -18,7 +19,7 @@ This repository contains the source code for the AI powered travel planner, **Ge
 - [OPTIONAL] Docker
 # How to Run the App in Dev Environment (Method 1)
 This section will outline how to run the application. 
-It contains the steps for installing dependencies, adding environment variables, <**Other stuff?**> and running the application.
+It contains the steps for installing dependencies, adding environment variables, and running the application.
 ## Installing Dependencies
 First, clone the repository onto your machine.
 Basic understanding of the terminal would be helpful, but not required. 
@@ -56,7 +57,6 @@ PORT = 4000;
 OPENAI_API_KEY =<your openai api key>
 ```
 
-
 ## Running the Application (Dev Environment)
 After all the necessary setup has been completed, you should be ready to run the application in the development environment.
 Open two terminal windows. 
@@ -74,8 +74,6 @@ in the second terminal:
 PS <file_path_to_project>\AI_Travel_Plan> cd server
 PS <file_path_to_project>\AI_Travel_Plan\server> npm run dev
 ```
-
-The react app should open in your browser. After running both steps above, you should be ready to use the application in the development environment. 
 
 The react app should open in your browser. After running both steps above, you should be ready to use the application in the development environment. 
 
