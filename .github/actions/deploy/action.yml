@@ -22,6 +22,7 @@ inputs:
 runs:
   using: composite
   steps:
+# AWS AUTHENTICATION ACTION IS REQUIRED HERE TO AUTH PROPERLY
     - name: Download artifacts
       uses: actions/download-artifact@v3
     - name: Install Terraform
@@ -38,7 +39,6 @@ runs:
       env:
         TERRAFORM_VARS_FILE: ./environments/${{ inputs.terraform-variables-file }}
         TF_VAR_application-version: ${{ inputs.application-version }}
-        TF_VAR_new-relic-license-key: ${{ inputs.new-relic-license-key }}
       run: terraform plan -var-file="$TERRAFORM_VARS_FILE" -input=false
     - name: Terraform Apply
       shell: bash
@@ -46,5 +46,4 @@ runs:
       env:
         TERRAFORM_VARS_FILE: ./environments/${{ inputs.terraform-variables-file }}
         TF_VAR_application-version: ${{ inputs.application-version }}
-        TF_VAR_new-relic-license-key: ${{ inputs.new-relic-license-key }}
       run: terraform apply -var-file="$TERRAFORM_VARS_FILE" -auto-approve -input=false

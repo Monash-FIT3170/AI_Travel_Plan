@@ -50,8 +50,71 @@ jobs:
         with:
           name: publish
           path: publish
+          
+
 # THE FOLLOWING IS THE CODE REQUIRED TO RUN AN AWS DEPLOYMENT TO BOTH STAGING AND PRODUCTION
 # IN ORDER FOR IT TO WORK, UNCOMMENT THE CODE AND ADD YOUR AWS ACCOUNT NUMBER INTO THE SECTIONS SPECIFIED
+#name: Build and Deploy
+#on: push
+#concurrency: ${{ github.ref }}
+#jobs:
+#  calculate-version:
+#    name: Calculate release version
+#    runs-on: ubuntu-latest
+#    env:
+#      MAJOR: 1
+#      MINOR: 0
+#    outputs:
+#      version: ${{ steps.create_version.outputs.VERSION }}
+#    steps:
+#      - id: create_version
+#        run: |
+#          VERSION=${MAJOR}.${MINOR}.${GITHUB_RUN_NUMBER}
+#          echo "$VERSION"
+#          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+#  build:
+#    name: Build
+#    needs:
+#      - calculate-version
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      id-token: write
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#      - name: Docker Registry Login
+#        run: echo "${{ secrets.GPR_PAT_TOKEN }}" | docker login ghcr.io -u <GHCRUSERNAME> --password-stdin
+#     - name: Configure Docker BuildX
+#        run: |
+#          export ACTIONS_CACHE_URL=$(echo "$ACTIONS_ID_TOKEN_REQUEST_URL" | grep -Po 'https://[^/]+/[^/]+/' | sed  's/pipelines/artifactcache/')
+#          export ACTIONS_RUNTIME_TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
+#          docker buildx create --use --driver=docker-container
+#      - name: Build
+#        env:
+#          version: ${{ needs.calculate-version.outputs.version }}
+#          GPR_USERNAME: <GHCRUSERNAME>
+#          GPR_TOKEN: ${{ secrets.GPR_PAT_TOKEN }}
+#        run: docker buildx bake --set *.cache-from="type=gha" --set *.cache-to="type=gha,mode=max" --progress plain --load
+#      - name: Test
+#        timeout-minutes: 10
+#        env:
+#          version: ${{ needs.calculate-version.outputs.version }}
+#        run: docker compose up tests --no-build --abort-on-container-exit
+#      - name: Create publish folder
+#        run: mkdir publish
+#      - name: Publish Docker Images
+#        if: github.ref == 'refs/heads/main'
+#        run: docker save $(docker images --format '{{.Repository}}:{{.Tag}}' | grep ghcr.io/monash-fit3170/ai_travel_plan) | gzip > publish/docker-images.tar.gz
+#      - name: Publish Terraform
+#        if: github.ref == 'refs/heads/main'
+#        run: cp -r terraform publish/terraform
+#      - name: Publish Artifacts
+#        if: github.ref == 'refs/heads/main'
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: publish
+#          path: publish
 #    deploy-global:
 #      name: Deploy Global Artifacts
 #      needs: build
@@ -63,7 +126,7 @@ jobs:
 #        - name: Load Docker Images
 #          run: docker load -i publish/docker-images.tar.gz
 #        - name: Docker Registry Login
-#          run: echo "${{ secrets.GPR_PAT_TOKEN }}" | docker login ghcr.io -u csnopsteam --password-stdin
+#          run: echo "${{ secrets.GPR_PAT_TOKEN }}" | docker login ghcr.io -u <GHCRUSERNAME> --password-stdin
 #        - name: Push Docker images
 #          run: docker images --format '{{.Repository}}:{{.Tag}}' | grep ghcr.io/monash-fit3170/ai_travel_plan | xargs -L1 docker push
 #    deploy-staging:
@@ -117,7 +180,7 @@ jobs:
 #        - name: Deploy
 #          uses: ./.github/actions/deploy/
 #          with:
-#            environment: AU.Production
+#            environment: Production
 #            aws-account-id: <AWS ACCOUNT ID>
 #            aws-region: ap-southeast-2
 #            terraform-backend-vars-file: production.backend.tfvars
