@@ -9,21 +9,21 @@ import axios from "axios";
 import {useState, useEffect} from "react";
 import {useTravelItinerary} from "../TravelItineraryContext";
 import PdfDownload from "../components/itinerary/PDFexport";
-import EmergCardView from "../components/itinerary/EmergCardView";
+import {EmergCardView} from "../components/itinerary/EmergCardView";
 
 export function ItineraryPage() {
   const travelItinerary = useTravelItinerary();
   const [forexRate, setForexRate] = useState(null);
   const [currencyCode, setCurrencyCode] = useState(null);
 
+  const country = travelItinerary.country;
   useEffect(() => {
     async function fetchForexRate() {
-      const countryName = "america";
       try {
         const response = await axios.post(
           "http://localhost:4000/api/exchangeRate",
           {
-            countryName: countryName,
+            countryName: country,
           }
         );
         console.log("Response data:", response.data);
@@ -76,7 +76,12 @@ export function ItineraryPage() {
               rootElementId="timeline"
             />
           </Grid>
-          <Grid id="timeline" item xs={6} style={{height: "100vh", overflowY: "auto"}}>
+          <Grid
+            id="timeline"
+            item
+            xs={6}
+            style={{height: "100vh", overflowY: "auto"}}
+          >
             <ItineraryTimeLine />
             <div style={{position: "fixed", bottom: "20px", right: "50px"}}>
               <AddNewLocationFAB></AddNewLocationFAB>
