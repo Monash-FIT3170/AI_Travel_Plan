@@ -18,7 +18,7 @@ function HomePage() {
       <Background scrollable={false}>
         <Typography
           variant="h1"
-          style={{ textAlign: "center", color: "white", marginTop: "200px" }}
+          style={{ fontFamily: ['Roboto Slab', 'serif'], textAlign: "center", color: "white", marginTop: "200px" }}
         >
           Your Journey Begins Now{" "}
         </Typography>

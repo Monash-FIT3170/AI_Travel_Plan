@@ -37,8 +37,8 @@ const DragUp = () => {
           textAlign: "center",
         }}
       >
-        <span style={{ fontSize: "69px" }}>↑</span>
-        <p>Swipe up to start talking to our AI Travel Planner </p>
+        <span style={{ fontSize: "69px", color: 'white' }}>↑</span>
+        <p style={{color:'white'}} >Swipe up to start talking to our AI Travel Planner </p>
       </div>
     </div>
   );

@@ -31,8 +31,8 @@ const MyAppBar = () => {
             }}
           >
             <HomeIcon style={{ marginRight: "10px", color: "white" }} />
-            <Typography variant="h6" style={{ color: "white" }}>
-              Get Packing Traveller
+            <Typography variant="h6" style={{ fontFamily: ['Roboto Slab', 'serif'], color: "white" }}>
+              Get Packing, Traveller
             </Typography>
           </Link>
         </Box>
