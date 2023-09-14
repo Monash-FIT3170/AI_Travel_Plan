@@ -41,6 +41,7 @@ export function ChatPage() {
     travelItinerary.startDate = "";
     travelItinerary.endDate = "";
     travelItinerary.country = "";
+    travelItinerary.schedule = "";
     setChatBoxKey((prevKey) => prevKey + 1); // Increment the key to force remount
   };
   return (
