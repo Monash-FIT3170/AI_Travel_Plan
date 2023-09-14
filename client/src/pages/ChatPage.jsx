@@ -23,6 +23,7 @@ export function ChatPage() {
   const clearChat = () => {
     localStorage.removeItem("chatMessages");
     localStorage.removeItem("chatHistory");
+    localStorage.removeItem("travelItinerary");
     setChatHistory([]);
     localStorage.setItem(
       "chatMessages",
