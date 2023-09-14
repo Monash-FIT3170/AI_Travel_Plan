@@ -56,6 +56,7 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
   // Chat container reference for scrolling
   const chatContainerRef = useRef(null);
 
+  // useEffect to scroll to the bottom of the chat container when messages change
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
