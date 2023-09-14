@@ -13,16 +13,19 @@ import {AddNewLocationFAB} from "../components/itinerary/AddNewLocationFAB";
 import {useTravelItinerary} from "../TravelItineraryContext";
 
 export function ChatPage() {
-  const travelItinerary = useTravelItinerary;
+  const travelItinerary = useTravelItinerary();
   const [chatBoxKey, setChatBoxKey] = useState(1); // Add a state for key
   const locationHistory = useLocation();
   const fromHomePage = locationHistory.state?.fromHomePage;
+
+  // clear chat history and local storage
   const [chatHistory, setChatHistory, updateChatMessageInLocalStorage] =
     useLocalStorage("chatHistory", []);
   console.log(chatHistory);
   const clearChat = () => {
     localStorage.removeItem("chatMessages");
     localStorage.removeItem("chatHistory");
+    localStorage.removeItem("travelItinerary");
     setChatHistory([]);
     localStorage.setItem(
       "chatMessages",
@@ -33,6 +36,12 @@ export function ChatPage() {
         },
       ])
     );
+
+    // clear the text showing current dates and destination
+    travelItinerary.startDate = "";
+    travelItinerary.endDate = "";
+    travelItinerary.country = "";
+    travelItinerary.schedule = "";
     setChatBoxKey((prevKey) => prevKey + 1); // Increment the key to force remount
   };
   return (
