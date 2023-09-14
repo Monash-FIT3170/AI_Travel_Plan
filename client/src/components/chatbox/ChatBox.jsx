@@ -14,7 +14,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import {
   useTravelItinerary,
   useTravelItineraryDispatch,
@@ -52,6 +52,16 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
           },
         ]
   );
+
+  // Chat container reference for scrolling
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   /**
    * States - initial information about the travel itinerary
@@ -209,6 +219,7 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
     <div style={{ display: "flex", height: "73vh" }}>
       {/* Scrolling div for messages*/}
       <div
+        ref={chatContainerRef}
         style={{
           flex: "1",
           overflowY: "auto",
