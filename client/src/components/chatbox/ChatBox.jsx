@@ -59,12 +59,22 @@ export default function Chatbox({chatHistory, setChatHistory}) {
   const [destination, setDestination] = useState();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [dateError, setDateError] = useState(null);
   const [budget, setBudget] = useState();
   const [chatStarted, setChatStarted] = useState(
     chatHistory.length > 0 ? true : false
   );
   const [showForm, setShowForm] = useState(false); // to track if form should be shown
   const handleConfirm = () => {
+    // Check if the end date is before or the same as the start date
+    if (endDate && startDate && (endDate.isBefore(startDate) || endDate.isSame(startDate))) {
+      setDateError("End date must be after start date.");
+      return; // Stop the function here
+    }
+
+    // Reset the error
+    setDateError(null);
+
     setShowForm(false); // Hide the form after confirmation
     setChatStarted(true); // Start the chat
     setDestination(destination);
@@ -295,6 +305,7 @@ export default function Chatbox({chatHistory, setChatHistory}) {
                     onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
                   />
                 </LocalizationProvider>
+                {dateError && <Typography color="error">{dateError}</Typography>}
                 <TextField
                   autoFocus
                   margin="dense"
