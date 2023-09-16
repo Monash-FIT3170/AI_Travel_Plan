@@ -1,10 +1,10 @@
 import React from "react";
 
-const Background = ({ children, scrollable = true }) => {
+const HomeBackground = ({ children, scrollable = true }) => {
 	return (
 		<div
 			style={{
-				backgroundColor: "#2c387e",
+				backgroundColor: "rgba(0,0, 0,0.5)",
 				paddingTop: "64px",
 				position: "relative",
 				zIndex: 1,
@@ -17,4 +17,4 @@ const Background = ({ children, scrollable = true }) => {
 	);
 };
 
-export default Background;
+export default HomeBackground;
