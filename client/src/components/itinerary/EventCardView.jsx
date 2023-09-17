@@ -168,7 +168,7 @@ export function EventCardView({event}) {
             </Box>
           }
         />
-        <CardMedia sx={{height: 200}} image={imageUrl} />
+        <CardMedia data-html2canvas-ignore="true" rootElementId="media" sx={{height: 200}} image={imageUrl} />
         <CardContent>{event.description}</CardContent>
         <CardActions>
           <Button
