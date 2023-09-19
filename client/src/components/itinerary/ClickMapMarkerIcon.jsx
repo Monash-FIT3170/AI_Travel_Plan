@@ -8,56 +8,45 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import "./ClickMapMarkerIcon.css";
+import { useMapContextUpdate } from "../map/MapContext";
 
 export default function ClickMapMarkerIcon(props) {
   const [open, setOpen] = React.useState(false);
+  const toggleCoords = useMapContextUpdate()
 
+  // recentres map to valid coords
+  const handleValidCoordClick = () => {
+    // do something to recentre map
+    let coords = {latitude: props.coords.latitude, longitude: props.coords.longitude, default: false}
+    console.log("Updated coords:", coords);
+    toggleCoords(coords)
+  }
+
+  // opens popup when invalid coords and clicked
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  // closes popup
   const handleClose = () => {
     setOpen(false);
   };
-  //TODO: shold centre map to valid coord.
-  if (props.coords.longitude && props.coords.latitude) {
-    <div>
-      <IconButton
-        className="click-map-marker-icon"
-        onClick={handleClickOpen}
-        edge="start"
-      >
-        <PlaceIcon onClick={handleClickOpen} />
-      </IconButton>
 
+  //if has valid coords for this location, centre to there
+  if (props.coords.longitude && props.coords.latitude) {
+    return (
       <div>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
+        <IconButton
+          className="click-map-marker-icon"
+          onClick={handleValidCoordClick}
+          edge="start"
         >
-          <DialogTitle id="alert-dialog-title">
-            {props.coords.latitude && props.coords.longitude
-              ? "this should not exist"
-              : "coordinates to this location could not be found"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {props.coords.latitude && props.coords.longitude
-                ? props.coords.latitude
-                : "Latitude could not be found"}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} autoFocus>
-              Okay
-            </Button>
-          </DialogActions>
-        </Dialog>
+          <PlaceIcon />
+        </IconButton>
       </div>
-    </div>
+    );
   }
+  // if coords invalid, show popup instead
   return (
     <div>
       <IconButton

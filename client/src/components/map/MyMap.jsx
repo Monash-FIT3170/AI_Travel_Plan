@@ -7,6 +7,7 @@ import { useTravelItinerary } from "../../TravelItineraryContext";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
+import { useMapContext } from "./MapContext";
 
 const ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
@@ -21,28 +22,52 @@ const ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
 export default function MyMap() {
   const travelItinerary = useTravelItinerary();
-  console.log(travelItinerary);
+  const centerCoordinatesFromContext = useMapContext();
+  const [viewport, setViewport] = useState({
+    longitude: centerCoordinatesFromContext.longitude,
+    latitude: centerCoordinatesFromContext.latitude,
+    zoom: 10,
+  });
+  const [centerCoordinates, setCenterCoordinates] = useState(
+    centerCoordinatesFromContext
+  );
+
+  useEffect(() => {
+    setViewport({
+      longitude: centerCoordinatesFromContext.longitude,
+      latitude: centerCoordinatesFromContext.latitude,
+      zoom: 10,
+    });
+  }, [centerCoordinatesFromContext]);
 
   //trying to centre to a location
-  let centerCoordinates = { longitude: 144.946457, latitude: -37.840935 };
-  if (travelItinerary && travelItinerary.schedule) {
-    for (const schedule of travelItinerary.schedule) {
+  console.log("reloaded component")
+  console.log("is default? : ", centerCoordinates.default)
+  if (
+    centerCoordinates.default &&
+    travelItinerary &&
+    travelItinerary.schedule
+  ) {
+    console.log("default is true");
+    loop1: for (const schedule of travelItinerary.schedule) {
       if (schedule.activities && schedule.activities.length > 0) {
         for (const activity of schedule.activities) {
-          console.log(activity.longitude);
           const parsedLong = parseFloat(activity.longitude);
           const parsedLat = parseFloat(activity.latitude);
-
           if (!isNaN(parsedLong) && !isNaN(parsedLat)) {
-            centerCoordinates = { longitude: parsedLong, latitude: parsedLat };
-            console.log("found new location");
-            break; // Exit loop if valid coordinates are found
+            setCenterCoordinates({
+              longitude: parsedLong,
+              latitude: parsedLat,
+              default: false,
+            });
+            break loop1; // Exit loop if valid coordinates are found
           }
         }
       }
     }
   }
 
+  console.log("recentering with coords: ", centerCoordinates.longitude, centerCoordinates.latitude)
   // safeguard in case there is no mapbox api token
   if (!ACCESS_TOKEN) {
     return (
@@ -64,14 +89,12 @@ export default function MyMap() {
     <div style={{ paddingLeft: "20px" }}>
       <Map
         mapboxAccessToken={ACCESS_TOKEN}
-        initialViewState={{
-          longitude: centerCoordinates.longitude,
-          latitude: centerCoordinates.latitude,
-          zoom: 10,
-        }}
+        {...viewport}
         style={{ width: "100%", height: "calc(100vh - 200px)" }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
         attributionControl={false}
+        onViewportChange={newViewport => setViewport(newViewport)}
+        onMove={evt => setViewport(evt.viewState)}
       >
         {travelItinerary.schedule &&
           travelItinerary.schedule.map((schedule, scheduleIndex) =>

@@ -2,14 +2,15 @@ import Background from "../components/background/Background";
 import BackgroundImage from "../components/background/BackgroundImage";
 import Typography from "@mui/material/Typography"; // Import Typography component
 import Grid from "@mui/material/Grid";
-import {AddNewLocationFAB} from "../components/itinerary/AddNewLocationFAB";
-import {ItineraryTimeLine} from "../components/itinerary/ItineraryTimeLine";
+import { AddNewLocationFAB } from "../components/itinerary/AddNewLocationFAB";
+import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
 import MyMap from "./../components/map/MyMap";
 import axios from "axios";
-import {useState, useEffect} from "react";
-import {useTravelItinerary} from "../TravelItineraryContext";
+import { useState, useEffect } from "react";
+import { useTravelItinerary } from "../TravelItineraryContext";
 import PdfDownload from "../components/itinerary/PDFexport";
-import {EmergCardView} from "../components/itinerary/EmergCardView";
+import { EmergCardView } from "../components/itinerary/EmergCardView";
+import { MapContextProvider } from "../components/map/MapContext";
 
 export function ItineraryPage() {
   const travelItinerary = useTravelItinerary();
@@ -65,29 +66,31 @@ export function ItineraryPage() {
     <>
       <BackgroundImage />
       <Background>
-        <Grid container>
-          <Grid item xs={6}>
-            <MyMap />
-            <h4>Key Destination Information</h4>
-            <ForexRateComponent />
-            <EmergCardView></EmergCardView>
-            <PdfDownload
-              downloadFileName="Itinerary"
-              rootElementId="timeline"
-            />
+        <MapContextProvider>
+          <Grid container>
+            <Grid item xs={6}>
+              <MyMap />
+              <h4>Key Destination Information</h4>
+              <ForexRateComponent />
+              <EmergCardView></EmergCardView>
+              <PdfDownload
+                downloadFileName="Itinerary"
+                rootElementId="timeline"
+              />
+            </Grid>
+            <Grid
+              id="timeline"
+              item
+              xs={6}
+              style={{ height: "100vh", overflowY: "auto" }}
+            >
+              <ItineraryTimeLine />
+              <div style={{ position: "fixed", bottom: "20px", right: "50px" }}>
+                <AddNewLocationFAB></AddNewLocationFAB>
+              </div>
+            </Grid>
           </Grid>
-          <Grid
-            id="timeline"
-            item
-            xs={6}
-            style={{height: "100vh", overflowY: "auto"}}
-          >
-            <ItineraryTimeLine />
-            <div style={{position: "fixed", bottom: "20px", right: "50px"}}>
-              <AddNewLocationFAB></AddNewLocationFAB>
-            </div>
-          </Grid>
-        </Grid>
+        </MapContextProvider>
       </Background>
     </>
   );
