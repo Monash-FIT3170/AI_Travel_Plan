@@ -67,13 +67,13 @@ export default function ClickMapMarkerIcon(props) {
           <DialogTitle id="alert-dialog-title">
             {props.coords.latitude && props.coords.longitude
               ? "this should not exist"
-              : "coordinates to this location could not be found"}
+              : "Location Error"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               {props.coords.latitude && props.coords.longitude
                 ? props.coords.latitude
-                : "Latitude could not be found"}
+                : "The coordinates to this location could not be found on the map."}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
