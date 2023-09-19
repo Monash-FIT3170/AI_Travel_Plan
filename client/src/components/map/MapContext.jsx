@@ -26,6 +26,9 @@ export function MapContextProvider({ children }) {
     setCoords(newCoords);
   }
 
+  useEffect(() => {
+    }, []);
+
   return (
     <MapContext.Provider value={coords}>
       <MapUpdateContext.Provider value={changeCoords}>

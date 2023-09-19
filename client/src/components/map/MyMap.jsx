@@ -7,7 +7,7 @@ import { useTravelItinerary } from "../../TravelItineraryContext";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import { useMapContext } from "./MapContext";
+import { useMapContext, useMapContextUpdate } from "./MapContext"; // Import useMapContextUpdate
 
 const ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 
@@ -23,6 +23,8 @@ const ACCESS_TOKEN = process.env.REACT_APP_MAPBOX_API_KEY;
 export default function MyMap() {
   const travelItinerary = useTravelItinerary();
   const centerCoordinatesFromContext = useMapContext();
+  const toggleCoords = useMapContextUpdate(); // Get the function to update coordinates
+
   const [viewport, setViewport] = useState({
     longitude: centerCoordinatesFromContext.longitude,
     latitude: centerCoordinatesFromContext.latitude,
@@ -40,15 +42,11 @@ export default function MyMap() {
     });
   }, [centerCoordinatesFromContext]);
 
-  //trying to centre to a location
-  console.log("reloaded component")
-  console.log("is default? : ", centerCoordinates.default)
   if (
     centerCoordinates.default &&
     travelItinerary &&
     travelItinerary.schedule
   ) {
-    console.log("default is true");
     loop1: for (const schedule of travelItinerary.schedule) {
       if (schedule.activities && schedule.activities.length > 0) {
         for (const activity of schedule.activities) {
@@ -60,15 +58,21 @@ export default function MyMap() {
               latitude: parsedLat,
               default: false,
             });
-            break loop1; // Exit loop if valid coordinates are found
+
+            // Use the function to update coordinates here
+            toggleCoords({
+              longitude: parsedLong,
+              latitude: parsedLat,
+              default: false,
+            });
+
+            break loop1;
           }
         }
       }
     }
   }
 
-  console.log("recentering with coords: ", centerCoordinates.longitude, centerCoordinates.latitude)
-  // safeguard in case there is no mapbox api token
   if (!ACCESS_TOKEN) {
     return (
       <React.Fragment>
@@ -93,8 +97,8 @@ export default function MyMap() {
         style={{ width: "100%", height: "calc(100vh - 200px)" }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
         attributionControl={false}
-        onViewportChange={newViewport => setViewport(newViewport)}
-        onMove={evt => setViewport(evt.viewState)}
+        onViewportChange={(newViewport) => setViewport(newViewport)}
+        onMove={(evt) => setViewport(evt.viewState)}
       >
         {travelItinerary.schedule &&
           travelItinerary.schedule.map((schedule, scheduleIndex) =>
@@ -102,7 +106,6 @@ export default function MyMap() {
               const parsedLong = parseFloat(activity.longitude);
               const parsedLat = parseFloat(activity.latitude);
 
-              // Check if parsedLong and parsedLat are valid numbers
               if (!isNaN(parsedLong) && !isNaN(parsedLat)) {
                 return (
                   <Marker
@@ -115,7 +118,6 @@ export default function MyMap() {
                 );
               }
 
-              // Return null if long and lat are invalid
               return null;
             })
           )}
