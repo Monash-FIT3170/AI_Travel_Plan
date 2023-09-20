@@ -37,11 +37,13 @@
 
  */
 export interface Activity {
-    name: string
-    location: string
-    city: string
-    description?: string
-    startTime: Date
-    endTime: Date
-    cost?: number
+  name: string;
+  location: string;
+  city: string;
+  longitude: string;
+  latitude: string;
+  description?: string;
+  startTime: Date;
+  endTime: Date;
+  cost?: number;
 }
