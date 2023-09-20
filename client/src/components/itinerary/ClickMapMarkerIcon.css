@@ -1,11 +1,11 @@
 /* Button Styles */
 .click-map-marker-icon {
-  color: black; /* Removed quotes */
-  background-color: white; /* Removed quotes */
-  margin-left: 0px; /* Removed quotes */
+  color: black; 
+  background-color: white; 
+  margin-left: 0px; 
   background-color: rgba(0, 0, 0, 0.1);
-  border: 10px solid grey; /* Removed quotes */
-  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2); /* Removed quotes */
+  border: 10px solid grey; 
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2); 
 }
 
 .click-map-marker-icon:hover {

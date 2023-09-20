@@ -38,7 +38,7 @@ export default function MyMap() {
     setViewport({
       longitude: centerCoordinatesFromContext.longitude,
       latitude: centerCoordinatesFromContext.latitude,
-      zoom: 10,
+      zoom: 12,
     });
   }, [centerCoordinatesFromContext]);
 
@@ -95,7 +95,7 @@ export default function MyMap() {
         mapboxAccessToken={ACCESS_TOKEN}
         {...viewport}
         style={{ width: "100%", height: "calc(100vh - 200px)" }}
-        mapStyle="mapbox://styles/mapbox/streets-v9"
+        mapStyle="mapbox://styles/aker0015/clmr8hr2m003f01pyddphg6mw"
         attributionControl={false}
         onViewportChange={(newViewport) => setViewport(newViewport)}
         onMove={(evt) => setViewport(evt.viewState)}
