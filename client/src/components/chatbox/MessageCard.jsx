@@ -1,6 +1,7 @@
 import React from "react";
-import {Box, Typography} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import axios from "axios";
+import "./confirmButton.css";
 import {
   useTravelItinerary,
   useTravelItineraryDispatch,
@@ -28,9 +29,9 @@ export default function MessageCard(props) {
     );
     console.log(response.data);
     if (response.data.day) {
-      dispatchV({type: "insertNewEvent", payload: response.data});
+      dispatchV({ type: "insertNewEvent", payload: response.data });
     } else {
-      dispatchV({type: "updateTravelItinerary", payload: response.data});
+      dispatchV({ type: "updateTravelItinerary", payload: response.data });
     }
     if (response.status === 201) {
       props.sendMessageFunction("Confirmed! lets continue");
@@ -73,7 +74,10 @@ export default function MessageCard(props) {
       <Box padding={1} borderRadius={4} bgcolor={backgroundStyle}>
         <Typography variant="body1">{props.message}</Typography>
         {props.needConfirmation ? (
-          <button onClick={convertTextToItinerary}> Confirm</button>
+          <button onClick={convertTextToItinerary} className="button">
+            {" "}
+            Confirm
+          </button>
         ) : null}
       </Box>
     </Box>

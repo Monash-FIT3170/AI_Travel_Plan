@@ -40,8 +40,8 @@ export interface Activity {
   name: string;
   location: string;
   city: string;
-  longitude: string;
-  latitude: string;
+  longitude?: string;
+  latitude?: string;
   description?: string;
   startTime: Date;
   endTime: Date;
