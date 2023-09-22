@@ -41,6 +41,6 @@ export interface TravelItinerary {
     numberOfPeople?: number
     preferences?: string[]
     schedule?: DailyItinerary[]
-    longitude: number
-    latitude: number
+    longitud?: number
+    latitude?: number
 }

@@ -147,11 +147,9 @@ export function EventCardView({ event }) {
     <Box display="flex" justifyContent="stretch" width="100%">
       <Card variant="outlined" style={{ width: "100%" }}>
         <CardHeader
-          avatar={
-            <ClickMapMarkerIcon
-              coords={{ latitude: event.latitude, longitude: event.longitude }}
-            />
-          }
+        avatar={window.location.href.endsWith("/itinerary") ? <ClickMapMarkerIcon
+        coords={{ latitude: event.latitude, longitude: event.longitude }}
+      /> : <PlaceIcon />}
           title={event.name}
           subheader={
             "DURATION: " +
