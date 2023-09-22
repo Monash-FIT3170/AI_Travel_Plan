@@ -18,7 +18,7 @@ function timelineGenerator(dailyItinerary) {
   );
   const formattedDate = new Date(dailyItinerary.date).getDate();
   const formattedYear = new Date(dailyItinerary.date).getFullYear();
-  console.log(dailyItinerary.activities[0].startTime);
+  // console.log(dailyItinerary.activities[0].startTime);
   const formattedStartTime = formatTimeToAMPM(
     new Date(dailyItinerary.activities[0].startTime)
   );
