@@ -1,7 +1,8 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import axios from "axios";
 import "./confirmButton.css";
+import Button from "@mui/material/Button";
 import {
   useTravelItinerary,
   useTravelItineraryDispatch,
@@ -16,25 +17,34 @@ export default function MessageCard(props) {
   //const alignStyle = props.sender === "user" ? "flex-end" : "flex-start";
 
   //determine the background colour
+  const [loading, setLoading] = useState(false);
   const backgroundStyle = props.sender === "user" ? "#DCF8C6" : "#ECEFF1";
   const travelItinerary = useTravelItinerary();
   const dispatchV = useTravelItineraryDispatch();
   async function convertTextToItinerary() {
-    const response = await axios.post(
-      "http://localhost:4000/api/chatMessage/confirm",
-      {
-        text: props.message,
-        travelItinerary: travelItinerary,
+    setLoading(true); // Start loading indicator
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/chatMessage/confirm",
+        {
+          text: props.message,
+          travelItinerary: travelItinerary,
+        }
+      );
+      console.log(response.data);
+      if (response.data.day) {
+        dispatchV({ type: "insertNewEvent", payload: response.data });
+      } else {
+        dispatchV({ type: "updateTravelItinerary", payload: response.data });
       }
-    );
-    console.log(response.data);
-    if (response.data.day) {
-      dispatchV({ type: "insertNewEvent", payload: response.data });
-    } else {
-      dispatchV({ type: "updateTravelItinerary", payload: response.data });
-    }
-    if (response.status === 201) {
-      props.sendMessageFunction("Confirmed! lets continue");
+      if (response.status === 201) {
+        props.sendMessageFunction("Confirmed! Let's continue");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // Handle errors here
+    } finally {
+      setLoading(false); // Stop loading indicator, whether success or failure
     }
 
     //to do
@@ -74,10 +84,22 @@ export default function MessageCard(props) {
       <Box padding={1} borderRadius={4} bgcolor={backgroundStyle}>
         <Typography variant="body1">{props.message}</Typography>
         {props.needConfirmation ? (
-          <button onClick={convertTextToItinerary} className="button">
-            {" "}
-            Confirm
-          </button>
+          <div>
+            <Button
+              variant="contained"
+              onClick={convertTextToItinerary}
+              disabled={loading}
+            >
+              Confirm
+            </Button>
+            {loading && (
+              <CircularProgress
+                size={24}
+                style={{ marginLeft: "10px", top: "10px" }}
+              />
+            )}{" "}
+            {/* Display loading indicator when loading is true */}
+          </div>
         ) : null}
       </Box>
     </Box>
