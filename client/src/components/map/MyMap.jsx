@@ -90,7 +90,7 @@ export default function MyMap() {
   }
 
   return (
-    <div style={{ paddingLeft: "20px" }}>
+    <div>
       <Map
         mapboxAccessToken={ACCESS_TOKEN}
         {...viewport}
