@@ -9,8 +9,10 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useTravelItinerary } from "../TravelItineraryContext";
 import PdfDownload from "../components/itinerary/PDFexport";
+import { MonetizationOn } from '@mui/icons-material';
 import { EmergCardView } from "../components/itinerary/EmergCardView";
 import { MapContextProvider } from "../components/map/MapContext";
+
 
 export function ItineraryPage() {
   const travelItinerary = useTravelItinerary();
@@ -48,35 +50,49 @@ export function ItineraryPage() {
   }, []);
   const ForexRateComponent = () => (
     <div
+    style={{
+      backgroundColor: "#f0f0f0",
+      padding: "20px",
+      marginBottom: "10px",
+      borderRadius: "5px"
+    }}
+  >
+    <div
       style={{
-        backgroundColor: "#f0f0f0",
-        padding: "8px",
-        marginBottom: "10px",
+        display: "flex",
+        alignItems: "center",
+        marginBottom: "20px",
       }}
     >
-      {forexRate !== null ? (
-        <Typography variant="body1">{`Exchange Rate: 1 AUD = ${forexRate} ${currencyCode}`}</Typography>
-      ) : (
-        <Typography variant="body1">Fetching exchange rate...</Typography>
-      )}
+      <MonetizationOn fontSize="large" style={{ marginRight: "10px" }} />
+      <Typography variant="h6">Exchange rate</Typography>
     </div>
+    {forexRate !== null ? (
+      <Typography variant="body1">{`1 Australian Dollar = ${forexRate} ${currencyCode}`}</Typography>
+    ) : (
+      <Typography variant="body1">Fetching exchange rate...</Typography>
+    )}
+  </div>
   );
 
   return (
     <>
+
       <BackgroundImage />
       <Background>
         <MapContextProvider>
           <Grid container>
             <Grid item xs={6}>
-              <MyMap />
-              <h4>Key Destination Information</h4>
-              <ForexRateComponent />
-              <EmergCardView></EmergCardView>
-              <PdfDownload
-                downloadFileName="Itinerary"
-                rootElementId="timeline"
-              />
+              <div style={{ marginLeft: "30px" }}>
+                <MyMap />
+                <h4>Key Destination Information</h4>
+                <ForexRateComponent />
+                <EmergCardView></EmergCardView>
+                <PdfDownload
+                  downloadFileName="Itinerary"
+                  rootElementId="timeline"
+                />
+               </div>
             </Grid>
             <Grid
               id="timeline"
