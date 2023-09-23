@@ -1,5 +1,6 @@
 import React from "react";
 
+// Background colour set for all pages except landing page
 const Background = ({ children, scrollable = true }) => {
 	return (
 		<div

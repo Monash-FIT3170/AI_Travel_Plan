@@ -1,6 +1,7 @@
 import React from "react";
 import background from "../../assets/background.jpeg";
 
+// Background image set for landing page
 const BackgroundImage = () => {
 	return (
 		<div

@@ -1,5 +1,6 @@
 import React from "react";
 
+// Semi-transparent background colour set for landing page
 const HomeBackground = ({ children, scrollable = true }) => {
 	return (
 		<div
