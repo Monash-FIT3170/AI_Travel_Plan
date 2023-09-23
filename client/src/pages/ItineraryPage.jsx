@@ -10,6 +10,10 @@ import { useState, useEffect } from "react";
 import { useTravelItinerary } from "../TravelItineraryContext";
 import PdfDownload from "../components/itinerary/PDFexport";
 import { EmergCardView } from "../components/itinerary/EmergCardView";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
 
 export function ItineraryPage() {
 	const travelItinerary = useTravelItinerary();
@@ -46,18 +50,17 @@ export function ItineraryPage() {
 		fetchForexRate();
 	}, []);
 	const ForexRateComponent = () => (
-		<div
-			style={{
-				backgroundColor: "#f0f0f0",
-				padding: "8px",
-				marginBottom: "10px",
-			}}
-		>
-			{forexRate !== null ? (
-				<Typography variant="body1">{`Exchange Rate: 1 AUD = ${forexRate} ${currencyCode}`}</Typography>
-			) : (
-				<Typography variant="body1">Fetching exchange rate...</Typography>
-			)}
+		<div style={{ paddingBottom: "20px" }}>
+			<Card sx={{ minWidth: 275 }}>
+				<CardHeader avatar={<CurrencyExchangeIcon />} title={"Exchange Rate"} />
+				<CardContent>
+					{forexRate !== null ? (
+						<Typography variant="body1">{`1 AUD = ${forexRate} ${currencyCode}`}</Typography>
+					) : (
+						<Typography variant="body1">Fetching exchange rate...</Typography>
+					)}
+				</CardContent>
+			</Card>
 		</div>
 	);
 
