@@ -8,7 +8,7 @@ import MyMap from "./../components/map/MyMap";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useTravelItinerary } from "../TravelItineraryContext";
-import PdfDownload from "../components/itinerary/PDFexport";
+import PdfDownload from "../components/itinerary/PdfExport";
 import { EmergCardView } from "../components/itinerary/EmergCardView";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import Card from "@mui/material/Card";

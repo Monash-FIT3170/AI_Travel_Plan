@@ -17,14 +17,14 @@ export const PdfDownload = ({rootElementId , downloadFileName}) => {
             const input = document.getElementById(rootElementId);
             input.scrollTo(0, 0);
             html2canvas(input, {
-                allowTaint: true, scale: '1', backgroundColor: '#87CEEB',
+                useCORS: true, allowTaint: true, scale: '1', backgroundColor: '#87CEEB',
                 height: input.scrollHeight, windowHeight: input.scrollHeight
             }).then(canvas => {
                 const imgData = canvas.toDataURL('image/png');
                 const imgWidth = 210;
                 const pageHeight = 290;
                 const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                let heightLeft = imgHeight;
+                let heightLeft = imgHeight  - (200*('[id^=media]').length);
                 const doc = new jsPDF('pt', 'mm');
                 let position = 0;
                 doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
