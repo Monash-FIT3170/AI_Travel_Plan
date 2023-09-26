@@ -59,12 +59,30 @@ export default function Chatbox({chatHistory, setChatHistory}) {
   const [destination, setDestination] = useState();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [dateError, setDateError] = useState(null);
+  const [destinationError, setDestinationError] = useState(null);
   const [budget, setBudget] = useState();
   const [chatStarted, setChatStarted] = useState(
     chatHistory.length > 0 ? true : false
   );
   const [showForm, setShowForm] = useState(false); // to track if form should be shown
   const handleConfirm = () => {
+    // Reset the error
+    setDateError(null);
+    setDestinationError(null);
+
+    // Check if the end date is before or the same as the start date
+    if (endDate && startDate && (endDate.isBefore(startDate) || endDate.isSame(startDate))) {
+      setDateError("End date must be after start date.");
+      return; // Stop the function here
+    }
+
+    // Check if the destination is empty or just whitespace
+    if (!destination || destination.trim() === "") {
+      setDestinationError("Destination cannot be empty.");
+      return; 
+    }
+
     setShowForm(false); // Hide the form after confirmation
     setChatStarted(true); // Start the chat
     setDestination(destination);
@@ -278,23 +296,32 @@ export default function Chatbox({chatHistory, setChatHistory}) {
                 <TextField
                   autoFocus
                   margin="dense"
-                  label="Destination"
+                  label="Destination Country"
                   type="text"
                   fullWidth
-                  onChange={(e) => setDestination(e.target.value)}
+                  onChange={(e) => {
+                    setDestination(e.target.value);
+                    if (e.target.value.trim() !== "") {
+                      setDestinationError(null);
+                    }
+                  }}
                 />
+                {destinationError && <Typography color="error">{destinationError}</Typography>}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Start Date"
                     onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
+                    minDate={dayjs()}  // sets the minimum selectable date to today
                   />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="End Date"
                     onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
+                    minDate={dayjs()}
                   />
                 </LocalizationProvider>
+                {dateError && <Typography color="error">{dateError}</Typography>}
                 <TextField
                   autoFocus
                   margin="dense"
