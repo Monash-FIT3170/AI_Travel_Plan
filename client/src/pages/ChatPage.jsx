@@ -8,12 +8,14 @@ import Button from "@mui/material/Button";
 import {motion} from "framer-motion";
 import {useLocation} from "react-router-dom";
 import {useLocalStorage} from "../components/LocalStorageGeneric";
-
 import {AddNewLocationFAB} from "../components/itinerary/AddNewLocationFAB";
-import {useTravelItinerary} from "../TravelItineraryContext";
+import {useTravelItinerary,useTravelItineraryDispatch} from "../TravelItineraryContext";
+
 
 export function ChatPage() {
-  const travelItinerary = useTravelItinerary();
+  const travelItinerary = useTravelItinerary;
+  const itineraryDispatch = useTravelItineraryDispatch();
+
   const [chatBoxKey, setChatBoxKey] = useState(1); // Add a state for key
   const locationHistory = useLocation();
   const fromHomePage = locationHistory.state?.fromHomePage;
@@ -43,6 +45,8 @@ export function ChatPage() {
     travelItinerary.country = "";
     travelItinerary.schedule = "";
     setChatBoxKey((prevKey) => prevKey + 1); // Increment the key to force remount
+    itineraryDispatch({ type: 'clearItinerary' });
+    
   };
   return (
     <motion.div
