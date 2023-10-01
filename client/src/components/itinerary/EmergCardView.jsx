@@ -8,6 +8,19 @@ import {List, ListItem} from "@mui/material";
 import axios from "axios";
 import {useTravelItinerary} from "../../TravelItineraryContext";
 
+// Used for testing purposes
+// export async function emergencyDataApi(country) {
+//   try {
+//   const response = await axios.get(
+//     "http://localhost:4000/api/emergencyContact?country=" + country
+//   );
+//   const data = response.data.detail; // Assuming your API response is an object with emergency details
+//   return data;
+//   } catch (error) {
+//     console.error("Error fetching emergency data:", error);
+//   }
+// }
+
 export function EmergCardView() {
   const [emergencyData, setEmergencyData] = useState({
     country: {},
