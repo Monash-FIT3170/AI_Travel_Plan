@@ -1,11 +1,11 @@
 import React from "react";
 
-// Background colour set for all pages except landing page
-const Background = ({ children, scrollable = true }) => {
+// Semi-transparent background colour set for landing page
+const HomeBackground = ({ children, scrollable = true }) => {
 	return (
 		<div
 			style={{
-				backgroundColor: "#2c387e",
+				backgroundColor: "rgba(0,0, 0,0.5)",
 				paddingTop: "64px",
 				position: "relative",
 				zIndex: 1,
@@ -18,4 +18,4 @@ const Background = ({ children, scrollable = true }) => {
 	);
 };
 
-export default Background;
+export default HomeBackground;

@@ -7,20 +7,9 @@ import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
 import {List, ListItem} from "@mui/material";
 import axios from "axios";
 import {useTravelItinerary} from "../../TravelItineraryContext";
-
-// Used for testing purposes
-// export async function emergencyDataApi(country) {
-//   try {
-//   const response = await axios.get(
-//     "http://localhost:4000/api/emergencyContact?country=" + country
-//   );
-//   const data = response.data.detail; // Assuming your API response is an object with emergency details
-//   return data;
-//   } catch (error) {
-//     console.error("Error fetching emergency data:", error);
-//   }
-// }
-
+const URL = process.env.REACT_APP_BACKEND_URL
+  ? process.env.REACT_APP_BACKEND_URL
+  : "http://localhost:4000/";
 export function EmergCardView() {
   const [emergencyData, setEmergencyData] = useState({
     country: {},
@@ -34,12 +23,12 @@ export function EmergCardView() {
   //need to check when they change country
   if (!emergencyData.country.countryName) {
     axios
-      .get("http://localhost:4000/api/emergencyContact?country=" + country)
+      .get(URL + "api/emergencyContact?country=" + country)
       .then((response) => {
         const data = response.data.detail; // Assuming your API response is an object with emergency details
-        console.log(data);
+        // console.log(data);
         setEmergencyData(data);
-        console.log(emergencyData);
+        // console.log(emergencyData);
       })
       .catch((error) => {
         console.error("Error fetching emergency data:", error);
@@ -57,7 +46,7 @@ export function EmergCardView() {
           subheader={`Services in ${emergencyData.country.countryName}`} // Update this subheader as needed
         />
         <CardContent>
-          <Typography variant="body2">
+          <Typography variant="body1">
             <List>
               {isUniversalEmergencyNumber && (
                 <>

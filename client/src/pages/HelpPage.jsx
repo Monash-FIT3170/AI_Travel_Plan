@@ -12,9 +12,10 @@ export default function HelpPage() {
       <Background>
         <Typography
           variant="h3"
-          style={{textAlign: "center", color: "white", marginTop: "100px"}}
+          style={{ fontFamily: [
+            'Roboto Slab', 'serif'], textAlign: "center", color: "white", marginTop: "100px"}}
         >
-          We are here to help{" "}
+          We are here to help...{" "}
         </Typography>
         <div style={{marginTop: "50px"}}>
           <HelpMenu />

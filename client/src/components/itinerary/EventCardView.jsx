@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -7,21 +7,25 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import PlaceIcon from "@mui/icons-material/Place";
+import ClickMapMarkerIcon from "./ClickMapMarkerIcon.jsx";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
-import {TimePicker} from "@mui/x-date-pickers/TimePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import {fetchWeatherForLocation, getWeatherIconUrl} from "../api/weatherAPI.js";
-import {PlaceSearch} from "../api/imageAPI.jsx";
+import {
+  fetchWeatherForLocation,
+  getWeatherIconUrl,
+} from "../api/weatherAPI.js";
+import { PlaceSearch } from "../api/imageAPI.jsx";
 import {
   useTravelItineraryDispatch,
   useTravelItinerary,
@@ -30,7 +34,7 @@ import {
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export function EventCardView({event}) {
+export function EventCardView({ event }) {
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [name, setName] = useState(event.name);
@@ -40,7 +44,7 @@ export function EventCardView({event}) {
   const [chatResponse, setResponse] = useState(event.chatResponse);
   const [date, setDate] = useState(dayjs(event.startTime).toDate());
   const [time, setTime] = useState(dayjs(event.startTime).toDate());
-  const [errors, setErrors] = useState({name: "", date: "", time: ""});
+  const [errors, setErrors] = useState({ name: "", date: "", time: "" });
   const [weatherData, setWeatherData] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -57,7 +61,7 @@ export function EventCardView({event}) {
 
   const handleClose = () => {
     setOpen(false);
-    setErrors({name: "", date: "", time: ""});
+    setErrors({ name: "", date: "", time: "" });
   };
 
   const handleDeleteOpen = () => {
@@ -103,7 +107,7 @@ export function EventCardView({event}) {
       timeError = "Time is not valid";
     }
 
-    setErrors({name: nameError, date: dateError, time: timeError});
+    setErrors({ name: nameError, date: dateError, time: timeError });
   }, [name, date, time]);
 
   const handleSave = () => {
@@ -125,7 +129,7 @@ export function EventCardView({event}) {
       location,
     };
 
-    itineraryDispatch({type: "insertNewEvent", payload: newEvent});
+    itineraryDispatch({ type: "insertNewEvent", payload: newEvent });
     setOpen(false);
   };
 
@@ -141,9 +145,11 @@ export function EventCardView({event}) {
   }, []);
   return (
     <Box display="flex" justifyContent="stretch" width="100%">
-      <Card variant="outlined" style={{width: "100%"}}>
+      <Card variant="outlined" style={{ width: "100%" }}>
         <CardHeader
-          avatar={<PlaceIcon />}
+        avatar={window.location.href.endsWith("/itinerary") ? <ClickMapMarkerIcon
+        coords={{ latitude: event.latitude, longitude: event.longitude }}
+      /> : <PlaceIcon />}
           title={event.name}
           subheader={
             "DURATION: " +
@@ -157,7 +163,7 @@ export function EventCardView({event}) {
                 <img
                   src={getWeatherIconUrl(weatherData.weather[0].icon)}
                   alt="Weather Icon"
-                  style={{marginRight: "10px"}}
+                  style={{ marginRight: "10px" }}
                 />
               )}
               <Typography>
@@ -168,7 +174,7 @@ export function EventCardView({event}) {
             </Box>
           }
         />
-        <CardMedia sx={{height: 200}} image={imageUrl} />
+        <CardMedia data-html2canvas-ignore="true" rootElementId="media" sx={{height: 200}} image={imageUrl} />
         <CardContent>{event.description}</CardContent>
         <CardActions>
           <Button

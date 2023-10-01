@@ -14,11 +14,15 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
 import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useRef, useEffect} from "react";
 import {
   useTravelItinerary,
   useTravelItineraryDispatch,
 } from "../../TravelItineraryContext";
+const URL = process.env.REACT_APP_BACKEND_URL
+  ? process.env.REACT_APP_BACKEND_URL
+  : "http://localhost:4000/";
+
 /**
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
@@ -53,18 +57,51 @@ export default function Chatbox({chatHistory, setChatHistory}) {
         ]
   );
 
+  // Chat container reference for scrolling
+  const chatContainerRef = useRef(null);
+
+  // useEffect to scroll to the bottom of the chat container when messages change
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   /**
    * States - initial information about the travel itinerary
    */
   const [destination, setDestination] = useState();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [dateError, setDateError] = useState(null);
+  const [destinationError, setDestinationError] = useState(null);
   const [budget, setBudget] = useState();
   const [chatStarted, setChatStarted] = useState(
     chatHistory.length > 0 ? true : false
   );
   const [showForm, setShowForm] = useState(false); // to track if form should be shown
   const handleConfirm = () => {
+    // Reset the error
+    setDateError(null);
+    setDestinationError(null);
+
+    // Check if the end date is before or the same as the start date
+    if (
+      endDate &&
+      startDate &&
+      (endDate.isBefore(startDate) || endDate.isSame(startDate))
+    ) {
+      setDateError("End date must be after start date.");
+      return; // Stop the function here
+    }
+
+    // Check if the destination is empty or just whitespace
+    if (!destination || destination.trim() === "") {
+      setDestinationError("Destination cannot be empty.");
+      return;
+    }
+
     setShowForm(false); // Hide the form after confirmation
     setChatStarted(true); // Start the chat
     setDestination(destination);
@@ -141,14 +178,11 @@ export default function Chatbox({chatHistory, setChatHistory}) {
       //   payload: response.data,
       // });
 
-      const response = await axios.post(
-        "http://localhost:4000/api/chatMessage",
-        {
-          prompt: newMessage,
-          travelItinerary: travelItinerary,
-          chatHistory: chatHistory,
-        }
-      );
+      const response = await axios.post(`${URL}api/chatMessage`, {
+        prompt: newMessage,
+        travelItinerary: travelItinerary,
+        chatHistory: chatHistory,
+      });
 
       console.log(response.data);
       setLoading(false);
@@ -206,6 +240,7 @@ export default function Chatbox({chatHistory, setChatHistory}) {
     <div style={{display: "flex", height: "73vh"}}>
       {/* Scrolling div for messages*/}
       <div
+        ref={chatContainerRef}
         style={{
           flex: "1",
           overflowY: "auto",
@@ -278,23 +313,36 @@ export default function Chatbox({chatHistory, setChatHistory}) {
                 <TextField
                   autoFocus
                   margin="dense"
-                  label="Destination"
+                  label="Destination Country"
                   type="text"
                   fullWidth
-                  onChange={(e) => setDestination(e.target.value)}
+                  onChange={(e) => {
+                    setDestination(e.target.value);
+                    if (e.target.value.trim() !== "") {
+                      setDestinationError(null);
+                    }
+                  }}
                 />
+                {destinationError && (
+                  <Typography color="error">{destinationError}</Typography>
+                )}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Start Date"
                     onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
+                    minDate={dayjs()} // sets the minimum selectable date to today
                   />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="End Date"
                     onChange={(newDate) => setEndDate(newDate)} // Pass the new Date object to setDate
+                    minDate={dayjs()}
                   />
                 </LocalizationProvider>
+                {dateError && (
+                  <Typography color="error">{dateError}</Typography>
+                )}
                 <TextField
                   autoFocus
                   margin="dense"
@@ -306,6 +354,7 @@ export default function Chatbox({chatHistory, setChatHistory}) {
                 />
               </DialogContent>
               <DialogActions>
+                <Button onClick={() => setShowForm(false)}>Cancel</Button>
                 <Button onClick={handleConfirm}>Start the chat</Button>
               </DialogActions>
             </Dialog>
