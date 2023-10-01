@@ -24,9 +24,9 @@ export function EmergCardView() {
       .get("http://localhost:4000/api/emergencyContact?country=" + country)
       .then((response) => {
         const data = response.data.detail; // Assuming your API response is an object with emergency details
-        console.log(data);
+        // console.log(data);
         setEmergencyData(data);
-        console.log(emergencyData);
+        // console.log(emergencyData);
       })
       .catch((error) => {
         console.error("Error fetching emergency data:", error);
