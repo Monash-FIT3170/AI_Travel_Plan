@@ -1,7 +1,7 @@
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
-import { TextField } from "@mui/material";
-import { Box, Typography } from "@mui/material";
+import {TextField} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import MessageCard from "./MessageCard";
 import axios from "axios";
 import Button from "@mui/material/Button";
@@ -10,20 +10,24 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
+import {DatePicker} from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, {useState, useContext, useRef, useEffect} from "react";
 import {
   useTravelItinerary,
   useTravelItineraryDispatch,
 } from "../../TravelItineraryContext";
+const URL = process.env.REACT_APP_BACKEND_URL
+  ? process.env.REACT_APP_BACKEND_URL
+  : "http://localhost:4000/";
+
 /**
  * Contains the entire code for a chat box area, including text field, message display.
  * @returns
  */
-export default function Chatbox({ chatHistory, setChatHistory }) {
+export default function Chatbox({chatHistory, setChatHistory}) {
   const travelItinerary = useTravelItinerary();
   const dispatch = useTravelItineraryDispatch();
   /**
@@ -41,9 +45,9 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
    */
   const [messages, setMessages] = useState(
     chatHistory.length > 0
-      ? chatHistory.flatMap(({ prompt, reply }) => [
-          { text: prompt, sender: "user" },
-          { text: reply, sender: "server" },
+      ? chatHistory.flatMap(({prompt, reply}) => [
+          {text: prompt, sender: "user"},
+          {text: reply, sender: "server"},
         ])
       : [
           {
@@ -83,7 +87,11 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
     setDestinationError(null);
 
     // Check if the end date is before or the same as the start date
-    if (endDate && startDate && (endDate.isBefore(startDate) || endDate.isSame(startDate))) {
+    if (
+      endDate &&
+      startDate &&
+      (endDate.isBefore(startDate) || endDate.isSame(startDate))
+    ) {
       setDateError("End date must be after start date.");
       return; // Stop the function here
     }
@@ -91,7 +99,7 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
     // Check if the destination is empty or just whitespace
     if (!destination || destination.trim() === "") {
       setDestinationError("Destination cannot be empty.");
-      return; 
+      return;
     }
 
     setShowForm(false); // Hide the form after confirmation
@@ -105,7 +113,7 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
     ).format("YYYY-MM-DD")} to ${dayjs(endDate).format(
       "YYYY-MM-DD"
     )} with a budget of ${budget}`;
-    setMessages([...messages, { text: message, sender: "user" }]);
+    setMessages([...messages, {text: message, sender: "user"}]);
     addMessage(message);
     dispatch({
       type: "updateTravelItinerary",
@@ -133,10 +141,7 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
     if (inputValue.length > 0) {
       addMessage(inputValue);
 
-      const updatedMessages = [
-        ...messages,
-        { text: inputValue, sender: "user" },
-      ];
+      const updatedMessages = [...messages, {text: inputValue, sender: "user"}];
       setMessages(updatedMessages);
 
       // Clear the input field
@@ -173,14 +178,11 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
       //   payload: response.data,
       // });
 
-      const response = await axios.post(
-        "http://localhost:4000/api/chatMessage",
-        {
-          prompt: newMessage,
-          travelItinerary: travelItinerary,
-          chatHistory: chatHistory,
-        }
-      );
+      const response = await axios.post(`${URL}api/chatMessage`, {
+        prompt: newMessage,
+        travelItinerary: travelItinerary,
+        chatHistory: chatHistory,
+      });
 
       console.log(response.data);
       setLoading(false);
@@ -190,12 +192,12 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
 
       setChatHistory((prevChatHistory) => [
         ...prevChatHistory,
-        { prompt: newMessage, reply: reply },
+        {prompt: newMessage, reply: reply},
       ]);
 
       const updatedMessages = [
         ...messages,
-        { text: inputValue, sender: "user" },
+        {text: inputValue, sender: "user"},
         {
           text: response.data.chatResponse,
           needConfirmation: response.data.needConfirmation,
@@ -207,8 +209,8 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
       console.error("API call error:", error);
       const updatedMessages = [
         ...messages,
-        { text: inputValue, sender: "user" },
-        { text: "please try again", sender: "server" },
+        {text: inputValue, sender: "user"},
+        {text: "please try again", sender: "server"},
       ];
       setMessages(updatedMessages);
     }
@@ -235,7 +237,7 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
 
   return (
     // Flexbox with 73% fixed height so messages don't overlap on the input text field
-    <div style={{ display: "flex", height: "73vh" }}>
+    <div style={{display: "flex", height: "73vh"}}>
       {/* Scrolling div for messages*/}
       <div
         ref={chatContainerRef}
@@ -247,8 +249,8 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
         }}
       >
         {/* Display each Message */}
-        {messages.map((message, index, { length }) => (
-          <div key={index} style={{ display: "flex" }}>
+        {messages.map((message, index, {length}) => (
+          <div key={index} style={{display: "flex"}}>
             <div
               style={{
                 marginBottom: "10px",
@@ -321,12 +323,14 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
                     }
                   }}
                 />
-                {destinationError && <Typography color="error">{destinationError}</Typography>}
+                {destinationError && (
+                  <Typography color="error">{destinationError}</Typography>
+                )}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Start Date"
                     onChange={(newDate) => setStartDate(newDate)} // Pass the new Date object to setDate
-                    minDate={dayjs()}  // sets the minimum selectable date to today
+                    minDate={dayjs()} // sets the minimum selectable date to today
                   />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -336,7 +340,9 @@ export default function Chatbox({ chatHistory, setChatHistory }) {
                     minDate={dayjs()}
                   />
                 </LocalizationProvider>
-                {dateError && <Typography color="error">{dateError}</Typography>}
+                {dateError && (
+                  <Typography color="error">{dateError}</Typography>
+                )}
                 <TextField
                   autoFocus
                   margin="dense"

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, Typography, CircularProgress } from "@mui/material";
+import React, {useState} from "react";
+import {Box, Typography, CircularProgress} from "@mui/material";
 import axios from "axios";
 import "./confirmButton.css";
 import Button from "@mui/material/Button";
@@ -7,6 +7,10 @@ import {
   useTravelItinerary,
   useTravelItineraryDispatch,
 } from "../../TravelItineraryContext";
+
+const URL = process.env.REACT_APP_BACKEND_URL
+  ? process.env.REACT_APP_BACKEND_URL
+  : "http://localhost:4000/";
 /**
  * Component for a chat message
  * @param {JSON} props the properties passed to the component
@@ -24,18 +28,15 @@ export default function MessageCard(props) {
   async function convertTextToItinerary() {
     setLoading(true); // Start loading indicator
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/chatMessage/confirm",
-        {
-          text: props.message,
-          travelItinerary: travelItinerary,
-        }
-      );
+      const response = await axios.post(`${URL}api/chatMessage/confirm`, {
+        text: props.message,
+        travelItinerary: travelItinerary,
+      });
       console.log(response.data);
       if (response.data.day) {
-        dispatchV({ type: "insertNewEvent", payload: response.data });
+        dispatchV({type: "insertNewEvent", payload: response.data});
       } else {
-        dispatchV({ type: "updateTravelItinerary", payload: response.data });
+        dispatchV({type: "updateTravelItinerary", payload: response.data});
       }
       if (response.status === 201) {
         props.sendMessageFunction("Confirmed! Let's continue");
@@ -95,7 +96,7 @@ export default function MessageCard(props) {
             {loading && (
               <CircularProgress
                 size={24}
-                style={{ marginLeft: "10px", top: "10px" }}
+                style={{marginLeft: "10px", top: "10px"}}
               />
             )}{" "}
             {/* Display loading indicator when loading is true */}
