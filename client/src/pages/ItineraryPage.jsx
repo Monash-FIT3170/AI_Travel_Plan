@@ -2,18 +2,21 @@ import Background from "../components/background/Background";
 import BackgroundImage from "../components/background/BackgroundImage";
 import Typography from "@mui/material/Typography"; // Import Typography component
 import Grid from "@mui/material/Grid";
-import {AddNewLocationFAB} from "../components/itinerary/AddNewLocationFAB";
-import {ItineraryTimeLine} from "../components/itinerary/ItineraryTimeLine";
+import { AddNewLocationFAB } from "../components/itinerary/AddNewLocationFAB";
+import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
 import MyMap from "./../components/map/MyMap";
 import axios from "axios";
-import {useState, useEffect} from "react";
-import {useTravelItinerary} from "../TravelItineraryContext";
-import {PdfDownload} from "../components/itinerary/PDFexport";
-import {EmergCardView} from "../components/itinerary/EmergCardView";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
+import { useState, useEffect } from "react";
+import { useTravelItinerary } from "../TravelItineraryContext";
+import PdfDownload from "../components/itinerary/PDFexport";
+import { MonetizationOn } from '@mui/icons-material';
+import { EmergCardView } from "../components/itinerary/EmergCardView";
+import { MapContextProvider } from "../components/map/MapContext";
+
 
 export function ItineraryPage() {
   const travelItinerary = useTravelItinerary();
@@ -50,18 +53,30 @@ export function ItineraryPage() {
     fetchForexRate();
   }, []);
   const ForexRateComponent = () => (
-    <div style={{paddingBottom: "20px"}}>
-      <Card sx={{minWidth: 275}}>
-        <CardHeader avatar={<CurrencyExchangeIcon />} title={"Exchange Rate"} />
-        <CardContent>
-          {forexRate !== null ? (
-            <Typography variant="body1">{`1 AUD = ${forexRate} ${currencyCode}`}</Typography>
-          ) : (
-            <Typography variant="body1">Fetching exchange rate...</Typography>
-          )}
-        </CardContent>
-      </Card>
+    <div
+    style={{
+      backgroundColor: "#f0f0f0",
+      padding: "20px",
+      marginBottom: "10px",
+      borderRadius: "5px"
+    }}
+  >
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        marginBottom: "20px",
+      }}
+    >
+      <MonetizationOn fontSize="large" style={{ marginRight: "10px" }} />
+      <Typography variant="h6">Exchange rate</Typography>
     </div>
+    {forexRate !== null ? (
+      <Typography variant="body1">{`1 Australian Dollar = ${forexRate} ${currencyCode}`}</Typography>
+    ) : (
+      <Typography variant="body1">Fetching exchange rate...</Typography>
+    )}
+  </div>
   );
 
   return (
@@ -120,7 +135,7 @@ export function ItineraryPage() {
               <AddNewLocationFAB></AddNewLocationFAB>
             </div>
           </Grid>
-        </Grid>
+        </MapContextProvider>
       </Background>
     </>
   );

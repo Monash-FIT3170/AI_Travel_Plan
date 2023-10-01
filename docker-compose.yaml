@@ -5,6 +5,9 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+      #args:
+      #  - GPR_USERNAME=${GPR_USERNAME}
+      #  - GPR_TOKEN=${GPR_TOKEN}
       tags:
         - ghcr.io/monash-fit3170/ai_travel_plan/aitravelplannerfrontend:${version}
     image: app
@@ -18,6 +21,9 @@ services:
   backend:
     build:
       context: ./server
+      #args:
+      #  - GPR_USERNAME=${GPR_USERNAME}
+      #  - GPR_TOKEN=${GPR_TOKEN}
       tags:
         - ghcr.io/monash-fit3170/ai_travel_plan/aitravelplannerbackend:${version}
     ports:
@@ -30,5 +36,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+      #args:
+      #  - GPR_USERNAME=${GPR_USERNAME}
+      #  - GPR_TOKEN=${GPR_TOKEN}
       target: tests
     image: tests

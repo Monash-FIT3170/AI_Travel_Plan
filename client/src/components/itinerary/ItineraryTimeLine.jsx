@@ -12,38 +12,38 @@ import dayjs from "dayjs";
 import "./ItineraryTimeLine.css";
 
 function timelineGenerator(dailyItinerary) {
-	const formattedMonth = new Date(dailyItinerary.date).toLocaleString(
-		"default",
-		{ month: "long" }
-	);
-	const formattedDate = new Date(dailyItinerary.date).getDate();
-	const formattedYear = new Date(dailyItinerary.date).getFullYear();
-	console.log(dailyItinerary.activities[0].startTime);
-	const formattedStartTime = formatTimeToAMPM(
-		new Date(dailyItinerary.activities[0].startTime)
-	);
-	return (
-		<TimelineItem>
-			<TimelineOppositeContent display="none" />
-			<TimelineSeparator>
-				<TimelineDot sx={{ bgcolor: "white" }} />
-				<TimelineConnector sx={{ bgcolor: "white" }} />
-			</TimelineSeparator>
-			<TimelineContent>
-				<h5>
-					Day {dailyItinerary.day} {formattedMonth} {formattedDate},{" "}
-					{formattedYear} - {formattedStartTime}
-				</h5>
-				{dailyItinerary.activities.map((event) => (
-					<EventCardView
-						// Using a name identifier for the key so react doesn't re-use the same component
-						key={event.name}
-						event={event}
-					/>
-				))}
-			</TimelineContent>
-		</TimelineItem>
-	);
+  const formattedMonth = new Date(dailyItinerary.date).toLocaleString(
+    "default",
+    {month: "long"}
+  );
+  const formattedDate = new Date(dailyItinerary.date).getDate();
+  const formattedYear = new Date(dailyItinerary.date).getFullYear();
+  // console.log(dailyItinerary.activities[0].startTime);
+  const formattedStartTime = formatTimeToAMPM(
+    new Date(dailyItinerary.activities[0].startTime)
+  );
+  return (
+    <TimelineItem>
+      <TimelineOppositeContent display="none" />
+      <TimelineSeparator>
+        <TimelineDot sx={{bgcolor: "white"}} />
+        <TimelineConnector sx={{bgcolor: "white"}} />
+      </TimelineSeparator>
+      <TimelineContent>
+        <h5>
+          Day {dailyItinerary.day} {formattedMonth} {formattedDate},{" "}
+          {formattedYear} - {formattedStartTime}
+        </h5>
+        {dailyItinerary.activities.map((event) => (
+          <EventCardView
+            // Using a name identifier for the key so react doesn't re-use the same component
+            key={event.name}
+            event={event}
+          />
+        ))}
+      </TimelineContent>
+    </TimelineItem>
+  );
 }
 
 export function ItineraryTimeLine() {

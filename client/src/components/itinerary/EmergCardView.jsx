@@ -9,29 +9,30 @@ import axios from "axios";
 import { useTravelItinerary } from "../../TravelItineraryContext";
 
 export function EmergCardView() {
-	const [emergencyData, setEmergencyData] = useState({
-		country: {},
-		ambulanceNumber: "",
-		policeNumber: "",
-		fireNumber: "",
-		universalNumber: "",
-	});
-	const itinerary = useTravelItinerary();
-	const country = itinerary.country;
-	//need to check when they change country
-	if (!emergencyData.country.countryName) {
-		axios
-			.get("http://localhost:4000/api/emergencyContact?country=" + country)
-			.then((response) => {
-				const data = response.data.detail; // Assuming your API response is an object with emergency details
-				console.log(data);
-				setEmergencyData(data);
-				console.log(emergencyData);
-			})
-			.catch((error) => {
-				console.error("Error fetching emergency data:", error);
-			});
-	}
+
+  const [emergencyData, setEmergencyData] = useState({
+    country: {},
+    ambulanceNumber: "",
+    policeNumber: "",
+    fireNumber: "",
+    universalNumber: "",
+  });
+  const itinerary = useTravelItinerary();
+  const country = itinerary.country;
+  //need to check when they change country
+  if (!emergencyData.country.countryName) {
+    axios
+      .get("http://localhost:4000/api/emergencyContact?country=" + country)
+      .then((response) => {
+        const data = response.data.detail; // Assuming your API response is an object with emergency details
+        // console.log(data);
+        setEmergencyData(data);
+        // console.log(emergencyData);
+      })
+      .catch((error) => {
+        console.error("Error fetching emergency data:", error);
+      });
+  }
 
 	const isUniversalEmergencyNumber = emergencyData.universalNumber === "";
 

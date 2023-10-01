@@ -44,6 +44,9 @@ function reducer(state, action) {
     } else {
       newState = {...state, schedule: [action.payload]};
     }
+  } else if (action.type == "clearItinerary") {
+    newState = { startDate: null, endDate: null, country: null, schedule: null };
+    localStorage.removeItem(key);
   } else {
     throw new Error(`Unknown action: ${action.type}`);
   }
