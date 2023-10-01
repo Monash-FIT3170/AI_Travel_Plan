@@ -1,0 +1,15 @@
+name: Trigger Amplify Build
+
+on:
+  push:
+    branches:
+      - main # or the branch name you want the action to run on, e.g., master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Webhook
+        run: |
+          curl -X POST "${{ secrets.AMPLIFY_WEBHOOK_URL }}"
