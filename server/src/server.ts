@@ -12,7 +12,7 @@ import swaggerDocs from './utils/swagger';
 
 
 const app = express();
-app.use(cors())
+app.use(cors());
 //convert input to json
 app.use(express.json())
 

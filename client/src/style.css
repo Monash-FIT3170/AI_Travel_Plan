@@ -109,3 +109,6 @@ visibility: visible;
     margin-bottom: 20px;
 }
 
+.slab-heading {
+    font-family: 'Roboto Slab', serif;
+}
