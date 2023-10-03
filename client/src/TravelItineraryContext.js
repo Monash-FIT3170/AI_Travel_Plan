@@ -36,8 +36,9 @@ function reducer(state, action) {
   if (action.type == "updateTravelItinerary") {
     if (action.payload.schedule) {
       newState = sortEvents(action.payload);
+    } else {
+      newState = {...action.payload};
     }
-    newState = {...action.payload};
   } else if (action.type == "insertNewEvent") {
     if (state.schedule) {
       newState = insertEvent(action.payload.activities[0], state);
@@ -45,7 +46,7 @@ function reducer(state, action) {
       newState = {...state, schedule: [action.payload]};
     }
   } else if (action.type == "clearItinerary") {
-    newState = { startDate: null, endDate: null, country: null, schedule: null };
+    newState = {startDate: null, endDate: null, country: null, schedule: null};
     localStorage.removeItem(key);
   } else {
     throw new Error(`Unknown action: ${action.type}`);
@@ -69,7 +70,7 @@ const sortEvents = (itinerary) => {
   );
   console.log(allEvents);
   console.log(allActivitySorted);
-
+  if (allActivitySorted.length === 0) return {...itinerary, schedule: null};
   const scheduleStart = [
     {
       day: 1,
