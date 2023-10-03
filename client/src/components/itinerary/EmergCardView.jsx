@@ -12,7 +12,7 @@ const URL = process.env.REACT_APP_BACKEND_URL
   : "http://localhost:4000/";
 export function EmergCardView() {
   const [emergencyData, setEmergencyData] = useState({
-    country: {},
+    country: {countryName: "Australia"},
     ambulanceNumber: "",
     policeNumber: "",
     fireNumber: "",
@@ -21,7 +21,7 @@ export function EmergCardView() {
   const itinerary = useTravelItinerary();
   const country = itinerary.country;
   //need to check when they change country
-  if (!emergencyData.country.countryName) {
+  if (emergencyData.country.countryName !== country) {
     axios
       .get(URL + "api/emergencyContact?country=" + country)
       .then((response) => {

@@ -2,21 +2,23 @@ import Background from "../components/background/Background";
 import BackgroundImage from "../components/background/BackgroundImage";
 import Typography from "@mui/material/Typography"; // Import Typography component
 import Grid from "@mui/material/Grid";
-import { AddNewLocationFAB } from "../components/itinerary/AddNewLocationFAB";
-import { ItineraryTimeLine } from "../components/itinerary/ItineraryTimeLine";
+import {AddNewLocationFAB} from "../components/itinerary/AddNewLocationFAB";
+import {ItineraryTimeLine} from "../components/itinerary/ItineraryTimeLine";
 import MyMap from "./../components/map/MyMap";
 import axios from "axios";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
-import { useState, useEffect } from "react";
-import { useTravelItinerary } from "../TravelItineraryContext";
+import {useState, useEffect} from "react";
+import {useTravelItinerary} from "../TravelItineraryContext";
 import PdfDownload from "../components/itinerary/PDFexport";
-import { MonetizationOn } from "@mui/icons-material";
-import { EmergCardView } from "../components/itinerary/EmergCardView";
-import { MapContextProvider } from "../components/map/MapContext";
-
+import {MonetizationOn} from "@mui/icons-material";
+import {EmergCardView} from "../components/itinerary/EmergCardView";
+import {MapContextProvider} from "../components/map/MapContext";
+const URL = process.env.REACT_APP_BACKEND_URL
+  ? process.env.REACT_APP_BACKEND_URL
+  : "http://localhost:4000/";
 export function ItineraryPage() {
   const travelItinerary = useTravelItinerary();
   const [forexRate, setForexRate] = useState(null);
@@ -26,12 +28,9 @@ export function ItineraryPage() {
   useEffect(() => {
     async function fetchForexRate() {
       try {
-        const response = await axios.post(
-          "http://localhost:4000/api/exchangeRate",
-          {
-            countryName: country,
-          }
-        );
+        const response = await axios.post(`${URL}api/exchangeRate`, {
+          countryName: country,
+        });
         console.log("Response data:", response.data);
 
         if (response.data.rate !== null) {
@@ -67,7 +66,7 @@ export function ItineraryPage() {
           marginBottom: "20px",
         }}
       >
-        <MonetizationOn fontSize="large" style={{ marginRight: "10px" }} />
+        <MonetizationOn fontSize="large" style={{marginRight: "10px"}} />
         <Typography variant="h6">Exchange rate</Typography>
       </div>
       {forexRate !== null ? (
@@ -93,7 +92,7 @@ export function ItineraryPage() {
               }}
             >
               <MyMap />
-              <div style={{ paddingLeft: "20px" }}>
+              <div style={{paddingLeft: "20px"}}>
                 <h4
                   style={{
                     paddingTop: "10px",
@@ -131,7 +130,7 @@ export function ItineraryPage() {
               }}
             >
               <ItineraryTimeLine />
-              <div style={{ position: "fixed", bottom: "20px", right: "50px" }}>
+              <div style={{position: "fixed", bottom: "20px", right: "50px"}}>
                 <AddNewLocationFAB></AddNewLocationFAB>
               </div>
             </Grid>

@@ -32,6 +32,7 @@ export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: C
         
         Scenarios2-Customer has confirmed the travel information and you are ready to start building the itinerary.
         TO do: Start building the itinerary itiratively starting from day 1. Suggest max 2 activities for a given response including the lunch and dinner, making sure to provide the name, location, address, city, description, starting time, ending time and the cost. Please also include lunch and dinner as part of the suggested activties and take the budget into consideration as well.
+        Make sure the suggested activites are within a resonable travel distance and also take into account of previous day activities location and make a resonable place suggestion
         Once you suggest the activities, ask the user if the activities suggested are ok and make sure to set the <<needConfirmation>> field in the response schema to true
         Scenarios3- you are in the middle of building the itinerary and the user has confirmed the activities suggested.
         To do: Make sure the current day itinerary looks complete, if its not continue building like in scenarios2. If the current day itinerary looks complete, move on to next day
