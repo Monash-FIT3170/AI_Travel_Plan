@@ -1,18 +1,18 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
 import ContactEmergencyIcon from "@mui/icons-material/ContactEmergency";
-import {List, ListItem} from "@mui/material";
+import { List, ListItem } from "@mui/material";
 import axios from "axios";
-import {useTravelItinerary} from "../../TravelItineraryContext";
+import { useTravelItinerary } from "../../TravelItineraryContext";
 const URL = process.env.REACT_APP_BACKEND_URL
   ? process.env.REACT_APP_BACKEND_URL
   : "http://localhost:4000/";
 export function EmergCardView() {
   const [emergencyData, setEmergencyData] = useState({
-    country: {countryName: ""},
+    country: { countryName: "" },
     ambulanceNumber: "",
     policeNumber: "",
     fireNumber: "",
@@ -22,26 +22,24 @@ export function EmergCardView() {
   const itinerary = useTravelItinerary();
   const country = itinerary.country;
   //need to check when they change country
-  console.log(country);
-  useEffect(() => {
-    if (country && emergencyData.country.countryName !== country) {
-      axios
-        .get(URL + "api/emergencyContact?country=" + country)
-        .then((response) => {
-          const data = response.data.detail;
-          setEmergencyData(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching emergency data:", error);
-        });
-    }
-  }, [country, emergencyData.country.countryName]);
+  console.log("frontend country " + country);
+  if (country && emergencyData.country.countryName !== country) {
+    axios
+      .get(URL + "api/emergencyContact?country=" + country)
+      .then((response) => {
+        const data = response.data.detail;
+        setEmergencyData(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching emergency data:", error);
+      });
+  }
 
   const isUniversalEmergencyNumber = emergencyData.universalNumber === "";
 
   return (
     <div>
-      <Card sx={{minWidth: 275}}>
+      <Card sx={{ minWidth: 275 }}>
         <CardHeader
           avatar={<ContactEmergencyIcon />}
           title={"Emergency Contacts"}
