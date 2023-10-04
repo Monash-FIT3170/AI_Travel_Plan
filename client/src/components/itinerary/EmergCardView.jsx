@@ -22,7 +22,7 @@ export function EmergCardView() {
   const itinerary = useTravelItinerary();
   const country = itinerary.country;
   //need to check when they change country
-  console.log(country, emergencyData.country.countryName);
+  console.log(country);
   useEffect(() => {
     if (country && emergencyData.country.countryName !== country) {
       axios
