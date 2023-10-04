@@ -7,8 +7,9 @@ const getEmergencyContactRequest = async (req: Request, res: Response) => {
 
     try {
         const country = req.query.country;
-        console.log(country)
+        console.log("Backend Country "+country)
         const countryCode = await getCountryCodeFromAPI(country as string)
+        console.log("This is the country code " + countryCode)
         const response = await getEmergencyContact(countryCode as string)
         res.status(200).json({ detail: response })
 
