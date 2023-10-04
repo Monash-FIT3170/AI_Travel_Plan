@@ -23,12 +23,15 @@ export function EmergCardView() {
   const country = itinerary.country;
   //need to check when they change country
   console.log("frontend country " + country);
+  console.log(emergencyData)
   if (country && emergencyData.country.countryName !== country) {
     axios
       .get(URL + "api/emergencyContact?country=" + country)
       .then((response) => {
         const data = response.data.detail;
+        console.log(data);
         setEmergencyData(data);
+        console.log(emergencyData)
       })
       .catch((error) => {
         console.error("Error fetching emergency data:", error);
