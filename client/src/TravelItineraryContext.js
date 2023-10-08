@@ -48,6 +48,9 @@ function reducer(state, action) {
   } else if (action.type == "clearItinerary") {
     newState = {startDate: null, endDate: null, country: null, schedule: null};
     localStorage.removeItem(key);
+  } else if (action.type == "insertOneEvent") {
+    const tempEvent = action.payload;
+    newState = insertEvent(tempEvent, state);
   } else {
     throw new Error(`Unknown action: ${action.type}`);
   }
@@ -55,6 +58,12 @@ function reducer(state, action) {
   return newState;
 }
 
+const deleteEvent = (event, itinerary) => {
+  const allEvents = itinerary.schedule
+    ?.flatMap((day) => day.activities)
+    .map((activity) => activity);
+  allEvents.filter((e) => e.name !== event.id);
+};
 // NOTE: Reconstructing because the timezone in the mock data is not the same as the timezone in the browser.
 // TODO: When prompting gpt, provide user's timezone such that GPT returns event times in the user's timezone.
 const sortEvents = (itinerary) => {
