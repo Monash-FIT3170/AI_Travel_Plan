@@ -1,5 +1,8 @@
 # Welcome
-This repository contains the source code for the AI powered travel planner, **Get Packing Traveller**
+This repository contains the source code for the AI powered travel 
+planner, **Get Packing Traveller**
+
+Link: https://main.d2azdyrrhon0fz.amplifyapp.com/
 # Contents
 - [Required Tech](#required-tech)
 - [How to Run the App in Dev Environment (Method 1)](#how-to-run-the-app-in-dev-environment-method-1)
@@ -8,10 +11,14 @@ This repository contains the source code for the AI powered travel planner, **Ge
   - [Running the Application (Dev Environment)](#running-the-application-dev-environment)
 - [How to run the App in Dev Environment (Method 2)](#how-to-run-the-app-in-dev-environment-method-2)
 - [Running the Application (Prod Environment)](#running-the-application-prod-environment)
+- [How To Contribute](#how-to-contribute)
+  - [Pull Request (PR) Strategy](#pull-request-pr-strategy)
 - [Additional Notes](#additional-notes)
   - [Tech Stack](#tech-stack)
   - [APIs Used](#apis-used)
   - [Common Issues](#common-issues)
+  - [GitHub Actions](#github-actions)
+  - [License Information](#license-information)
 # Required Tech
 - A computer (Windows or Mac is fine)
 - node.js installed on your machine
@@ -82,7 +89,7 @@ The react app should open in your browser. After running both steps above, you s
 2. run `docker-compose up` make sure to run this in the root project folder
 3. Download docker extension on vs code.
 4. Open Command Palette (Ctrl+Shift+P) and Click on attached to running container
-5. Once finish run `docker-compose down`
+5. Once finished, run `docker-compose down`
 
 # Running the Application (Prod Environment)
 After all the necessary setup has been completed, you should be ready to run the application in the development environment.
@@ -102,6 +109,14 @@ PS <file_path_to_project>\AI_Travel_Plan> cd server
 PS <file_path_to_project>\AI_Travel_Plan\server> npm run build
 PS <file_path_to_project>\AI_Travel_Plan\server> npm run start
 ```
+
+# How to Contribute
+<span style="background-color: #f8fa98">Add how to contribute</span>
+
+## Pull Request (PR) Strategy
+
+
+
 
 # Additional Notes 
 This section will outline our tech stack, APIs used, and some common troubleshooting. 
@@ -193,3 +208,6 @@ uncommented the sections within the [Build.yml](.github/workflows/build.yml) fil
 will do, is deploy your docker image for both the server and client to their own ECS clusters
 which will then host them and allow them to run properly. There are also cloudwatch logs included
 so that you will be able to monitor these containers and any error logs they may be giving.
+
+## License Information
+<span style="background-color: #f8fa98">Add license info</span>
