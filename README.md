@@ -38,17 +38,21 @@ We use React Bootstrap for UI components.
 (Recommended) Install the ES7+ React/Redux/React-Native snippets extension for VS Code to enhance your development workflow.
 
 ## Directory Structure and Where to Add New Files
-React Components: Add new React components inside the src/components directory.
+- React Components: Add new React components inside the src/components directory.
 
-Server Routes: New server routes should be added inside the server/routes directory.
+- Server Routes: New server routes should be added inside the server/routes directory.
 
-Features: Any new feature modules should be added inside the src/features directory.
+- Features: Any new feature modules should be added inside the src/features directory.
 
 ## Contributing New Features or Changes
 1)Always pull the latest changes from the main branch before starting your work: `git pull origin main`
+
 2)Create a new branch for your feature or change: `git checkout -b feature/your-feature-name`
+
 3)After completing your work, push your changes to the repository: `git push origin feature/your-feature-name`
+
 4)reate a pull request (PR) from your branch to the main branch. Ensure to add relevant reviewers for your PR.
+
 5)After your PR is reviewed and approved, it will be merged into the main branch.
 
 ## Troubleshooting Guide
@@ -56,36 +60,44 @@ Encountering issues while setting up or developing the project is not uncommon. 
 
 1. NPM Install Fails
 
--Problem: If you encounter errors while running npm install.
+Problem: If you encounter errors while running npm install.
 
--Solution:
---Ensure you have the correct version of Node.js and npm installed. You can check your version by running `node -v` and `npm -v`.
---Delete the node_modules/ folder and package-lock.json file in both client and server directories, then run `npm install` again.
+Solution:
+
+- Ensure you have the correct version of Node.js and npm installed. You can check your version by running `node -v` and `npm -v`.
+
+- Delete the node_modules/ folder and package-lock.json file in both client and server directories, then run `npm install` again.
 
 2. Docker Containers Not Starting
 
--Problem: Docker containers fail to start when running `docker-compose up`.
+Problem: Docker containers fail to start when running `docker-compose up`.
 
--Solution:
---Ensure Docker is running. You can check if Docker is running by executing docker info.
---Check the logs by running docker-compose logs to identify the specific issue.
---Ensure all required environment variables and configurations are properly set.
+Solution:
+- Ensure Docker is running. You can check if Docker is running by executing docker info.
+
+- Check the logs by running docker-compose logs to identify the specific issue.
+
+- Ensure all required environment variables and configurations are properly set.
 
 3. API Keys Not Working
 
--Problem: The application is not connecting to external services.
+Problem: The application is not connecting to external services.
 
--Solution:
---Ensure the `.env` file is correctly placed in the server directory and has the right keys and values.
---Restart the server after adding or modifying the `.env` file to ensure the changes take effect.
+Solution:
+
+- Ensure the `.env` file is correctly placed in the server directory and has the right keys and values.
+
+- Restart the server after adding or modifying the `.env` file to ensure the changes take effect.
 
 4. Changes Not Reflecting
 
--Problem: Code changes are not reflecting in the application.
+Problem: Code changes are not reflecting in the application.
 
--Solution:
---Ensure the application is being recompiled and reloaded after making changes. In the case of Docker, rebuild the containers using `docker-compose up --build`.
---Clear the browser cache or try another browser to ensure the changes are not being masked by cached data.
+Solution:
+
+- Ensure the application is being recompiled and reloaded after making changes. In the case of Docker, rebuild the containers using `docker-compose up --build`.
+
+- Clear the browser cache or try another browser to ensure the changes are not being masked by cached data.
 
 ## Pull Request (PR) Strategy
 
