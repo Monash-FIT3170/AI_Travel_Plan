@@ -25,7 +25,12 @@ Link: https://main.d2azdyrrhon0fz.amplifyapp.com/
 Check out [this document](other-readmes/RUNNING_APP.md) for an in depth guide on how to install dependencies, adding environment variables and running the application in the dev and prod environments. 
 
 # How to Contribute
-<span style="background-color: #f8fa98">Add how to contribute</span>
+## Setting up your Devolpment Environment
+### Clone Git Repository
+Clone the git repository: git clone https://github.com/Monash-FIT3170/AI_Travel_Plan
+
+### Setting up Environment Variables And Client and Server Dependencies
+Check out [this document](other-readmes/RUNNING_APP.md) for an in depth guide on how to install dependencies, adding environment variables and running the application in the dev and prod environments. 
 
 ## Pull Request (PR) Strategy
 
