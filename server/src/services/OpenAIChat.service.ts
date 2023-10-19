@@ -19,8 +19,8 @@ const openai = new OpenAIApi(configuration);
 export async function sendOpenAIChat({ prompt, travelItinerary, chatHistory }: ChatMessage) {
     //array of messages to be sent to chatgpt
     const messages: ChatCompletionRequestMessage[] = []
-    const messageLast5 = chatHistory.slice(1).slice(-5)
-    const messageHistory = messageLast5.reduce((acc, cur) => acc + `Customer: ${cur.prompt}\n Agent: ${cur.reply}}`, "")
+    const messageLast5 = chatHistory?.slice(1).slice(-5)
+    const messageHistory = messageLast5?.reduce((acc, cur) => acc + `Customer: ${cur.prompt}\n Agent: ${cur.reply}}`, "")
     const travelItineraryString = "current travel itinerary" + JSON.stringify(travelItinerary)
     const returnMessage: ChatCompletionRequestMessage = {
         role: "system",

@@ -43,3 +43,4 @@ app.listen(PORT, () => {
 //Just an example of using the
 // const exampleUsage = require("./services/ExampleUsageOfArenService")
 // exampleUsage.printAsyncValue()
+export default app;
