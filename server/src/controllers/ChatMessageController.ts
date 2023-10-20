@@ -77,9 +77,9 @@ export const convertToStructuredResponse = async (req: Request, res: Response) =
 
 }
 
-function parseResponse(response: string): ChatResponse {
+export function parseResponse(response: string): ChatResponse {
   //parse response to json
-
+  console.log(response)
   const startIndex = response.indexOf("{");
   const endIndex = response.lastIndexOf("}");
   if (startIndex === -1 || endIndex === -1) {
