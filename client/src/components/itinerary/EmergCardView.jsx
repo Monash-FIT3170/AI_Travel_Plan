@@ -22,10 +22,14 @@ export function EmergCardView() {
   const itinerary = useTravelItinerary();
   const country = itinerary.country;
   //need to check when they change country
-  console.log("frontend country " + country);
+  const config = {
+    headers: {
+      "ngrok-skip-browser-warning": "1",
+    },
+  };
   if (country && emergencyData.country.countryName !== country) {
     axios
-      .get(URL + "api/emergencyContact?country=" + country)
+      .get(URL + "api/emergencyContact?country=" + country, config)
       .then((response) => {
         const data = response.data.detail;
         setEmergencyData(data);

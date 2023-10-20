@@ -4,7 +4,7 @@ export const fetchWeatherForLocation = async (location) => {
   try {
     // fetch lat and lon for the location
     const latLonResponse = await axios.get(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=5&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
+      `https://api.openweathermap.org/geo/1.0/direct?q=${location}&limit=5&appid=${process.env.REACT_APP_WEATHER_API_KEY}`
     );
 
     // check if the array is not empty
