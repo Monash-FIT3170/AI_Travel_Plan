@@ -144,5 +144,17 @@ GitHub Actions is the (CI/CD) platform used to automate our build, test, and dep
 ## Software Versions
 Please visit [this page](other-readmes/SOFTWARE_VERSIONS.md) for a list of both front and backend dependencies and their versions allowing for a stable release of the application.
 
+## Versioning Strategy
+Our project adheres to the principles of semantic versioning (SemVer) to manage version updates. SemVer employs three components: MAJOR, MINOR, and PATCH, each signifying a specific category of change:
+
+- MAJOR version increments indicate significant, potentially incompatible changes or major feature additions that may necessitate code adjustments on the user's part.
+- MINOR version increases represent backward-compatible feature enhancements and additions.
+- PATCH version updates cover backward-compatible bug fixes or minor improvements.
+
+Our version numbers follow the format MAJOR.MINOR.PATCH (e.g., 1.0.0). 
+
+Please update the project's version by changing the relevant `package.json` files.
+
+
 ## License Information
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
