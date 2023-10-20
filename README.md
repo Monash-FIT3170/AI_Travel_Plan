@@ -1,107 +1,189 @@
 # Welcome
-This repository contains the source code for the AI powered travel planner, **Get Packing Traveller**
+This repository contains the source code for the AI powered travel 
+planner, **Get Packing Traveller**
+
+Link: https://main.d2azdyrrhon0fz.amplifyapp.com/
 # Contents
 - [Required Tech](#required-tech)
-- [How to Run the App in Dev Environment (Method 1)](#how-to-run-the-app-in-dev-environment-method-1)
-  - [Installing Dependencies](#installing-dependencies)
-  - [Adding Environment Variables](#adding-environment-variables)
-  - [Running the Application (Dev Environment)](#running-the-application-dev-environment)
-- [How to run the App in Dev Environment (Method 2)](#how-to-run-the-app-in-dev-environment-method-2)
-- [Running the Application (Prod Environment)](#running-the-application-prod-environment)
+- [How to Run the App](#how-to-run-the-app)
+- [How To Contribute](#how-to-contribute)
+  - [Pull Request (PR) Strategy](#pull-request-pr-strategy)
 - [Additional Notes](#additional-notes)
   - [Tech Stack](#tech-stack)
   - [APIs Used](#apis-used)
   - [Common Issues](#common-issues)
+  - [GitHub Actions](#github-actions)
+  - [Software Versions](#software-versions)
+  - [License Information](#license-information)
 # Required Tech
 - A computer (Windows or Mac is fine)
 - node.js installed on your machine
 - an IDE or text editor (ideally vs code)
 - [OPTIONAL] Docker
-# How to Run the App in Dev Environment (Method 1)
-This section will outline how to run the application. 
-It contains the steps for installing dependencies, adding environment variables, and running the application.
-## Installing Dependencies
-First, clone the repository onto your machine.
-Basic understanding of the terminal would be helpful, but not required. 
-Ensure your terminal window is open in the root of the project. 
-```console
-PS <file_path_to_project>\AI_Travel_Plan>
-``` 
-Now, install dependencies in both the `AI_Travel_Plan/client` and `AI_Travel_Plan/server` directories
-For example, to install dependencies in **client**:
-```console
-PS <file_path_to_project>\AI_Travel_Plan> cd client
-PS <file_path_to_project>\AI_Travel_Plan\client> npm install
-```
-you can navigate out of the client directory by entering the `cd ..` command: 
+# How to Run the App 
 
-```console
-PS <file_path_to_project>\AI_Travel_Plan\client> cd .. 
-PS <file_path_to_project>\AI_Travel_Plan>
-```
-repeat the install process in the **server** directory.
+Check out [this document](other-readmes/RUNNING_APP.md) for an in depth guide on how to install dependencies, adding environment variables and running the application in the dev and prod environments. 
 
-## Adding Environment Variables
-within **both** the **client** and **server** folder, a `.env` file should be created
+# How to Contribute
+## Setting up your Devolpment Environment
+### Clone Git Repository
+Clone the git repository:`git clone https://github.com/Monash-FIT3170/AI_Travel_Plan`
 
-In the `client/.env` file, the following API credentials should be added: 
-```
-REACT_APP_MAPBOX_API_KEY=<Your mapbox api key>
-REACT_APP_WEATHER_API_KEY=<Your open weather map api key>
-REACT_APP_GOOGLE_PLACES_API_KEY=<Your Google Places api key>
-```
+### Setting up Environment Variables And Client and Server Dependencies
+Check out [this document](other-readmes/RUNNING_APP.md) for an in depth guide on how to install dependencies, adding environment variables and running the application in the dev and prod environments. 
 
-In the `server/.env` file, the following should be added: 
-```
-PORT = 4000; 
-OPENAI_API_KEY =<your openai api key>
-```
+## Coding Standards and Best Practices
+We use React Bootstrap for UI components.
 
-## Running the Application (Dev Environment)
-After all the necessary setup has been completed, you should be ready to run the application in the development environment.
-Open two terminal windows. 
-- One terminal will run the react app in port 3000.
-- the other will run the server in port 4000.
+(Recommended) Install the ES7+ React/Redux/React-Native snippets extension for VS Code to enhance your development workflow.
 
-In the first terminal: 
-```console
-PS <file_path_to_project>\AI_Travel_Plan> cd client
-PS <file_path_to_project>\AI_Travel_Plan\client> npm start
-```
+## Directory Structure and Where to Add New Files
+- React Components: Add new React components inside the src/components directory.
 
-in the second terminal: 
-```console
-PS <file_path_to_project>\AI_Travel_Plan> cd server
-PS <file_path_to_project>\AI_Travel_Plan\server> npm run dev
-```
+- Server Routes: New server routes should be added inside the server/routes directory.
 
-The react app should open in your browser. After running both steps above, you should be ready to use the application in the development environment. 
+- Features: Any new feature modules should be added inside the src/features directory.
 
-# How to run the App in Dev Environment (Method 2)
-1. download docker or check if docker exist in the system by typing `docker -v`
-2. run `docker-compose up` make sure to run this in the root project folder
-3. Download docker extension on vs code.
-4. Open Command Palette (Ctrl+Shift+P) and Click on attached to running container
-5. Once finish run `docker-compose down`
+## Contributing New Features or Changes
+1)Always pull the latest changes from the main branch before starting your work: `git pull origin main`
 
-# Running the Application (Prod Environment)
-After all the necessary setup has been completed, you should be ready to run the application in the development environment.
-Open two terminal windows. 
-- One terminal will run the react app in port 3000.
-- the other will run the server in port 4000.
+2)Create a new branch for your feature or change: `git checkout -b feature/your-feature-name`
 
-In the first terminal: 
-```console
-PS <file_path_to_project>\AI_Travel_Plan> cd client
-PS <file_path_to_project>\AI_Travel_Plan\client> npm run build // compile to production for execution
-```
+3)After completing your work, push your changes to the repository: `git push origin feature/your-feature-name`
 
-in the second terminal: 
-```console
-PS <file_path_to_project>\AI_Travel_Plan> cd server
-PS <file_path_to_project>\AI_Travel_Plan\server> npm run build
-PS <file_path_to_project>\AI_Travel_Plan\server> npm run start
-```
+4)reate a pull request (PR) from your branch to the main branch. Ensure to add relevant reviewers for your PR.
+
+5)After your PR is reviewed and approved, it will be merged into the main branch.
+
+## Troubleshooting Guide
+Encountering issues while setting up or developing the project is not uncommon. Below are some common problems and their respective solutions to help you get past them quickly.
+
+1. NPM Install Fails
+
+Problem: If you encounter errors while running npm install.
+
+Solution:
+
+- Ensure you have the correct version of Node.js and npm installed. You can check your version by running `node -v` and `npm -v`.
+
+- Delete the node_modules/ folder and package-lock.json file in both client and server directories, then run `npm install` again.
+
+2. Docker Containers Not Starting
+
+Problem: Docker containers fail to start when running `docker-compose up`.
+
+Solution:
+- Ensure Docker is running. You can check if Docker is running by executing docker info.
+
+- Check the logs by running docker-compose logs to identify the specific issue.
+
+- Ensure all required environment variables and configurations are properly set.
+
+3. API Keys Not Working
+
+Problem: The application is not connecting to external services.
+
+Solution:
+
+- Ensure the `.env` file is correctly placed in the server directory and has the right keys and values.
+
+- Restart the server after adding or modifying the `.env` file to ensure the changes take effect.
+
+4. Changes Not Reflecting
+
+Problem: Code changes are not reflecting in the application.
+
+Solution:
+
+- Ensure the application is being recompiled and reloaded after making changes. In the case of Docker, rebuild the containers using `docker-compose up --build`.
+
+- Clear the browser cache or try another browser to ensure the changes are not being masked by cached data.
+
+## Pull Request (PR) Strategy
+
+### What type of PR is this? (check all applicable)
+
+- [ ] Refactor
+- [ ] Feature
+- [ ] Bug Fix
+- [ ] Optimisation
+- [ ] Documentation Update
+
+Definitions: 
+- Refactor: Improving the code quality, readabililty, or maintainablity of existing code.
+- Feature: Adding a new feature or capabilities to the project.
+- Bug Fix: Fixing a bug or resolving an issue.
+- Optimisation: Improving code or system performance and efficiency.
+- Documentation Update: Enhance project documentation to ensure accuracy and usability.
+### Description
+Briefly describe the purpose and scope of your pull request.
+
+e.g.
+This PR resolves the issue where the locations weren't loading on the map on the itinerary page.
+
+
+## Related Tickets & Documents
+If your pull request is related to an issue or document, you can link them by using the following keywords:
+
+e.g. Related Issue #99
+
+- Closes #99
+- Fixes #99
+- Resolves #99
+
+_Any of these three keywords (closes, fixes, resolves) will link the pull request 
+to the issue and indicate that the issue will automically be closed when the pull request is merged._
+
+### QA Instructions, Screenshots, Recordings
+
+_Please replace this line with instructions on how to test your changes, a note
+on the devices and browsers this has been tested on, as well as any relevant
+images and/or recording(s) for UI changes._
+
+e.g.
+
+Testing Instructions:
+- Generate an itinerary on the Travel Planner page.
+- Verify that the markers load correctly on the map on the Itinerary page.
+- Check for any error messages or unexpected behaviour when loading the itinerary page.
+
+Devices/Browsers Tested On:
+- Devices: MacBook Pro, Desktop
+- Browsers: Google Chrome, Mozilla Firefox
+
+Screenshots for UI Changes:
+
+Before:
+
+![](.github/pull_request/before_PR.png)
+
+After:
+
+![](.github/pull_request/after_PR.png)
+
+### UI accessibility checklist
+
+_If your PR includes UI changes, please utilise this checklist:_
+
+- [ ] Semantic HTML implemented?
+- [ ] Keyboard operability supported?
+- [ ] Checked with [axe DevTools](https://www.deque.com/axe/) and addressed `Critical` and `Serious` issues?
+- [ ] Color contrast tested?
+
+_For more info, check out the
+[Forem Accessibility Docs](https://developers.forem.com/frontend/accessibility)._
+
+### Added/updated tests?
+
+_We encourage you to keep the code coverage percentage at 80% and above._
+
+- [ ] Yes
+- [ ] No, and this is why: _please replace this line with details on why tests
+      have not been included_
+- [ ] I need help with writing tests
+
+
+
 
 # Additional Notes 
 This section will outline our tech stack, APIs used, and some common troubleshooting. 
@@ -110,33 +192,8 @@ This section will outline our tech stack, APIs used, and some common troubleshoo
 	> Currently, we make use of [React Material UI](https://mui.com/material-ui/getting-started/) library for our components
  - Front End pages are stored in `src/pages` folder.
 - Back end code is written in the `server` directory in the [TypeScript](https://www.typescriptlang.org/) language.
-- Swagger documentation for backend routes uses OpenAPI syntax. See example below:
-```  
-  openapi: 3.0.0
-info:
-  title: Sample API
-  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
-  version: 0.1.9
-servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
-    description: Optional server description, e.g. Internal staging server for testing
-paths:
-  /users:
-    get:
-      summary: Returns a list of users.
-      description: Optional extended description in CommonMark or HTML.
-      responses:
-        '200':    # status code
-          description: A JSON array of user names
-          content:
-            application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
-```
+- Swagger documentation for backend routes uses OpenAPI syntax. See example [here](other-readmes/EXAMPLE_SWAGGER_DOC.md):
+
 - Front and back-end communication is handled by [Express.js](https://expressjs.com/)
   	>To add more routes, create router function on the routes folder. From the server.ts file create a link to the route functions
   
@@ -163,33 +220,22 @@ Ensure you are adding all API keys to the relevant `.env` files.
 The current frontend loading is quite slow, improvements are necessary
 
 ## GitHub Actions
-Currently, GitHub actions is configured to run a deployment every time something is pushed to 
-a branch, deployment involves running all tests defined within the `tests` file located in the
-server folder. This is where you should write all your unit tests for the server side of the
-application.
+GitHub Actions is the (CI/CD) platform used to automate our build, test, and deployment pipeline. More information can be found [here](other-readmes/GITHUB_ACTIONS_INFO.md)
 
-The tests are written in TypeScript with chai and mocha. Documentation for them can be found [here](https://dev.to/matteobruni/mocha-chai-with-typescript-37f).
+## Software Versions
+Please visit [this page](other-readmes/SOFTWARE_VERSIONS.md) for a list of both front and backend dependencies and their versions allowing for a stable release of the application.
 
-### Future Development of GHA
-For now, the deployment process is very bare-bones, and is simply written in order to run the unit tests
-with every change to the repository and there are a lot of commented out sections.
+## Versioning Strategy
+Our project adheres to the principles of semantic versioning (SemVer) to manage version updates. SemVer employs three components: MAJOR, MINOR, and PATCH, each signifying a specific category of change:
 
-#### Commented Sections
-The commented section within the Build.yml file describe the optimal deployment process, where
-the packaged files will be put in a docker image and be sent to GitHub Container Registry (ghcr)
-in order for this to work, you will need to create a token within a GitHub account that has 
-admin access to this repository, that token should have package privileges and will be used to
-sign in to ghcr in order to push the docker image there. Documentation on how to create this token
-can be found [here](https://nikiforovall.github.io/docker/2020/09/19/publish-package-to-ghcr.html#:~:text=To%20access%20GitHub%20container%20registry,settings%2Ftokens%2Fnew).
+- MAJOR version increments indicate significant, potentially incompatible changes or major feature additions that may necessitate code adjustments on the user's part.
+- MINOR version increases represent backward-compatible feature enhancements and additions.
+- PATCH version updates cover backward-compatible bug fixes or minor improvements.
 
-Creating this token also means you can uncomment the sections within the [docker-compose.yaml](docker-compose.yaml) file.
+Our version numbers follow the format MAJOR.MINOR.PATCH (e.g., 1.0.0). 
 
-You will also be required to create an account with AWS and add your account number in to the 
-labelled spots as well in order to set up the AWS deployment with Terraform.
+Please update the project's version by changing the relevant `package.json` files.
 
-#### AWS and Terraform
-The AWS deployment should be set up once you have included the appropriate AWS account Id and
-uncommented the sections within the [Build.yml](.github/workflows/build.yml) file. What this
-will do, is deploy your docker image for both the server and client to their own ECS clusters
-which will then host them and allow them to run properly. There are also cloudwatch logs included
-so that you will be able to monitor these containers and any error logs they may be giving.
+
+## License Information
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
